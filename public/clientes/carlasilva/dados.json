@@ -1,0 +1,96 @@
+{
+  "profissional": "Carla Silva",
+  "whatsapp": "5511987654321",
+  "servicos": [
+    {
+      "nome": "Manicure",
+      "desc": "Corte, lixa, cutícula e esmaltação",
+      "preco": "R$ 45"
+    },
+    {
+      "nome": "Pedicure",
+      "desc": "Cuidado completo dos pés com hidratação",
+      "preco": "R$ 50"
+    },
+    {
+      "nome": "Manicure + pedicure",
+      "desc": "Os dois no mesmo atendimento",
+      "preco": "R$ 85"
+    },
+    {
+      "nome": "Unhas em gel",
+      "desc": "Durabilidade de até três semanas",
+      "preco": "R$ 70"
+    },
+    {
+      "nome": "Manutenção de gel",
+      "desc": "Retoque do alongamento",
+      "preco": "R$ 50"
+    },
+    {
+      "nome": "Alongamento",
+      "desc": "Fibra ou acrigel, com design",
+      "preco": "R$ 80"
+    }
+  ],
+  "horarios": [
+    "08:00",
+    "09:00",
+    "10:00",
+    "11:00",
+    "13:00",
+    "14:00",
+    "15:00",
+    "16:00",
+    "17:00",
+    "18:00"
+  ],
+  "pedirBairro": true,
+  "bairros": [
+    "Centro",
+    "Vila Mariana",
+    "Pinheiros",
+    "Moema",
+    "Ipiranga",
+    "Saúde",
+    "Jabaquara",
+    "Outro"
+  ],
+  "diasDeAntecedencia": 0,
+  "diasDeRetorno": 21,
+  "fotos": {
+    "capa": "https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=1200&q=70",
+    "galeria": [
+      "https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=700&q=70",
+      "https://images.unsplash.com/photo-1610992015762-45dca7fa3a85?auto=format&fit=crop&w=700&q=70",
+      "https://images.unsplash.com/photo-1607779097040-26e80aa78e66?auto=format&fit=crop&w=700&q=70",
+      "https://images.unsplash.com/photo-1612887390768-fb02affea7a6?auto=format&fit=crop&w=700&q=70",
+      "https://images.unsplash.com/photo-1630843599725-32ead7671867?auto=format&fit=crop&w=700&q=70",
+      "https://images.unsplash.com/photo-1571290274554-6a2eaa771e5f?auto=format&fit=crop&w=700&q=70"
+    ]
+  },
+  "instagram": "carlasilva.nails",
+  "sobre": {
+    "texto": "Sou manicure há oito anos e faz três que atendo só em domicílio. Comecei em salão, mas gostei mesmo foi de trabalhar assim: uma cliente por vez, sem pressa e sem fila esperando.\n\nLevo tudo comigo e não tenho hora marcada em cima da outra — se sua unha pedir mais capricho naquele dia, tem tempo pra isso.",
+    "foto": "https://images.unsplash.com/photo-1734821331651-7e4a47793566?auto=format&fit=crop&w=800&q=70"
+  },
+  "avaliacoes": {
+    "nota": "4,9",
+    "quantidade": 37,
+    "atendimentos": 250
+  },
+  "depoimentos": [
+    {
+      "texto": "Chegou no horário, montou tudo em cinco minutos e minha unha durou três semanas.",
+      "autora": "Marina S."
+    },
+    {
+      "texto": "Eu não tinha mais tempo de ir ao salão. Resolveu minha vida.",
+      "autora": "Carolina M."
+    },
+    {
+      "texto": "Caprichosa de verdade. Já indiquei pra três amigas.",
+      "autora": "Amanda T."
+    }
+  ]
+}

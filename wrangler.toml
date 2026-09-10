@@ -1,0 +1,37 @@
+name = "manicure-de-valor"
+main = "worker/index.js"
+compatibility_date = "2026-05-01"
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+# A rota curinga é o que faz cada subdomínio cair no Worker.
+# Confira no painel se o registro DNS *.manicuredevalor.com.br existe
+# como CNAME proxied (nuvem laranja) antes de publicar.
+[[routes]]
+pattern = "manicuredevalor.com.br"
+custom_domain = true
+
+[[routes]]
+pattern = "www.manicuredevalor.com.br"
+custom_domain = true
+
+[[routes]]
+pattern = "*.manicuredevalor.com.br/*"
+zone_name = "manicuredevalor.com.br"
+
+# Banco dos pedidos, usado pelo painel de manutencao. Enquanto estiver
+# comentado, o site funciona igual: o agendamento abre o WhatsApp e nada e
+# guardado. Para ligar:
+#
+#   npx wrangler d1 create manicure-de-valor
+#   npx wrangler d1 execute manicure-de-valor --remote --file=db/schema.sql
+#   npx wrangler secret put PAINEL_SEGREDO
+#
+# Cole o database_id que o primeiro comando imprime e descomente as tres linhas.
+#
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "manicure-de-valor"
+# database_id = "cole-o-id-aqui"

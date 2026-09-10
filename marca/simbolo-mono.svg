@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 172" width="160" height="172" role="img" aria-label="Manicure de Valor">
+  <mask id="v"><path d="M20 26h30l30 80 30-80h30L80 152z" fill="#fff" stroke="#fff" stroke-width="24" stroke-linejoin="round"/></mask>
+  <g mask="url(#v)"><rect width="160" height="172" fill="currentColor"/><path d="M0 64q80 26 160 0v13q-80 26-160 0z" fill="#fff"/></g>
+</svg>

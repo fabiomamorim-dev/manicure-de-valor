@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fotos — Manicure de Valor</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --milk:#fff7f2; --ink:#171110; --pop:#e23e57; --pop-dark:#bd2b41;
+  --butter:#f5cd67; --blush:#fbe0d6; --muted:#8a7168; --line:#efe0d7;
+}
+body{background:var(--milk);color:var(--ink);font:16px/1.55 system-ui,-apple-system,Segoe UI,sans-serif;padding:0 0 120px}
+.wrap{max-width:1000px;margin:0 auto;padding:0 22px}
+header{background:var(--ink);color:var(--milk);padding:26px 0;margin-bottom:38px}
+header h1{font-size:26px;letter-spacing:-.03em}
+header p{color:#b9a49c;font-size:15px;margin-top:4px}
+h2{font-size:20px;letter-spacing:-.02em;margin-bottom:8px}
+.muted{color:var(--muted);font-size:15px}
+button{font:inherit;font-size:15px;cursor:pointer;border:none;border-radius:999px;padding:11px 22px;background:var(--pop);color:#fff;transition:background .15s}
+button:hover{background:var(--pop-dark)}
+button:disabled{background:#d9c8c1;cursor:not-allowed}
+button.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+button.ghost:hover{background:#fff}
+
+.slug{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:26px}
+.slug input{font:inherit;padding:11px 14px;border:none;box-shadow:inset 0 0 0 1.5px var(--line);border-radius:12px;background:#fff;min-width:220px}
+.slug input:focus{outline:none;box-shadow:inset 0 0 0 2px var(--pop)}
+
+.drop{border:2px dashed var(--line);background:#fff;border-radius:20px;padding:44px 24px;text-align:center;transition:border-color .15s,background .15s}
+.drop.hot{border-color:var(--pop);background:var(--blush)}
+.drop h2{margin-bottom:6px}
+.drop p{margin-bottom:18px}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;margin-top:30px;align-items:start}
+.card{background:#fff;border-radius:18px;padding:14px;box-shadow:0 1px 0 var(--line),0 10px 30px rgba(23,17,16,.05)}
+.card .frame{background:var(--blush);border-radius:12px;overflow:hidden;display:grid;place-items:center;margin-bottom:12px}
+.card canvas{display:block;width:100%;height:auto}
+.card select{font:inherit;font-size:14px;width:100%;padding:9px 10px;border:none;border-radius:10px;background:var(--milk);box-shadow:inset 0 0 0 1.5px var(--line);margin-bottom:10px}
+.card .row{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)}
+.card input[type=range]{flex:1;accent-color:var(--pop)}
+.card .meta{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted);margin-top:10px}
+.card .x{background:none;color:var(--muted);padding:4px 8px;font-size:13px;box-shadow:none}
+.card .x:hover{background:none;color:var(--pop-dark)}
+.card.dup{box-shadow:0 0 0 2px var(--pop)}
+.card .fraca{color:var(--pop-dark)}
+
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--ink);color:var(--milk);padding:16px 0;z-index:10}
+.bar-in{max-width:1000px;margin:0 auto;padding:0 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.bar p{font-size:14px;color:#b9a49c}
+.bar b{color:var(--milk);font-weight:500}
+
+.done{background:var(--ink);color:var(--milk);border-radius:18px;padding:22px 24px;margin-top:30px;display:none}
+.done.on{display:block}
+.done h2{margin-bottom:10px}
+.done code{display:block;background:#000;color:var(--butter);padding:12px 14px;border-radius:10px;font:14px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;margin-top:10px;white-space:pre-wrap;word-break:break-all}
+.aviso{background:var(--blush);border-radius:14px;padding:14px 16px;font-size:15px;margin-top:20px}
+section{margin-top:40px}
+ul{margin:10px 0 0 20px}
+li{margin-bottom:6px;font-size:15px;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<header><div class="wrap">
+  <h1>Fotos do site</h1>
+  <p>Corta, comprime e renomeia. Nada sai daqui — tudo acontece no seu navegador.</p>
+</div></header>
+
+<div class="wrap">
+
+  <div class="slug">
+    <label for="slug">Slug da cliente</label>
+    <input id="slug" placeholder="carlasilva" spellcheck="false" autocomplete="off">
+    <span class="muted" id="slugAviso"></span>
+  </div>
+
+  <div class="drop" id="drop">
+    <h2>Arrasta as fotos aqui</h2>
+    <p class="muted">Ou escolhe pelo botão. JPG, PNG, HEIC convertido, WebP — o que vier.</p>
+    <button id="escolher">Escolher fotos</button>
+    <input type="file" id="file" accept="image/*" multiple hidden>
+  </div>
+
+  <div class="cards" id="cards"></div>
+
+  <div class="aviso" id="aviso" style="display:none"></div>
+
+  <div class="done" id="done">
+    <h2>Pronto</h2>
+    <p>Descompacta o zip dentro da pasta da cliente e roda o script — ele acha as fotos sozinho.</p>
+    <code id="comando"></code>
+  </div>
+
+  <section>
+    <h2>Como cada foto é usada</h2>
+    <ul>
+      <li><b>Capa</b> — o bloco grande logo abaixo do título. Deitada, 16:10.</li>
+      <li><b>Trabalho 1</b> — o quadro maior da galeria. Quadrada.</li>
+      <li><b>Trabalhos 2 a 5</b> — os quadros menores. Quadradas.</li>
+      <li><b>Trabalho 6</b> — a faixa deitada que fecha a galeria. 2:1.</li>
+      <li><b>Retrato</b> — a foto da profissional na seção "Oi, eu sou a ___". 4:5, em pé.</li>
+    </ul>
+  </section>
+
+</div>
+
+<div class="bar"><div class="bar-in">
+  <p id="resumo">Nenhuma foto ainda.</p>
+  <button id="baixar" disabled>Baixar fotos.zip</button>
+</div></div>
+
+<script>
+const SLOTS = [
+  { id: "capa",  nome: "Capa (topo)",            ratio: 16 / 10, w: 1400 },
+  { id: "01",    nome: "Trabalho 1 (o maior)",   ratio: 1,       w: 900  },
+  { id: "02",    nome: "Trabalho 2",             ratio: 1,       w: 700  },
+  { id: "03",    nome: "Trabalho 3",             ratio: 1,       w: 700  },
+  { id: "04",    nome: "Trabalho 4",             ratio: 1,       w: 700  },
+  { id: "05",    nome: "Trabalho 5",             ratio: 1,       w: 700  },
+  { id: "06",    nome: "Trabalho 6 (deitado)",   ratio: 2,       w: 1400 },
+  { id: "sobre", nome: "Retrato da profissional", ratio: 4 / 5,  w: 800  }
+];
+const QUALIDADE = 0.82;
+
+const $ = i => document.getElementById(i);
+const itens = [];
+let seq = 0;
+
+/* ---------- entrada ---------- */
+
+const drop = $("drop");
+$("escolher").addEventListener("click", () => $("file").click());
+$("file").addEventListener("change", e => receber(e.target.files));
+["dragenter", "dragover"].forEach(ev =>
+  drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add("hot"); }));
+["dragleave", "drop"].forEach(ev =>
+  drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove("hot"); }));
+drop.addEventListener("drop", e => receber(e.dataTransfer.files));
+
+async function receber(lista) {
+  const arquivos = [...lista].filter(f => f.type.startsWith("image/"));
+  for (const arquivo of arquivos) {
+    if (itens.length >= SLOTS.length) {
+      avisar(`O site usa ${SLOTS.length} fotos. As que passaram disso ficaram de fora.`);
+      break;
+    }
+    try {
+      const img = await carregar(arquivo);
+      itens.push({
+        id: ++seq,
+        nome: arquivo.name,
+        img,
+        slot: proximoSlotLivre(),
+        offset: 50,
+        blob: null
+      });
+    } catch (erro) {
+      avisar(`Não consegui abrir "${arquivo.name}". Se for HEIC do iPhone, exporta como JPG antes.`);
+    }
+  }
+  desenhar();
+}
+
+function carregar(arquivo) {
+  return new Promise((ok, falha) => {
+    const url = URL.createObjectURL(arquivo);
+    const img = new Image();
+    img.onload = () => { URL.revokeObjectURL(url); ok(img); };
+    img.onerror = () => { URL.revokeObjectURL(url); falha(new Error("imagem inválida")); };
+    img.src = url;
+  });
+}
+
+function proximoSlotLivre() {
+  const usados = itens.map(i => i.slot);
+  const livre = SLOTS.find(s => !usados.includes(s.id));
+  return livre ? livre.id : SLOTS[0].id;
+}
+
+/* ---------- corte e compressão ---------- */
+
+// Reduz em etapas pela metade: mantém a foto nítida em redução grande.
+function cortar(img, slot, offsetPct) {
+  const alvoL = Math.min(slot.w, img.width);
+  const alvoA = Math.round(alvoL / slot.ratio);
+
+  const escala = Math.max(alvoL / img.width, alvoA / img.height);
+  const janelaL = Math.min(img.width, alvoL / escala);
+  const janelaA = Math.min(img.height, alvoA / escala);
+  const sobraX = img.width - janelaL;
+  const sobraY = img.height - janelaA;
+  // O offset move no eixo que realmente sobra.
+  const sx = sobraX > 0.5 ? sobraX * (offsetPct / 100) : 0;
+  const sy = sobraY > 0.5 ? sobraY * (offsetPct / 100) : 0;
+
+  let atual = document.createElement("canvas");
+  atual.width = Math.round(janelaL);
+  atual.height = Math.round(janelaA);
+  ctx(atual).drawImage(img, sx, sy, janelaL, janelaA, 0, 0, atual.width, atual.height);
+
+  while (atual.width > alvoL * 2) {
+    const meio = document.createElement("canvas");
+    meio.width = Math.max(alvoL, Math.round(atual.width / 2));
+    meio.height = Math.max(alvoA, Math.round(atual.height / 2));
+    ctx(meio).drawImage(atual, 0, 0, meio.width, meio.height);
+    atual = meio;
+  }
+
+  const fim = document.createElement("canvas");
+  fim.width = alvoL;
+  fim.height = alvoA;
+  ctx(fim).drawImage(atual, 0, 0, alvoL, alvoA);
+  return fim;
+}
+
+function ctx(c) {
+  const g = c.getContext("2d");
+  g.imageSmoothingEnabled = true;
+  g.imageSmoothingQuality = "high";
+  return g;
+}
+
+function exportar(canvas) {
+  return new Promise(ok => {
+    canvas.toBlob(b => {
+      if (b) return ok({ blob: b, ext: "webp" });
+      // navegador sem WebP: cai para JPEG
+      canvas.toBlob(j => ok({ blob: j, ext: "jpg" }), "image/jpeg", QUALIDADE);
+    }, "image/webp", QUALIDADE);
+  });
+}
+
+/* ---------- tela ---------- */
+
+function desenhar() {
+  const alvo = $("cards");
+  alvo.innerHTML = "";
+  const usados = {};
+  itens.forEach(i => { usados[i.slot] = (usados[i.slot] || 0) + 1; });
+
+  itens.forEach(item => {
+    const slot = SLOTS.find(s => s.id === item.slot);
+    const card = document.createElement("div");
+    card.className = "card" + (usados[item.slot] > 1 ? " dup" : "");
+
+    const frame = document.createElement("div");
+    frame.className = "frame";
+    const canvas = cortar(item.img, slot, item.offset);
+    frame.appendChild(canvas);
+
+    const select = document.createElement("select");
+    select.innerHTML = SLOTS.map(s =>
+      `<option value="${s.id}"${s.id === item.slot ? " selected" : ""}>${s.nome}</option>`).join("");
+    select.addEventListener("change", () => {
+      const outro = itens.find(i => i !== item && i.slot === select.value);
+      if (outro) outro.slot = item.slot;   // troca de lugar em vez de duplicar
+      item.slot = select.value;
+      item.blob = null;
+      desenhar();
+    });
+
+    const linha = document.createElement("div");
+    linha.className = "row";
+    const range = document.createElement("input");
+    range.type = "range"; range.min = 0; range.max = 100; range.value = item.offset;
+    range.addEventListener("input", () => {
+      item.offset = Number(range.value);
+      item.blob = null;
+      const novo = cortar(item.img, slot, item.offset);
+      frame.replaceChild(novo, frame.firstChild);
+      marcarPendente();
+    });
+    linha.append(Object.assign(document.createElement("span"), { textContent: "Enquadramento" }), range);
+
+    const meta = document.createElement("div");
+    meta.className = "meta";
+    const pequena = canvas.width < slot.w;
+    meta.innerHTML = pequena
+      ? `<span class="fraca">${canvas.width}×${canvas.height} — o ideal aqui é ${slot.w}px de largura</span>`
+      : `<span>${canvas.width}×${canvas.height}</span>`;
+    const x = document.createElement("button");
+    x.className = "x"; x.textContent = "remover";
+    x.addEventListener("click", () => {
+      itens.splice(itens.indexOf(item), 1);
+      desenhar();
+    });
+    meta.appendChild(x);
+
+    card.append(frame, select, linha, meta);
+    alvo.appendChild(card);
+  });
+
+  const dup = Object.values(usados).some(n => n > 1);
+  $("resumo").innerHTML = itens.length
+    ? `<b>${itens.length}</b> foto${itens.length > 1 ? "s" : ""} · ${dup ? "duas na mesma posição" : "posições ok"}`
+    : "Nenhuma foto ainda.";
+  $("baixar").disabled = itens.length === 0 || dup;
+  $("done").classList.remove("on");
+}
+
+function marcarPendente() { $("done").classList.remove("on"); }
+
+function avisar(texto) {
+  const a = $("aviso");
+  a.textContent = texto;
+  a.style.display = "block";
+  clearTimeout(avisar.t);
+  avisar.t = setTimeout(() => { a.style.display = "none"; }, 6000);
+}
+
+/* ---------- zip (store, sem compressão: webp e jpg já vêm comprimidos) ---------- */
+
+const TABELA = (() => {
+  const t = new Uint32Array(256);
+  for (let n = 0; n < 256; n++) {
+    let c = n;
+    for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
+    t[n] = c >>> 0;
+  }
+  return t;
+})();
+
+function crc32(bytes) {
+  let c = 0xffffffff;
+  for (let i = 0; i < bytes.length; i++) c = TABELA[(c ^ bytes[i]) & 0xff] ^ (c >>> 8);
+  return (c ^ 0xffffffff) >>> 0;
+}
+
+function zip(arquivos) {
+  const partes = [];
+  const central = [];
+  let offset = 0;
+  const agora = new Date();
+  const hora = ((agora.getHours() << 11) | (agora.getMinutes() << 5) | (agora.getSeconds() / 2)) & 0xffff;
+  const data = (((agora.getFullYear() - 1980) << 9) | ((agora.getMonth() + 1) << 5) | agora.getDate()) & 0xffff;
+
+  for (const { nome, bytes } of arquivos) {
+    const rotulo = new TextEncoder().encode(nome);
+    const crc = crc32(bytes);
+
+    const local = new DataView(new ArrayBuffer(30));
+    local.setUint32(0, 0x04034b50, true);
+    local.setUint16(4, 20, true);
+    local.setUint16(6, 0x0800, true);      // nomes em UTF-8
+    local.setUint16(8, 0, true);           // método 0 = store
+    local.setUint16(10, hora, true);
+    local.setUint16(12, data, true);
+    local.setUint32(14, crc, true);
+    local.setUint32(18, bytes.length, true);
+    local.setUint32(22, bytes.length, true);
+    local.setUint16(26, rotulo.length, true);
+    local.setUint16(28, 0, true);
+    partes.push(new Uint8Array(local.buffer), rotulo, bytes);
+
+    const dir = new DataView(new ArrayBuffer(46));
+    dir.setUint32(0, 0x02014b50, true);
+    dir.setUint16(4, 20, true);
+    dir.setUint16(6, 20, true);
+    dir.setUint16(8, 0x0800, true);
+    dir.setUint16(10, 0, true);
+    dir.setUint16(12, hora, true);
+    dir.setUint16(14, data, true);
+    dir.setUint32(16, crc, true);
+    dir.setUint32(20, bytes.length, true);
+    dir.setUint32(24, bytes.length, true);
+    dir.setUint16(28, rotulo.length, true);
+    dir.setUint32(42, offset, true);
+    central.push(new Uint8Array(dir.buffer), rotulo);
+
+    offset += 30 + rotulo.length + bytes.length;
+  }
+
+  const tamanhoCentral = central.reduce((s, p) => s + p.length, 0);
+  const fim = new DataView(new ArrayBuffer(22));
+  fim.setUint32(0, 0x06054b50, true);
+  fim.setUint16(8, arquivos.length, true);
+  fim.setUint16(10, arquivos.length, true);
+  fim.setUint32(12, tamanhoCentral, true);
+  fim.setUint32(16, offset, true);
+
+  return new Blob([...partes, ...central, new Uint8Array(fim.buffer)], { type: "application/zip" });
+}
+
+/* ---------- saída ---------- */
+
+$("slug").addEventListener("input", () => {
+  const v = $("slug").value;
+  $("slugAviso").textContent =
+    v && !/^[a-z0-9-]+$/.test(v) ? "só minúsculas, números e hífen" : "";
+});
+
+$("baixar").addEventListener("click", async () => {
+  const botao = $("baixar");
+  botao.disabled = true;
+  botao.textContent = "Preparando…";
+
+  const slug = ($("slug").value || "cliente").replace(/[^a-z0-9-]/g, "") || "cliente";
+  const arquivos = [];
+
+  for (const item of itens) {
+    const slot = SLOTS.find(s => s.id === item.slot);
+    const { blob, ext } = await exportar(cortar(item.img, slot, item.offset));
+    arquivos.push({
+      nome: `${slot.id}.${ext}`,
+      bytes: new Uint8Array(await blob.arrayBuffer())
+    });
+  }
+
+  const pacote = zip(arquivos);
+  const url = URL.createObjectURL(pacote);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `${slug}-fotos.zip`;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+
+  const total = Math.round(arquivos.reduce((s, f) => s + f.bytes.length, 0) / 1024);
+  $("comando").textContent =
+    `public/clientes/${slug}/fotos/\n\nnode scripts/novo-cliente.mjs ${slug}`;
+  $("done").classList.add("on");
+  $("resumo").innerHTML = `<b>${arquivos.length}</b> fotos · ${total} KB no total`;
+
+  botao.textContent = "Baixar fotos.zip";
+  botao.disabled = false;
+});
+</script>
+</body>
+</html>

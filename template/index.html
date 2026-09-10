@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-tema="__TEMA__">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>__NOME__ — Manicure em domicílio</title>
+__FONTES__
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+[hidden]{display:none!important}
+:root{
+  /* tema pop — o padrao */
+  --milk:#fff7f2;
+  --ink:#171110;
+  --pop:#e02e49;
+  --pop-dark:#bd2b41;
+  --butter:#f5cd67;
+  --blush:#fbe0d6;
+  --muted:#866d65;
+  --line:#efe0d7;
+  --fonte-titulo:'Bricolage Grotesque',system-ui,sans-serif;
+  --fonte-texto:'Instrument Sans',system-ui,sans-serif;
+  --peso-titulo:800;
+  --peso-medio:500;
+  --ls-titulo:-.035em;
+}
+html[data-tema="clean"]{
+  --milk:#f8f2ee; --ink:#24191a; --pop:#b83d55; --pop-dark:#94293f;
+  --butter:#c9a46a; --blush:#efe0d8; --muted:#826a62; --line:#e6d7cd;
+  --fonte-titulo:'DM Serif Display',Georgia,serif;
+  --fonte-texto:'DM Sans',system-ui,sans-serif;
+  --peso-titulo:400; --peso-medio:400; --ls-titulo:-.015em;
+}
+html[data-tema="soft"]{
+  --milk:#fdf7f4; --ink:#3b2a26; --pop:#c05267; --pop-dark:#a03e52;
+  --butter:#e8b4a0; --blush:#f7e4dc; --muted:#846d66; --line:#eddcd4;
+  --fonte-titulo:'Fraunces',Georgia,serif;
+  --fonte-texto:'Manrope',system-ui,sans-serif;
+  --peso-titulo:600; --peso-medio:500; --ls-titulo:-.01em;
+}
+html[data-tema="minimal"]{
+  --milk:#faf7f4; --ink:#14110f; --pop:#8a6a52; --pop-dark:#6d523e;
+  --butter:#d9c3a5; --blush:#efe7df; --muted:#7d6f66; --line:#e6dcd3;
+  --fonte-titulo:'Instrument Serif',Georgia,serif;
+  --fonte-texto:'Instrument Sans',system-ui,sans-serif;
+  --peso-titulo:400; --peso-medio:400; --ls-titulo:-.01em;
+}
+html[data-tema="glam"]{
+  --milk:#fbf0f1; --ink:#2a1016; --pop:#a4123c; --pop-dark:#7d0d2e;
+  --butter:#d9b26a; --blush:#f6dfe2; --muted:#87666c; --line:#ecd8dc;
+  --fonte-titulo:'Playfair Display',Georgia,serif;
+  --fonte-texto:'Manrope',system-ui,sans-serif;
+  --peso-titulo:700; --peso-medio:500; --ls-titulo:-.02em;
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--milk);color:var(--ink);font-family:var(--fonte-texto);font-size:17px;line-height:1.55}
+h1,h2,h3,.big{font-family:var(--fonte-titulo);font-weight:var(--peso-titulo);line-height:1;letter-spacing:var(--ls-titulo)}
+img{display:block;width:100%;height:100%;object-fit:cover}
+.wrap{max-width:1080px;margin:0 auto;padding-left:22px;padding-right:22px}
+
+/* topo */
+.top{position:sticky;top:0;z-index:50;background:var(--ink)}
+.top-in{max-width:1080px;margin:0 auto;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.mark{font-family:var(--fonte-titulo);font-weight:var(--peso-titulo);font-size:34px;letter-spacing:var(--ls-titulo);line-height:1;display:block;color:var(--milk)}
+.mark i{color:var(--pop);font-style:normal}
+.mark small{display:block;font-family:var(--fonte-texto);font-weight:400;font-size:14px;letter-spacing:0;color:#b9a49c;margin-top:4px}
+
+button,.btn{font-family:var(--fonte-texto);font-size:16px;font-weight:500;cursor:pointer;border:none;text-decoration:none;display:inline-block;border-radius:999px;padding:12px 24px;transition:transform .12s,background .18s}
+.b-pop{background:var(--pop);color:#fff}
+.b-pop:hover{background:var(--pop-dark)}
+.b-line{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.b-line:hover{background:var(--ink);color:var(--milk)}
+.b-milk{background:var(--milk);color:var(--ink)}
+.b-xl{padding:17px 34px;font-size:18px}
+button:active,.btn:active{transform:scale(.97)}
+
+/* hero */
+.hero{padding-top:64px}
+.hero h1{font-size:clamp(46px,10.5vw,104px);margin-bottom:26px}
+.hero h1 em{font-style:normal;color:var(--pop)}
+.hero p{font-size:clamp(17px,2.2vw,21px);max-width:30ch;color:var(--muted);margin-bottom:30px}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:46px}
+.hero-photo{aspect-ratio:16/10;background:var(--blush);border-radius:20px;overflow:hidden}
+.hero-photo img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* faixa */
+.strip{background:var(--ink);color:var(--milk);overflow:hidden;padding:17px 0;margin:76px 0 20px}
+.strip-in{display:flex;gap:34px;white-space:nowrap;font-family:var(--fonte-titulo);font-weight:var(--peso-medio);font-size:17px;animation:slide 26s linear infinite}
+.strip-in b{font-weight:var(--peso-medio);color:var(--butter)}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){.strip-in{animation:none;flex-wrap:wrap;white-space:normal}}
+
+section{padding-top:96px;padding-bottom:96px;scroll-margin-top:110px}
+.h2{font-size:clamp(34px,6vw,62px);margin-bottom:16px}
+.lead{color:var(--muted);max-width:42ch;margin-bottom:46px;font-size:18px}
+
+/* passos */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:34px}
+.step-n{font-family:var(--fonte-titulo);font-weight:var(--peso-titulo);font-size:52px;color:var(--pop);line-height:1;display:block;margin-bottom:10px;letter-spacing:var(--ls-titulo)}
+.step h3{font-size:20px;margin-bottom:5px;letter-spacing:-.02em}
+.step p{color:var(--muted);font-size:16px}
+
+/* galeria */
+.gal{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.gal i{background:var(--blush);border-radius:14px;aspect-ratio:1;display:block;overflow:hidden}
+.gal i img{width:100%;height:100%;object-fit:cover;display:block}
+.gal i:nth-child(1){grid-column:span 2;grid-row:span 2;aspect-ratio:1}
+.gal i:nth-child(6){grid-column:span 2;aspect-ratio:2/1}
+
+/* serviços */
+.dark{background:var(--ink);color:var(--milk);border-radius:26px;padding:64px 34px}
+.dark .lead{color:#bda79e}
+.price{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:22px 0;border-top:1px solid #332622}
+.price:first-child{border-top:none}
+.price h3{font-size:clamp(22px,3.6vw,32px);letter-spacing:var(--ls-titulo)}
+.price p{color:#a89189;font-size:15px;margin-top:3px}
+.price b{font-family:var(--fonte-titulo);font-weight:var(--peso-titulo);font-size:clamp(22px,3.6vw,32px);color:var(--butter);white-space:nowrap;letter-spacing:var(--ls-titulo)}
+.price-info{flex:1;min-width:0}
+.price-right{display:flex;align-items:center;gap:18px}
+.b-mini{background:transparent;color:var(--milk);box-shadow:inset 0 0 0 1.5px #45332e;padding:9px 18px;font-size:15px}
+.b-mini:hover{background:var(--milk);color:var(--ink);box-shadow:none}
+
+/* bairros */
+.pills{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:16px}
+.pills span{background:#fff;box-shadow:inset 0 0 0 1px var(--line);padding:10px 18px;border-radius:999px;font-size:16px}
+.note{color:var(--muted);font-size:16px}
+
+/* prova social */
+.proof{display:flex;align-items:center;gap:6px 14px;flex-wrap:wrap;color:var(--muted);font-size:15px;margin:-24px 0 40px}
+.proof .stars{color:var(--butter);letter-spacing:3px;font-size:15px}
+.proof b{color:var(--ink);font-weight:500}
+
+/* sobre */
+.about{display:grid;grid-template-columns:minmax(0,330px) minmax(0,1fr);gap:46px;align-items:center}
+.about-photo{aspect-ratio:4/5;background:var(--blush);border-radius:20px;overflow:hidden}
+.about h2{font-size:clamp(30px,5vw,52px);margin-bottom:20px}
+.about p{color:var(--muted);font-size:18px;max-width:46ch}
+.about p+p{margin-top:14px}
+
+/* higiene */
+.care{background:var(--blush);border-radius:26px;padding:52px 34px;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:32px}
+.care h3{font-size:19px;letter-spacing:-.02em;margin-bottom:6px}
+.care p{color:var(--muted);font-size:16px}
+.care-t{grid-column:1/-1;font-size:clamp(26px,4vw,38px);margin-bottom:-8px}
+
+/* topo */
+.top-acts{display:flex;align-items:center;gap:16px}
+.ig{color:#b9a49c;text-decoration:none;font-size:15px;display:inline-flex;align-items:center;gap:7px}
+.ig:hover{color:var(--milk)}
+
+/* depoimentos */
+.says{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:34px}
+.say q{font-family:var(--fonte-titulo);font-weight:var(--peso-medio);font-size:22px;line-height:1.3;letter-spacing:-.01em;display:block;margin-bottom:14px;quotes:none}
+.say cite{font-style:normal;color:var(--muted);font-size:15px}
+
+/* fechamento */
+.end{background:var(--pop);color:#fff;border-radius:26px;padding:76px 30px;text-align:center}
+.end h2{font-size:clamp(36px,7vw,72px);margin-bottom:14px}
+.end p{margin-bottom:32px;font-size:19px;opacity:.92}
+
+footer{padding:40px 0 90px;color:var(--muted);font-size:15px;text-align:center}
+
+.dock{position:sticky;bottom:16px;z-index:45;display:flex;justify-content:center;padding:0 22px}
+.dock button{box-shadow:0 8px 26px rgba(224,46,73,.35)}
+
+/* modal */
+.veil{position:absolute;inset:0;background:rgba(23,17,16,.55);display:none;justify-content:center;align-items:flex-start;padding:20px;z-index:60}
+.veil.on{display:flex}
+.card{background:var(--milk);width:100%;max-width:440px;border-radius:22px;padding:28px;margin-top:36px}
+.card h3{font-size:32px;margin-bottom:6px}
+.card>p{color:var(--muted);margin-bottom:22px;font-size:16px}
+.f{margin-bottom:15px}
+.f label{display:block;font-size:15px;font-weight:500;margin-bottom:6px}
+.f input,.f select{width:100%;padding:14px;font-size:16px;font-family:inherit;color:var(--ink);background:#fff;border:none;box-shadow:inset 0 0 0 1.5px var(--line);border-radius:12px;appearance:none}
+.f input:focus,.f select:focus{outline:none;box-shadow:inset 0 0 0 2px var(--pop)}
+.bad{color:var(--pop-dark);font-size:14px;margin-top:5px;display:none}
+.bad.on{display:block}
+.mini{color:var(--muted);font-size:13px;margin-top:18px;line-height:1.4}
+.mini b{font-weight:500;color:var(--ink)}
+.acts{display:flex;gap:10px;margin-top:16px}
+.acts button{flex:1}
+
+@media(max-width:760px){
+  section{padding:62px 0}
+  .hero{padding:38px 0 0}
+  .mark{font-size:26px}
+  .mark small{font-size:13px}
+  .strip{margin:60px 0 14px}
+  button,.btn{padding:11px 20px;font-size:15px}
+  .b-xl{padding:16px 28px;font-size:17px}
+  .dark{padding:44px 22px;border-radius:20px}
+  .end{padding:56px 22px;border-radius:20px}
+  .care{padding:36px 22px;border-radius:20px}
+  .price{flex-wrap:wrap}
+  .price-right{width:100%;justify-content:space-between;margin-top:12px}
+  .about{grid-template-columns:1fr;gap:28px}
+  .about-photo{max-width:300px;aspect-ratio:1}
+  .ig span{display:none}
+  .gal{grid-template-columns:repeat(2,1fr)}
+  .gal i:nth-child(1){grid-column:span 2;grid-row:auto;aspect-ratio:4/3}
+  .gal i:nth-child(6){grid-column:span 2}
+}
+</style>
+</head>
+<body>
+
+<div class="top"><div class="top-in">
+  <span class="mark">__NOME__<i>.</i><small>Manicure em domic&#237;lio</small></span>
+  <div class="top-acts">
+    <a class="ig" id="ig" href="#" target="_blank" rel="noopener" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg><span id="igNome"></span></a>
+    <button class="b-pop" data-open>Agendar</button>
+  </div>
+</div></div>
+
+<div class="wrap hero">
+  <h1>Unhas bem feitas <em>na sua casa.</em></h1>
+  <p>Levo tudo comigo — material esterilizado, esmaltes e tempo de sobra pra caprichar.</p>
+  <div class="proof" id="proof" hidden></div>
+  <div class="hero-cta">
+    <button class="b-pop b-xl" data-open>Agendar horário</button>
+    <a class="btn b-line b-xl" href="#trabalhos">Ver trabalhos</a>
+  </div>
+  <div class="hero-photo"></div>
+</div>
+
+<div class="strip"><div class="strip-in" id="strip"></div></div>
+
+<section class="wrap">
+  <h2 class="h2">Simples assim</h2>
+  <p class="lead">Três passos e pronto. Sem ficar trocando mensagem pra achar um horário.</p>
+  <div class="steps">
+    <div class="step"><span class="step-n">1</span><h3>Escolhe o horário</h3><p>Aqui pelo site, em menos de um minuto.</p></div>
+    <div class="step"><span class="step-n">2</span><h3>Eu confirmo</h3><p>Seu pedido chega no meu WhatsApp e eu respondo.</p></div>
+    <div class="step"><span class="step-n">3</span><h3>Chego na sua casa</h3><p>Com tudo pronto, no dia e hora combinados.</p></div>
+  </div>
+</section>
+
+<section class="wrap" id="trabalhos">
+  <h2 class="h2">Trabalhos</h2>
+  <p class="lead">Alguns dos últimos atendimentos.</p>
+  <div class="gal"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+</section>
+
+<section class="wrap">
+  <div class="dark">
+    <h2 class="h2">Serviços</h2>
+    <p class="lead">Todos com material esterilizado, levado por mim.</p>
+    <div id="precos"></div>
+  </div>
+</section>
+
+<section class="wrap" id="secSobre" hidden>
+  <div class="about">
+    <div class="about-photo" id="sobreFoto"></div>
+    <div>
+      <h2 id="sobreTitulo"></h2>
+      <div id="sobreTexto"></div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="care">
+    <h2 class="h2 care-t">Seu cuidado come&#231;a na higiene.</h2>
+    <div><h3>Material esterilizado</h3><p>Alicate, esp&#225;tula e palito passam por esteriliza&#231;&#227;o entre um atendimento e outro.</p></div>
+    <div><h3>Levo tudo comigo</h3><p>Voc&#234; n&#227;o precisa separar nada em casa. Chego com o kit completo, pronto pra come&#231;ar.</p></div>
+    <div><h3>Lixa e palito descart&#225;veis</h3><p>O que n&#227;o d&#225; pra esterilizar &#233; individual e vai fora na sua frente.</p></div>
+  </div>
+</section>
+
+<section class="wrap" id="areas">
+  <h2 class="h2">Onde atendo</h2>
+  <p class="lead">Regiões com atendimento normal, sem taxa extra.</p>
+  <div class="pills" id="bairros"></div>
+  <p class="note">Mora fora dessas regiões? Me chama que a gente combina o deslocamento.</p>
+</section>
+
+<section class="wrap" id="secDepo" hidden>
+  <h2 class="h2">O que dizem</h2>
+  <div class="says" id="depos" style="margin-top:46px"></div>
+</section>
+
+<section class="wrap">
+  <div class="end">
+    <h2>Vamos marcar?</h2>
+    <p>Escolhe o dia e o horário. Eu confirmo pelo WhatsApp.</p>
+    <button class="b-milk b-xl" data-open>Agendar horário</button>
+  </div>
+</section>
+
+<footer>__NOME__ · Manicure em domicílio · 2026</footer>
+
+<div class="dock"><button class="b-pop b-xl" data-open>Agendar pelo WhatsApp</button></div>
+
+<div class="veil" id="veil">
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="ct">
+    <h3 id="ct">Agendar</h3>
+    <p>Preenche aqui e envia. A conversa abre no WhatsApp já com tudo escrito.</p>
+    <div class="f"><label for="fServico">Serviço</label><select id="fServico"></select><p class="bad" id="eServico">Escolhe um serviço.</p></div>
+    <div class="f"><label for="fData">Data</label><input type="date" id="fData"><p class="bad" id="eData">Escolhe uma data.</p></div>
+    <div class="f"><label for="fHora">Horário</label><select id="fHora"></select><p class="bad" id="eHora">Escolhe um horário.</p></div>
+    <div class="f" id="wrapBairro"><label for="fBairro">Bairro</label><select id="fBairro"></select><p class="bad" id="eBairro">Escolhe o bairro.</p></div>
+    <div class="f"><label for="fNome">Seu nome</label><input type="text" id="fNome" placeholder="Maria Souza"><p class="bad" id="eNome">Escreve seu nome.</p></div>
+    <div class="f"><label for="fFone">Seu WhatsApp</label><input type="tel" id="fFone" placeholder="11 98765-4321" inputmode="tel"><p class="bad" id="eFone">Coloca um número com DDD.</p></div>
+    <p class="mini">Seus dados v&#227;o s&#243; para <b>__NOME__</b>, para confirmar o hor&#225;rio e lembrar da sua manuten&#231;&#227;o.</p>
+    <div class="acts"><button class="b-line" data-close>Cancelar</button><button class="b-pop" id="enviar">Enviar</button></div>
+  </div>
+</div>
+
+<script>
+const CONFIG = __DADOS__;
+
+const $ = i => document.getElementById(i);
+const esc = t => String(t == null ? '' : t).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
+
+$('precos').innerHTML = CONFIG.servicos.map(s =>
+  `<div class="price">
+     <div class="price-info"><h3>${esc(s.nome)}</h3><p>${esc(s.desc)}</p></div>
+     <div class="price-right"><b>${esc(s.preco)}</b><button class="b-mini" data-open data-servico="${esc(s.nome)}">Agendar</button></div>
+   </div>`).join('');
+$('fServico').innerHTML = '<option value="">Selecione</option>' + CONFIG.servicos.map(s=>`<option>${s.nome}</option>`).join('');
+$('fHora').innerHTML = '<option value="">Selecione</option>' + CONFIG.horarios.map(h=>`<option>${h}</option>`).join('');
+
+const F = CONFIG.fotos || {};
+if (F.capa) {
+  document.querySelector('.hero-photo').innerHTML =
+    `<img src="${F.capa}" alt="Trabalho de ${CONFIG.profissional}">`;
+}
+if (Array.isArray(F.galeria)) {
+  document.querySelectorAll('.gal i').forEach((el, i) => {
+    const src = F.galeria[i];
+    if (src) el.innerHTML = `<img src="${src}" alt="Unhas feitas por ${CONFIG.profissional}" loading="lazy">`;
+  });
+}
+
+if (CONFIG.instagram) {
+  const arroba = String(CONFIG.instagram)
+    .replace(/^https?:\/\/(www\.)?instagram\.com\//i, '')
+    .replace(/[@\/]/g, '')
+    .trim();
+  if (arroba) {
+    $('ig').href = `https://instagram.com/${arroba}`;
+    $('igNome').textContent = `@${arroba}`;
+    $('ig').hidden = false;
+  }
+}
+
+const AV = CONFIG.avaliacoes || {};
+if (AV.nota || AV.quantidade || AV.atendimentos) {
+  const partes = [];
+  if (AV.nota) partes.push(`<span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> <b>${esc(AV.nota)}</b>`);
+  if (AV.quantidade) partes.push(`${esc(AV.quantidade)} avalia&#231;&#245;es`);
+  if (AV.atendimentos) partes.push(`${esc(AV.atendimentos)} atendimentos`);
+  $('proof').innerHTML = partes.map(p => `<span>${p}</span>`).join('');
+  $('proof').hidden = false;
+}
+
+const SOBRE = CONFIG.sobre || {};
+if (SOBRE.texto) {
+  const primeiro = CONFIG.profissional.trim().split(/\s+/)[0];
+  $('sobreTitulo').textContent = `Oi, eu sou a ${primeiro}.`;
+  $('sobreTexto').innerHTML = String(SOBRE.texto)
+    .split(/\n\s*\n/).map(t => `<p>${esc(t)}</p>`).join('');
+  if (SOBRE.foto) {
+    $('sobreFoto').innerHTML = `<img src="${esc(SOBRE.foto)}" alt="${esc(CONFIG.profissional)}">`;
+  } else {
+    $('sobreFoto').remove();
+    document.querySelector('.about').style.gridTemplateColumns = '1fr';
+  }
+  $('secSobre').hidden = false;
+}
+
+const DEPO = (Array.isArray(CONFIG.depoimentos) ? CONFIG.depoimentos : []).filter(d => d && d.texto);
+if (DEPO.length) {
+  $('depos').innerHTML = DEPO.map(d =>
+    `<div class="say"><q>${esc(d.texto)}</q><cite>${esc(d.autora)}</cite></div>`).join('');
+  $('secDepo').hidden = false;
+}
+
+const nomes = CONFIG.servicos.map(s=>s.nome);
+$('strip').innerHTML = (nomes.concat(nomes)).map(n=>`<span>${n}<b> ✳ </b></span>`).join('');
+
+const d = new Date(); d.setDate(d.getDate() + CONFIG.diasDeAntecedencia);
+$('fData').min = d.toISOString().slice(0,10);
+
+if (CONFIG.pedirBairro){
+  $('bairros').innerHTML = CONFIG.bairros.filter(b=>b.toLowerCase()!=='outro').map(b=>`<span>${b}</span>`).join('');
+  $('fBairro').innerHTML = '<option value="">Selecione</option>' + CONFIG.bairros.map(b=>`<option>${b}</option>`).join('');
+}else{
+  $('wrapBairro').style.display='none';
+  $('areas').style.display='none';
+}
+
+const veil = $('veil');
+document.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>{
+  if (b.dataset.servico) {
+    $('fServico').value = b.dataset.servico;
+    $('eServico').classList.remove('on');
+  }
+  veil.classList.add('on');
+  window.scrollTo({top:veil.offsetTop-16,behavior:'smooth'});
+}));
+document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',off));
+veil.addEventListener('click',e=>{ if(e.target===veil) off(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') off(); });
+function off(){ veil.classList.remove('on'); }
+
+['fServico','fData','fHora','fBairro','fNome','fFone'].forEach(id=>{
+  const el=$(id); if(!el) return;
+  el.addEventListener('input',()=>{ const b=$('e'+id.slice(1)); if(b) b.classList.remove('on'); });
+});
+
+function extenso(iso){
+  const [,m,dd]=iso.split('-');
+  const M=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  return `${Number(dd)} de ${M[Number(m)-1]}`;
+}
+
+$('enviar').addEventListener('click',()=>{
+  let ok=true; const ruim=i=>{ $(i).classList.add('on'); ok=false; };
+  const servico=$('fServico').value, data=$('fData').value, hora=$('fHora').value;
+  const nome=$('fNome').value.trim(), fone=$('fFone').value.trim();
+  const bairro = CONFIG.pedirBairro ? $('fBairro').value : '';
+
+  if(!servico) ruim('eServico');
+  if(!data) ruim('eData');
+  if(!hora) ruim('eHora');
+  if(CONFIG.pedirBairro && !bairro) ruim('eBairro');
+  if(!nome) ruim('eNome');
+  if(fone.replace(/\D/g,'').length<10) ruim('eFone');
+  if(!ok) return;
+
+  const t=[`Oi, ${CONFIG.profissional}! Quero agendar pelo site:`,'',
+           `Serviço: ${servico}`,`Data: ${extenso(data)}`,`Horário: ${hora}`];
+  if(bairro) t.push(`Bairro: ${bairro}`);
+  t.push('',`Meu nome: ${nome}`,`Meu WhatsApp: ${fone}`);
+
+  // Registra o pedido para o lembrete de manutencao. Nao espera resposta:
+  // se o banco estiver fora, a conversa no WhatsApp abre do mesmo jeito.
+  try {
+    fetch('/api/pedido', {
+      method: 'POST',
+      keepalive: true,
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ nome, fone, servico, data, hora, bairro,
+                             retorno: CONFIG.diasDeRetorno })
+    }).catch(() => {});
+  } catch (e) {}
+
+  window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(t.join('\n'))}`,'_blank');
+  off();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+node_modules/
+.wrangler/
+.dev.vars
+.DS_Store
+
+# lixo do sistema
+Thumbs.db
+desktop.ini
+
+# zip antigo do repo, antes do git
+manicure-de-valor-repo.zip

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Manicure de Valor — sua cliente marca sozinha, você só confirma</title>
+<meta name="description" content="Preços, fotos e horários num site com o seu nome. A cliente escolhe e o pedido chega pronto no seu WhatsApp. Em um dia, sem fidelidade.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,800&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --plum:#2b1d24;
+  --plum-soft:#3a2831;
+  --cream:#f4efec;
+  --paper:#fbf7f5;
+  --rose:#d97a92;
+  --rose-deep:#c05a76;
+  --muted:#8a7168;
+  --muted-dark:#b8a29a;
+  --line:#e8ddd7;
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--paper);color:var(--plum);font-family:'Instrument Sans',system-ui,sans-serif;font-size:17px;line-height:1.55}
+h1,h2,h3{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;line-height:.98;letter-spacing:-.035em}
+.wrap{max-width:1060px;margin:0 auto;padding-left:22px;padding-right:22px}
+section{padding-top:96px;padding-bottom:96px;scroll-margin-top:104px}
+
+/* topo */
+.top{position:sticky;top:0;z-index:50;background:var(--plum)}
+.top-in{max-width:1060px;margin:0 auto;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.lock{display:flex;align-items:center;gap:11px}
+.lock-t{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:21px;letter-spacing:-.04em;line-height:1;color:var(--cream)}
+.lock-t span{display:block;color:var(--rose)}
+
+a.btn,button{font-family:'Instrument Sans',sans-serif;font-size:16px;font-weight:500;cursor:pointer;border:none;text-decoration:none;display:inline-block;border-radius:999px;padding:13px 26px;transition:background .18s,transform .12s}
+.b-rose{background:var(--rose-deep);color:#fff}
+.b-rose:hover{background:#a94965}
+.b-cream{background:var(--cream);color:var(--plum)}
+.b-cream:hover{background:#fff}
+.b-line{background:transparent;color:var(--cream);box-shadow:inset 0 0 0 1.5px rgba(244,239,236,.45)}
+.b-line:hover{background:var(--cream);color:var(--plum)}
+.b-line-dark{background:transparent;color:var(--plum);box-shadow:inset 0 0 0 1.5px var(--plum)}
+.b-line-dark:hover{background:var(--plum);color:var(--cream)}
+.b-xl{padding:17px 34px;font-size:18px}
+a.btn:active,button:active{transform:scale(.97)}
+
+/* hero */
+.hero{background:var(--plum);color:var(--cream);padding-top:78px;padding-bottom:88px}
+.hero-in{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center}
+.tagline{color:var(--rose);font-size:16px;margin-bottom:20px}
+.hero h1{font-size:clamp(42px,7.4vw,78px);margin-bottom:24px}
+.hero h1 em{font-style:normal;color:var(--rose)}
+.hero p{font-size:19px;color:var(--muted-dark);max-width:40ch;margin-bottom:32px}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+.hero-note{margin-top:22px;font-size:15px;color:var(--muted-dark)}
+
+/* celular */
+.phone{width:250px;margin:0 auto;background:#111;border-radius:34px;padding:9px;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.screen{background:#fff7f2;border-radius:26px;overflow:hidden}
+.s-bar{background:#171110;padding:9px 12px;display:flex;justify-content:space-between;align-items:center}
+.s-bar b{color:#fff7f2;font-family:'Bricolage Grotesque',sans-serif;font-size:13px;letter-spacing:-.03em}
+.s-bar i{background:#e23e57;color:#fff;font-style:normal;font-size:9px;padding:4px 9px;border-radius:999px}
+.s-body{padding:14px 12px 16px}
+.s-body h4{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:21px;letter-spacing:-.04em;line-height:1;color:#171110;margin-bottom:8px}
+.s-body h4 span{color:#e23e57}
+.s-body p{font-size:10px;color:#8a7168;margin-bottom:11px;line-height:1.4}
+.s-btn{background:#e23e57;color:#fff;font-size:10px;padding:7px 14px;border-radius:999px;display:inline-block;margin-bottom:13px}
+.s-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.s-grid i{display:block;aspect-ratio:1;background:#fbe0d6;border-radius:5px;overflow:hidden}
+.s-grid img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* dores */
+.pains{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:28px;margin-top:48px}
+.pain{background:#fff;border-radius:18px;padding:28px;border:1px solid var(--line)}
+.pain b{display:block;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;letter-spacing:-.03em;margin-bottom:8px}
+.pain p{color:var(--muted);font-size:16px}
+
+.h2{font-size:clamp(34px,6vw,58px);margin-bottom:16px}
+.lead{color:var(--muted);font-size:18px;max-width:46ch}
+.dark .lead{color:var(--muted-dark)}
+
+/* o que vem */
+.dark{background:var(--plum);color:var(--cream)}
+.gets{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:34px;margin-top:52px}
+.get{border-top:2px solid var(--rose);padding-top:16px}
+.get b{display:block;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:21px;letter-spacing:-.03em;margin-bottom:7px}
+.get p{color:var(--muted-dark);font-size:16px}
+
+/* passos */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:36px;margin-top:52px}
+.step-n{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:56px;color:var(--rose);line-height:1;display:block;margin-bottom:10px;letter-spacing:-.05em}
+.step b{display:block;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;letter-spacing:-.03em;margin-bottom:6px}
+.step p{color:var(--muted);font-size:16px}
+
+/* preço */
+.price-box{background:var(--plum);color:var(--cream);border-radius:26px;padding:56px 38px;display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center}
+.price-tag{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.04em;line-height:1}
+.price-tag u{display:block;text-decoration:none;font-size:16px;font-family:'Instrument Sans',sans-serif;font-weight:400;color:var(--muted-dark);letter-spacing:0;margin-bottom:6px}
+.price-tag em{font-style:normal;font-size:clamp(44px,7vw,68px);color:var(--rose)}
+.price-tag small{font-size:19px;color:var(--muted-dark);font-family:'Instrument Sans',sans-serif;font-weight:400;letter-spacing:0}
+.price-split{border-top:1px solid var(--plum-soft);margin:26px 0;padding-top:26px}
+.inc li{list-style:none;padding:11px 0;border-bottom:1px solid var(--plum-soft);font-size:16px;color:var(--cream)}
+.inc li:last-child{border-bottom:none}
+
+/* dúvidas */
+details{border-bottom:1px solid var(--line);padding:20px 0}
+summary{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;letter-spacing:-.03em;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:18px;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--rose-deep);font-size:26px;line-height:1}
+details[open] summary::after{content:"–"}
+details p{color:var(--muted);font-size:16px;margin-top:12px;max-width:62ch}
+
+/* fim */
+.end{background:var(--rose-deep);color:#fff;border-radius:26px;padding:76px 30px;text-align:center}
+.end h2{font-size:clamp(36px,6.5vw,64px);margin-bottom:14px}
+.end p{font-size:19px;opacity:.94;margin-bottom:32px}
+
+footer{background:var(--plum);color:var(--muted-dark);padding:44px 22px;text-align:center;font-size:15px}
+footer b{color:var(--cream);font-weight:500}
+
+@media(max-width:820px){
+  section{padding-top:62px;padding-bottom:62px}
+  .hero{padding-top:48px;padding-bottom:56px}
+  .hero-in{grid-template-columns:1fr;gap:44px}
+  .price-box{grid-template-columns:1fr;gap:30px;padding:40px 24px}
+  .end{padding:54px 22px}
+  a.btn,button{padding:12px 22px;font-size:15px}
+  .b-xl{padding:16px 28px;font-size:17px}
+  .lock-t{font-size:18px}
+}
+</style>
+</head>
+<body>
+
+<div class="top"><div class="top-in">
+  <div class="lock">
+    <svg width="30" height="32" viewBox="0 0 160 172" aria-hidden="true">
+      <mask id="lg1"><path d="M20 26h30l30 80 30-80h30L80 152z" fill="#fff" stroke="#fff" stroke-width="24" stroke-linejoin="round"/></mask>
+      <g mask="url(#lg1)"><rect width="160" height="172" fill="#f4efec"/><path d="M0 62q80 26 160 0v110H0z" fill="#d97a92"/></g>
+    </svg>
+    <span class="lock-t">manicure<span>de valor</span></span>
+  </div>
+  <a class="btn b-rose" href="#preco">Quero o meu</a>
+</div></div>
+
+<section class="hero">
+  <div class="wrap hero-in">
+    <div>
+      <p class="tagline">Para quem atende em domicílio</p>
+      <h1>Sua cliente marca sozinha. <em>Você só confirma.</em></h1>
+      <p>Seus preços, seus serviços, seus bairros e seus horários num site com o seu nome. A cliente escolhe tudo antes de te chamar, e o pedido chega pronto no seu WhatsApp.</p>
+      <div class="hero-cta">
+        <a class="btn b-rose b-xl" href="#preco">Quero o meu site</a>
+        <a class="btn b-line b-xl" href="https://carlasilva.manicuredevalor.com.br" target="_blank" rel="noopener">Ver um site pronto</a>
+      </div>
+      <p class="hero-note">Pronto em um dia. Sem fidelidade.</p>
+    </div>
+
+    <div class="phone" id="exemplo">
+      <div class="screen">
+        <div class="s-bar"><b>Carla Silva.</b><i>Agendar</i></div>
+        <div class="s-body">
+          <h4>Unhas bem feitas <span>na sua casa.</span></h4>
+          <p>Levo tudo comigo — material esterilizado, esmaltes e tempo de sobra pra caprichar.</p>
+          <span class="s-btn">Agendar horário</span>
+          <div class="s-grid"><i><img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&amp;fit=crop&amp;w=160&amp;q=60" alt="" loading="lazy"></i><i><img src="https://images.unsplash.com/photo-1610992015762-45dca7fa3a85?auto=format&amp;fit=crop&amp;w=160&amp;q=60" alt="" loading="lazy"></i><i><img src="https://images.unsplash.com/photo-1607779097040-26e80aa78e66?auto=format&amp;fit=crop&amp;w=160&amp;q=60" alt="" loading="lazy"></i><i><img src="https://images.unsplash.com/photo-1612887390768-fb02affea7a6?auto=format&amp;fit=crop&amp;w=160&amp;q=60" alt="" loading="lazy"></i><i><img src="https://images.unsplash.com/photo-1630843599725-32ead7671867?auto=format&amp;fit=crop&amp;w=160&amp;q=60" alt="" loading="lazy"></i><i><img src="https://images.unsplash.com/photo-1571290274554-6a2eaa771e5f?auto=format&amp;fit=crop&amp;w=160&amp;q=60" alt="" loading="lazy"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <h2 class="h2">O que trava hoje</h2>
+  <p class="lead">Três coisas que aparecem em quase toda conversa com manicure que atende em casa.</p>
+  <div class="pains">
+    <div class="pain">
+      <b>Tudo depende do Instagram</b>
+      <p>A cliente viu o story, gostou, e amanhã não acha mais. Sem um lugar fixo com o seu nome, cada cliente nova começa do zero.</p>
+    </div>
+    <div class="pain">
+      <b>Meia hora por agendamento</b>
+      <p>Quanto é, tem horário, você vem aqui em casa, aceita Pix. O mesmo vai e volta com cada cliente, todo dia.</p>
+    </div>
+    <div class="pain">
+      <b>Preço sempre em negociação</b>
+      <p>Quando o valor só aparece na conversa, ele vira ponto de discussão. Escrito no site, ele já chega decidido.</p>
+    </div>
+  </div>
+</section>
+
+<section class="dark">
+  <div class="wrap">
+    <h2 class="h2">O que vem junto</h2>
+    <p class="lead">Tudo montado por nós. Você não precisa mexer em nada.</p>
+    <div class="gets">
+      <div class="get"><b>Um endereço que é seu</b><p>seunome.manicuredevalor.com.br, com cadeado de segurança. O link que você põe na bio e manda pra quem pergunta.</p></div>
+      <div class="get"><b>Agendamento no WhatsApp</b><p>A cliente escolhe serviço, dia e horário. A mensagem chega pronta para você confirmar.</p></div>
+      <div class="get"><b>Suas fotos em destaque</b><p>Galeria organizada com os seus trabalhos. É o que mais convence quem nunca te contratou.</p></div>
+      <div class="get"><b>Preços escritos</b><p>Cada serviço com valor e descrição. Menos negociação, menos surpresa na hora.</p></div>
+      <div class="get"><b>Regiões que você atende</b><p>Você define os bairros. Quem está longe já sabe antes de chamar.</p></div>
+      <div class="get"><b>Google Meu Negócio</b><p>Configuramos seu perfil e ligamos ao site, para aparecer em quem busca no seu bairro.</p></div>
+      <div class="get"><b>O visual que você escolher</b><p>Cinco estilos, do mais discreto ao mais chamativo. Você escolhe o seu — o site não sai com cara de modelo repetido.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <h2 class="h2">Como funciona</h2>
+  <p class="lead">Do primeiro contato ao site no ar, geralmente em 24 horas.</p>
+  <div class="steps">
+    <div class="step"><span class="step-n">1</span><b>Você manda o material</b><p>Fotos dos trabalhos, serviços, preços e bairros — tudo pelo WhatsApp. E escolhe o estilo visual do seu site.</p></div>
+    <div class="step"><span class="step-n">2</span><b>Montamos o site</b><p>Em até um dia útil você recebe o link para conferir e pedir ajustes.</p></div>
+    <div class="step"><span class="step-n">3</span><b>Você divulga</b><p>Coloca o link na bio do Instagram e manda para as clientes. Os pedidos chegam no seu WhatsApp.</p></div>
+  </div>
+</section>
+
+<section class="wrap" id="preco">
+  <div class="price-box">
+    <div>
+      <div class="price-tag">
+        <u>Para começar</u>
+        <em>R$ 500</em>
+        <small>uma vez</small>
+      </div>
+      <div class="price-split"></div>
+      <div class="price-tag">
+        <u>Depois</u>
+        <em>R$ 50</em>
+        <small>por mês</small>
+      </div>
+      <p style="color:var(--muted-dark);margin-top:22px;font-size:16px">Sem fidelidade e sem multa. Você para quando quiser.</p>
+      <a class="btn b-cream b-xl" href="https://wa.me/5541900000000?text=Oi!%20Vim%20pelo%20site.%20Quero%20saber%20mais%20sobre%20o%20Manicure%20de%20Valor." style="margin-top:26px">Falar no WhatsApp</a>
+    </div>
+    <ul class="inc">
+      <li>Site montado com as suas fotos</li>
+      <li>Agendamento ligado ao seu WhatsApp</li>
+      <li>Endereço próprio e hospedagem</li>
+      <li>Perfil no Google Meu Negócio</li>
+      <li>Ajustes de fotos e preços quando precisar</li>
+      <li>Suporte por WhatsApp</li>
+    </ul>
+  </div>
+</section>
+
+<section class="wrap">
+  <h2 class="h2">Dúvidas</h2>
+  <div style="margin-top:34px">
+    <details><summary>Preciso saber mexer em site?</summary><p>Não. Você manda fotos e informações pelo WhatsApp e a gente monta tudo. Quando quiser trocar uma foto ou mudar um preço, é só avisar.</p></details>
+    <details><summary>Meu site vai ficar igual ao das outras?</summary><p>Não. São cinco estilos visuais para escolher, e dentro do que você escolher entram as suas fotos, os seus preços e o seu texto. Duas profissionais no mesmo estilo já saem com sites diferentes.</p></details>
+    <details><summary>Minha cliente precisa instalar algum aplicativo?</summary><p>Não. Ela abre o site pelo navegador do celular, escolhe o horário e o pedido chega no seu WhatsApp como uma mensagem normal.</p></details>
+    <details><summary>O site marca o horário sozinho na minha agenda?</summary><p>Não. Ele monta o pedido e manda para você — quem confirma, remarca ou recusa é você. Isso é proposital: assim nada entra na sua agenda sem o seu aval.</p></details>
+    <details><summary>E se eu parar de pagar?</summary><p>O site sai do ar, mas suas fotos e seus dados continuam sendo seus e devolvemos tudo se você pedir. O endereço fica reservado por 60 dias, caso você queira voltar.</p></details>
+    <details><summary>Preciso ter CNPJ?</summary><p>Não. A maioria das profissionais que atendemos trabalha como pessoa física.</p></details>
+    <details><summary>Posso usar um endereço só meu, sem o manicuredevalor?</summary><p>Pode. Nesse caso você compra o domínio no seu nome e a gente aponta para o site — a mensalidade continua a mesma.</p></details>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="end">
+    <h2>Vamos montar o seu?</h2>
+    <p>Manda uma mensagem contando o que você faz e onde atende. A gente responde com um exemplo do seu site, com o seu nome nele.</p>
+    <a class="btn b-cream b-xl" href="https://wa.me/5541900000000?text=Oi!%20Vim%20pelo%20site.%20Quero%20montar%20o%20meu.">Falar no WhatsApp</a>
+  </div>
+</section>
+
+<footer>
+  <b>Manicure de Valor</b> · Sites para quem atende em domicílio · 2026<br>
+  Uma marca <b>Revene</b>
+</footer>
+
+</body>
+</html>

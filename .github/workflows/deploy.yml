@@ -1,0 +1,44 @@
+name: Publicar
+
+# Todo push na main publica. Também dá para disparar na mão pela aba Actions
+# do GitHub, sem precisar de commit (botão "Run workflow").
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Dois pushes seguidos não brigam pelo mesmo deploy: o segundo espera o primeiro.
+concurrency:
+  group: publicar
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          package-manager-cache: false   # o repo não tem package.json, e é de propósito
+
+      # Gera o index.html de cada cliente a partir do template e do dados.json.
+      # É o que garante que mexer no template vale para todo mundo: sem isso,
+      # uma cliente antiga continuaria no ar com o HTML gerado meses atrás.
+      - name: Gerar os sites das clientes
+        run: |
+          for pasta in public/clientes/*/; do
+            slug=$(basename "$pasta")
+            echo "→ $slug"
+            node scripts/novo-cliente.mjs "$slug"
+          done
+
+      - name: Testar o Worker
+        run: node teste/painel.test.mjs
+
+      - name: Publicar na Cloudflare
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
