@@ -51,7 +51,7 @@ const TEMAS = {
 };
 
 const MODELO = {
-  tema: "pop",
+  tema: "soft",
   profissional: "Nome da profissional",
   whatsapp: "5511900000000",
   servicos: [

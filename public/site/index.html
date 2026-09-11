@@ -6,23 +6,28 @@
 <title>Manicure de Valor — sua cliente marca sozinha, você só confirma</title>
 <meta name="description" content="Preços, fotos e horários num site com o seu nome. A cliente escolhe e o pedido chega pronto no seu WhatsApp. Em um dia, sem fidelidade.">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,800&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --plum:#2b1d24;
-  --plum-soft:#3a2831;
-  --cream:#f4efec;
-  --paper:#fbf7f5;
-  --rose:#d97a92;
-  --rose-deep:#c05a76;
-  --muted:#8a7168;
-  --muted-dark:#b8a29a;
-  --line:#e8ddd7;
+  /* mesma familia do tema soft, que e o padrao do site das clientes */
+  --plum:#412e2a;        /* superficie escura, nao a cor do texto */
+  --plum-soft:#60443e;   /* linhas sobre o escuro */
+  --cream:#fbf1ec;
+  --paper:#fdf7f4;
+  --rose:#e8b4a0;
+  --rose-deep:#c05267;
+  --muted:#846d66;
+  --muted-dark:#aa9894;
+  --line:#eddcd4;
+  --fonte-titulo:'Fraunces',Georgia,serif;
+  --fonte-texto:'Manrope',system-ui,sans-serif;
+  --peso-titulo:600;
+  --ls-titulo:-.01em;
 }
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{background:var(--paper);color:var(--plum);font-family:'Instrument Sans',system-ui,sans-serif;font-size:17px;line-height:1.55}
-h1,h2,h3{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;line-height:.98;letter-spacing:-.035em}
+body{background:var(--paper);color:var(--plum);font-family:var(--fonte-texto);font-size:17px;line-height:1.55}
+h1,h2,h3{font-family:var(--fonte-titulo);font-weight:var(--peso-titulo);line-height:1.06;letter-spacing:var(--ls-titulo)}
 .wrap{max-width:1060px;margin:0 auto;padding-left:22px;padding-right:22px}
 section{padding-top:96px;padding-bottom:96px;scroll-margin-top:104px}
 
@@ -30,10 +35,10 @@ section{padding-top:96px;padding-bottom:96px;scroll-margin-top:104px}
 .top{position:sticky;top:0;z-index:50;background:var(--plum)}
 .top-in{max-width:1060px;margin:0 auto;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px}
 .lock{display:flex;align-items:center;gap:11px}
-.lock-t{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:21px;letter-spacing:-.04em;line-height:1;color:var(--cream)}
+.lock-t{font-family:var(--fonte-titulo);font-weight:var(--peso-titulo);font-size:21px;letter-spacing:var(--ls-titulo);line-height:1;color:var(--cream)}
 .lock-t span{display:block;color:var(--rose)}
 
-a.btn,button{font-family:'Instrument Sans',sans-serif;font-size:16px;font-weight:500;cursor:pointer;border:none;text-decoration:none;display:inline-block;border-radius:999px;padding:13px 26px;transition:background .18s,transform .12s}
+a.btn,button{font-family:var(--fonte-texto);font-size:16px;font-weight:500;cursor:pointer;border:none;text-decoration:none;display:inline-block;border-radius:999px;padding:13px 26px;transition:background .18s,transform .12s}
 .b-rose{background:var(--rose-deep);color:#fff}
 .b-rose:hover{background:#a94965}
 .b-cream{background:var(--cream);color:var(--plum)}
@@ -57,23 +62,23 @@ a.btn:active,button:active{transform:scale(.97)}
 
 /* celular */
 .phone{width:250px;margin:0 auto;background:#111;border-radius:34px;padding:9px;box-shadow:0 24px 60px rgba(0,0,0,.35)}
-.screen{background:#fff7f2;border-radius:26px;overflow:hidden}
-.s-bar{background:#171110;padding:9px 12px;display:flex;justify-content:space-between;align-items:center}
-.s-bar b{color:#fff7f2;font-family:'Bricolage Grotesque',sans-serif;font-size:13px;letter-spacing:-.03em}
-.s-bar i{background:#e23e57;color:#fff;font-style:normal;font-size:9px;padding:4px 9px;border-radius:999px}
+.screen{background:#fdf7f4;border-radius:26px;overflow:hidden}
+.s-bar{background:#412e2a;padding:9px 12px;display:flex;justify-content:space-between;align-items:center}
+.s-bar b{color:#fdf7f4;font-family:var(--fonte-titulo);font-size:13px;letter-spacing:var(--ls-titulo)}
+.s-bar i{background:#c05267;color:#fff;font-style:normal;font-size:9px;padding:4px 9px;border-radius:999px}
 .s-body{padding:14px 12px 16px}
-.s-body h4{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:21px;letter-spacing:-.04em;line-height:1;color:#171110;margin-bottom:8px}
-.s-body h4 span{color:#e23e57}
-.s-body p{font-size:10px;color:#8a7168;margin-bottom:11px;line-height:1.4}
-.s-btn{background:#e23e57;color:#fff;font-size:10px;padding:7px 14px;border-radius:999px;display:inline-block;margin-bottom:13px}
+.s-body h4{font-family:var(--fonte-titulo);font-weight:var(--peso-titulo);font-size:21px;letter-spacing:var(--ls-titulo);line-height:1;color:#3b2a26;margin-bottom:8px}
+.s-body h4 span{color:#c05267}
+.s-body p{font-size:10px;color:#846d66;margin-bottom:11px;line-height:1.4}
+.s-btn{background:#c05267;color:#fff;font-size:10px;padding:7px 14px;border-radius:999px;display:inline-block;margin-bottom:13px}
 .s-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
-.s-grid i{display:block;aspect-ratio:1;background:#fbe0d6;border-radius:5px;overflow:hidden}
+.s-grid i{display:block;aspect-ratio:1;background:#f7e4dc;border-radius:5px;overflow:hidden}
 .s-grid img{width:100%;height:100%;object-fit:cover;display:block}
 
 /* dores */
 .pains{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:28px;margin-top:48px}
 .pain{background:#fff;border-radius:18px;padding:28px;border:1px solid var(--line)}
-.pain b{display:block;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;letter-spacing:-.03em;margin-bottom:8px}
+.pain b{display:block;font-family:var(--fonte-titulo);font-weight:var(--peso-titulo);font-size:20px;letter-spacing:var(--ls-titulo);margin-bottom:8px}
 .pain p{color:var(--muted);font-size:16px}
 
 .h2{font-size:clamp(34px,6vw,58px);margin-bottom:16px}
@@ -84,28 +89,28 @@ a.btn:active,button:active{transform:scale(.97)}
 .dark{background:var(--plum);color:var(--cream)}
 .gets{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:34px;margin-top:52px}
 .get{border-top:2px solid var(--rose);padding-top:16px}
-.get b{display:block;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:21px;letter-spacing:-.03em;margin-bottom:7px}
+.get b{display:block;font-family:var(--fonte-titulo);font-weight:var(--peso-titulo);font-size:21px;letter-spacing:var(--ls-titulo);margin-bottom:7px}
 .get p{color:var(--muted-dark);font-size:16px}
 
 /* passos */
 .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:36px;margin-top:52px}
-.step-n{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:56px;color:var(--rose);line-height:1;display:block;margin-bottom:10px;letter-spacing:-.05em}
-.step b{display:block;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;letter-spacing:-.03em;margin-bottom:6px}
+.step-n{font-family:var(--fonte-titulo);font-weight:var(--peso-titulo);font-size:56px;color:var(--rose);line-height:1;display:block;margin-bottom:10px;letter-spacing:-.05em}
+.step b{display:block;font-family:var(--fonte-titulo);font-weight:var(--peso-titulo);font-size:20px;letter-spacing:var(--ls-titulo);margin-bottom:6px}
 .step p{color:var(--muted);font-size:16px}
 
 /* preço */
 .price-box{background:var(--plum);color:var(--cream);border-radius:26px;padding:56px 38px;display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center}
-.price-tag{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.04em;line-height:1}
-.price-tag u{display:block;text-decoration:none;font-size:16px;font-family:'Instrument Sans',sans-serif;font-weight:400;color:var(--muted-dark);letter-spacing:0;margin-bottom:6px}
+.price-tag{font-family:var(--fonte-titulo);font-weight:var(--peso-titulo);letter-spacing:var(--ls-titulo);line-height:1}
+.price-tag u{display:block;text-decoration:none;font-size:16px;font-family:var(--fonte-texto);font-weight:400;color:var(--muted-dark);letter-spacing:0;margin-bottom:6px}
 .price-tag em{font-style:normal;font-size:clamp(44px,7vw,68px);color:var(--rose)}
-.price-tag small{font-size:19px;color:var(--muted-dark);font-family:'Instrument Sans',sans-serif;font-weight:400;letter-spacing:0}
+.price-tag small{font-size:19px;color:var(--muted-dark);font-family:var(--fonte-texto);font-weight:400;letter-spacing:0}
 .price-split{border-top:1px solid var(--plum-soft);margin:26px 0;padding-top:26px}
 .inc li{list-style:none;padding:11px 0;border-bottom:1px solid var(--plum-soft);font-size:16px;color:var(--cream)}
 .inc li:last-child{border-bottom:none}
 
 /* dúvidas */
 details{border-bottom:1px solid var(--line);padding:20px 0}
-summary{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;letter-spacing:-.03em;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:18px;align-items:center}
+summary{font-family:var(--fonte-titulo);font-weight:var(--peso-titulo);font-size:20px;letter-spacing:var(--ls-titulo);cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:18px;align-items:center}
 summary::-webkit-details-marker{display:none}
 summary::after{content:"+";color:var(--rose-deep);font-size:26px;line-height:1}
 details[open] summary::after{content:"–"}
@@ -137,7 +142,7 @@ footer b{color:var(--cream);font-weight:500}
   <div class="lock">
     <svg width="30" height="32" viewBox="0 0 160 172" aria-hidden="true">
       <mask id="lg1"><path d="M20 26h30l30 80 30-80h30L80 152z" fill="#fff" stroke="#fff" stroke-width="24" stroke-linejoin="round"/></mask>
-      <g mask="url(#lg1)"><rect width="160" height="172" fill="#f4efec"/><path d="M0 62q80 26 160 0v110H0z" fill="#d97a92"/></g>
+      <g mask="url(#lg1)"><rect width="160" height="172" fill="#fbf1ec"/><path d="M0 62q80 26 160 0v110H0z" fill="#e8b4a0"/></g>
     </svg>
     <span class="lock-t">manicure<span>de valor</span></span>
   </div>

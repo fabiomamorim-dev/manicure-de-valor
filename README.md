@@ -103,7 +103,7 @@ O script recusa qualquer coisa fora de `[a-z0-9-]`.
 | `bairros` | lista exibida e opções do campo |
 | `diasDeAntecedencia` | `0` permite agendar hoje; `1` só a partir de amanhã |
 | `diasDeRetorno` | dias até a manutenção, usado no painel. Padrão 21 |
-| `tema` | `pop` (padrão), `clean`, `soft`, `minimal` ou `glam`. Ver Temas abaixo |
+| `tema` | `soft` (padrão), `pop`, `clean`, `minimal` ou `glam`. Ver Temas abaixo |
 | `instagram` | usuário sem arroba. Vazio esconde o link do topo |
 | `sobre.texto` | seção "Oi, eu sou a ___". Linha em branco separa parágrafo |
 | `sobre.foto` | retrato da profissional. Sem foto, a seção fica só com o texto |
@@ -126,7 +126,8 @@ novo nasce com esses dados.
 ## Temas
 
 Cinco combinações de cor e tipografia, mesma estrutura e mesmo agendamento.
-A escolha é da profissional, na hora da venda, e vira uma linha no `dados.json`:
+A escolha é da profissional, na hora da venda, e vira uma linha no `dados.json`.
+O padrão é o `soft`, que é a cara do institucional:
 
 ```json
 "tema": "clean"
