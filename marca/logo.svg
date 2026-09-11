@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 108" width="400" height="108" role="img" aria-label="Manicure de Valor">
-  <mask id="v"><path d="M22 24h22l22 58 22-58h22L66 132z" fill="#fff" stroke="#fff" stroke-width="20" stroke-linejoin="round"/></mask>
-  <g mask="url(#v)"><rect width="140" height="150" fill="#f4efec"/><path d="M0 52q66 22 132 0v98H0z" fill="#d97a92"/></g>
-  <text x="118" y="48" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="34" letter-spacing="-1.8" fill="#f4efec">manicure</text>
-  <text x="118" y="88" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="34" letter-spacing="-1.8" fill="#d97a92">de valor</text>
-</svg>

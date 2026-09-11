@@ -1,0 +1,35 @@
+Manicure de Valor — material da marca
+
+FOTO DE PERFIL DO INSTAGRAM
+  perfil-creme-1080.png     fundo claro
+  perfil-marrom-1080.png    fundo escuro
+  Quadradas, 1080x1080, com o simbolo no centro e folga de sobra para o
+  corte circular do Instagram. Use uma das duas — nao a logo com o nome:
+  texto some quando vira bolinha de 40 pixels no feed.
+
+MARCA COMPLETA (simbolo + nome)
+  logo-fundo-creme-2000.png
+  logo-fundo-marrom-2000.png
+  logo-transparente-2000.png   fundo transparente, para pôr sobre foto
+  Para post, capa de destaque, apresentacao, rodape de orcamento.
+
+SO O SIMBOLO
+  simbolo-marrom-1080.png   fundo transparente, para usar sobre claro
+  simbolo-creme-1080.png    fundo transparente, para usar sobre escuro
+
+ARQUIVOS VETORIAIS (.svg)
+  Mesmas pecas em vetor: nao perdem qualidade em nenhum tamanho, servem para
+  grafica, adesivo, placa. O texto esta em contorno, entao abrem igual em
+  qualquer maquina, sem precisar da fonte instalada.
+
+CORES
+  #412e2a  marrom     fundo escuro, texto
+  #fdf7f4  creme      fundo claro
+  #fbf1ec  creme claro  texto sobre o marrom
+  #e8b4a0  nude       a onda do simbolo
+  #c05267  rosa       botoes, "de valor"
+
+TIPOGRAFIA
+  Titulos: Fraunces (peso 600)
+  Texto:   Manrope
+  As duas sao gratuitas no Google Fonts.
