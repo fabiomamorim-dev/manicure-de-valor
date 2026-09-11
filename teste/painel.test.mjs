@@ -44,14 +44,27 @@ const DB = {
   },
 };
 
+// Imita o roteador de assets da Cloudflare, inclusive a parte que causava o
+// vazamento: pedir "/pasta/index.html" devolve um redirecionamento para
+// "/pasta/", e era esse Location que ia parar na barra de endereco.
 const ASSETS = {
   async fetch(req) {
+    const caminho = new URL(req.url).pathname;
+
     const mapa = {
-      "/clientes/carlasilva/index.html": "../public/clientes/carlasilva/index.html",
+      "/clientes/carlasilva/": "../public/clientes/carlasilva/index.html",
       "/clientes/carlasilva/dados.json": "../public/clientes/carlasilva/dados.json",
-      "/site/index.html": "../public/site/index.html",
+      "/site/": "../public/site/index.html",
     };
-    const rel = mapa[new URL(req.url).pathname];
+    // so redireciona quando a pasta existe, como faz o roteador de verdade
+    if (caminho.endsWith("/index.html")) {
+      const pasta = caminho.replace(/index\.html$/, "");
+      if (mapa[pasta]) {
+        return new Response(null, { status: 308, headers: { location: pasta } });
+      }
+    }
+
+    const rel = mapa[caminho];
     return rel
       ? new Response(ler(rel), { status: 200 })
       : new Response("não existe", { status: 404 });
@@ -144,6 +157,23 @@ ok(r.status === 404, "foto inexistente dá 404");
 html = await (await worker.fetch(new Request("https://manicuredevalor.com.br/painel?k=" + chave), env)).text();
 ok(!html.includes("Chamar agora") && !html.includes("noindex"),
    "domínio raiz não serve painel");
+
+console.log("\nendereco na barra");
+r = await worker.fetch(new Request(SITE + "/"), env);
+ok(r.status === 200 && !r.headers.get("location"),
+   "a raiz serve a pagina, sem redirecionar");
+
+r = await worker.fetch(new Request(SITE + "/?utm_source=instagram"), env);
+ok(r.status === 200 && (await r.text()).includes("Carla Silva"),
+   "parametro na URL nao quebra a pagina");
+
+r = await worker.fetch(new Request(SITE + "/clientes/carlasilva/"), env, { redirect: "manual" });
+ok(r.status === 301 && new URL(r.headers.get("location")).pathname === "/",
+   "caminho interno pedido direto volta para a raiz");
+
+r = await worker.fetch(new Request(SITE + "/rota/que/nao/existe"), env);
+ok(r.status === 200 && !r.headers.get("location"),
+   "rota desconhecida cai no site sem expor o caminho interno");
 
 console.log(falhas ? `\n${falhas} falha(s)\n` : "\ntudo passou\n");
 process.exit(falhas ? 1 : 0);

@@ -33,19 +33,42 @@ export default {
       }
     }
 
-    const caminho = url.pathname === "/" ? "/index.html" : url.pathname;
-    const alvo = new URL(base + caminho, url.origin);
+    // O caminho interno nunca deve aparecer na barra de endereco. Quem chegar
+    // em /clientes/<slug>/ (link antigo, redirecionamento) volta para a raiz.
+    if (/^\/(clientes|site)(\/|$)/i.test(url.pathname)) {
+      return Response.redirect(new URL("/", url.origin).toString(), 301);
+    }
 
-    const resposta = await env.ASSETS.fetch(new Request(alvo, request));
+    // Pede a pasta, nao o index.html: o roteador de assets normaliza
+    // "/pasta/index.html" para "/pasta/" com um redirecionamento, e esse
+    // redirecionamento e que vazava o caminho interno.
+    const caminho = url.pathname === "/" ? "/" : url.pathname;
+    const alvo = new URL(base + caminho, url.origin);
+    alvo.search = url.search;   // ?utm_source e amigos seguem adiante
+
+    let resposta = await env.ASSETS.fetch(new Request(alvo, request));
+
+    // Rede de seguranca: se ainda assim vier um redirecionamento, seguimos por
+    // dentro em vez de repassar o Location, que carregaria o caminho interno.
+    if (resposta.status >= 300 && resposta.status < 400) {
+      const destino = resposta.headers.get("location");
+      if (destino) {
+        resposta = await env.ASSETS.fetch(
+          new Request(new URL(destino, url.origin), request)
+        );
+      }
+    }
+
     if (resposta.status === 404) {
       // Arquivo que não existe (foto, css, ícone) é 404 de verdade. Devolver o
       // index.html no lugar de uma imagem só esconde o erro atrás de um 200.
       if (/\.[a-z0-9]{2,5}$/i.test(caminho) && !/\.html?$/i.test(caminho)) {
         return naoEncontrado();
       }
-      // rota interna desconhecida cai no index do próprio site
+      // rota interna desconhecida cai no index do próprio site — de novo pela
+      // pasta, para nao disparar o redirecionamento que vaza o caminho
       const fallback = await env.ASSETS.fetch(
-        new Request(new URL(base + "/index.html", url.origin), request)
+        new Request(new URL(base + "/", url.origin), request)
       );
       return fallback.status === 404 ? naoEncontrado() : fallback;
     }
@@ -69,7 +92,7 @@ async function apiPedido(request, env, slug, url) {
 
   // Subdomínio que não tem site não vira linha no banco.
   const existe = await env.ASSETS.fetch(
-    new Request(new URL(`/clientes/${slug}/index.html`, url.origin))
+    new Request(new URL(`/clientes/${slug}/`, url.origin))
   );
   if (existe.status === 404) return json({ ok: false, motivo: "cliente inexistente" }, 404);
 
