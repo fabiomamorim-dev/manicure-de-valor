@@ -46,6 +46,15 @@
     "17:00",
     "18:00"
   ],
+  "diasQueAtende": [
+    "seg",
+    "ter",
+    "qua",
+    "qui",
+    "sex",
+    "sab"
+  ],
+  "antecedenciaHoras": 2,
   "pedirBairro": true,
   "bairros": [
     "Centro",

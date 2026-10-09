@@ -4,6 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>__NOME__ — Manicure em domicílio</title>
+<meta name="description" content="__DESC__">
+<link rel="canonical" href="__URL__">
+
+<!-- Preview do link no WhatsApp, Instagram e Facebook. Sem isso o link
+     chega como texto cru e parece spam — e e por ai que a cliente recebe. -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="__NOME__">
+<meta property="og:title" content="__NOME__ — Manicure em domicílio">
+<meta property="og:description" content="__DESC__">
+<meta property="og:url" content="__URL__">
+__OG_IMAGE__
+<meta name="twitter:card" content="summary_large_image">
 __FONTES__
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -174,9 +187,10 @@ footer{padding:40px 0 90px;color:var(--muted);font-size:15px;text-align:center}
 @media(prefers-reduced-motion:reduce){.zap{transition:none}.zap:hover{transform:none}}
 
 /* modal */
-.veil{position:absolute;inset:0;background:rgba(23,17,16,.55);display:none;justify-content:center;align-items:flex-start;padding:20px;z-index:60}
+.veil{position:fixed;inset:0;background:rgba(23,17,16,.55);display:none;justify-content:center;align-items:flex-start;padding:20px;z-index:60;overflow-y:auto;overscroll-behavior:contain}
 .veil.on{display:flex}
-.card{background:var(--milk);width:100%;max-width:440px;border-radius:22px;padding:28px;margin-top:36px}
+body.travado{overflow:hidden}
+.card{background:var(--milk);width:100%;max-width:440px;border-radius:22px;padding:28px;margin:auto}
 .card h3{font-size:32px;margin-bottom:6px}
 .card>p{color:var(--muted);margin-bottom:22px;font-size:16px}
 .f{margin-bottom:15px}
@@ -185,10 +199,13 @@ footer{padding:40px 0 90px;color:var(--muted);font-size:15px;text-align:center}
 .f input:focus,.f select:focus{outline:none;box-shadow:inset 0 0 0 2px var(--pop)}
 .bad{color:var(--pop-dark);font-size:14px;margin-top:5px;display:none}
 .bad.on{display:block}
+.dica{color:var(--muted);font-size:13px;margin-top:5px}
 .mini{color:var(--muted);font-size:13px;margin-top:18px;line-height:1.4}
 .mini b{font-weight:500;color:var(--ink)}
 .acts{display:flex;gap:10px;margin-top:16px}
 .acts button{flex:1}
+.saida{margin-top:18px;padding-top:18px;border-top:1px solid var(--line);text-align:center}
+.saida p{font-size:15px;color:var(--muted);margin-bottom:12px}
 
 @media(max-width:760px){
   section{padding:62px 0}
@@ -311,13 +328,17 @@ footer{padding:40px 0 90px;color:var(--muted);font-size:15px;text-align:center}
     <h3 id="ct">Agendar</h3>
     <p>Preenche aqui e envia. A conversa abre no WhatsApp já com tudo escrito.</p>
     <div class="f"><label for="fServico">Serviço</label><select id="fServico"></select><p class="bad" id="eServico">Escolhe um serviço.</p></div>
-    <div class="f"><label for="fData">Data</label><input type="date" id="fData"><p class="bad" id="eData">Escolhe uma data.</p></div>
+    <div class="f"><label for="fData">Data</label><input type="date" id="fData"><p class="dica" id="dicaDias"></p><p class="bad" id="eData">Escolhe uma data.</p></div>
     <div class="f"><label for="fHora">Horário</label><select id="fHora"></select><p class="bad" id="eHora">Escolhe um horário.</p></div>
     <div class="f" id="wrapBairro"><label for="fBairro">Bairro</label><select id="fBairro"></select><p class="bad" id="eBairro">Escolhe o bairro.</p></div>
     <div class="f"><label for="fNome">Seu nome</label><input type="text" id="fNome" placeholder="Maria Souza"><p class="bad" id="eNome">Escreve seu nome.</p></div>
-    <div class="f"><label for="fFone">Seu WhatsApp</label><input type="tel" id="fFone" placeholder="11 98765-4321" inputmode="tel"><p class="bad" id="eFone">Coloca um número com DDD.</p></div>
+    <div class="f"><label for="fFone">Seu WhatsApp</label><input type="tel" id="fFone" placeholder="(41) 93500-0852" inputmode="tel"><p class="bad" id="eFone">Confere o número — precisa do DDD, como (41) 93500-0852.</p></div>
     <p class="mini">Seus dados v&#227;o s&#243; para <b>__NOME__</b>, para confirmar o hor&#225;rio e lembrar da sua manuten&#231;&#227;o.</p>
     <div class="acts"><button class="b-line" data-close>Cancelar</button><button class="b-pop" id="enviar">Enviar</button></div>
+    <div class="saida" id="saida" hidden>
+      <p>Seu pedido está pronto. O navegador não abriu o WhatsApp sozinho — toque no botão abaixo.</p>
+      <a class="btn b-pop" id="linkZap" href="#" target="_blank" rel="noopener">Abrir a conversa</a>
+    </div>
   </div>
 </div>
 
@@ -335,15 +356,82 @@ $('precos').innerHTML = CONFIG.servicos.map(s =>
 $('fServico').innerHTML = '<option value="">Selecione</option>' + CONFIG.servicos.map(s=>`<option>${s.nome}</option>`).join('');
 $('fHora').innerHTML = '<option value="">Selecione</option>' + CONFIG.horarios.map(h=>`<option>${h}</option>`).join('');
 
+/* ---- dias que ela atende e horarios ainda possiveis ----------------------
+   new Date('2026-10-11') e lido como UTC: em Brasilia volta o dia anterior e
+   o getDay() erra. Por isso a data do input e quebrada na mao.             */
+const SIGLAS  = ['dom','seg','ter','qua','qui','sex','sab'];
+const POR_EXT = ['domingo','segunda','terça','quarta','quinta','sexta','sábado'];
+
+const DIAS = Array.isArray(CONFIG.diasQueAtende) && CONFIG.diasQueAtende.length
+  ? CONFIG.diasQueAtende.map(d => String(d).toLowerCase().slice(0,3))
+  : SIGLAS;                        // sem o campo, segue atendendo todo dia
+const ANTEC = Number(CONFIG.antecedenciaHoras) >= 0 ? Number(CONFIG.antecedenciaHoras) : 2;
+
+const dataLocal = iso => { const [a,m,d] = iso.split('-').map(Number); return new Date(a, m-1, d); };
+const atendeNo  = iso => DIAS.includes(SIGLAS[dataLocal(iso).getDay()]);
+const ehHoje    = iso => iso === new Date(Date.now() - new Date().getTimezoneOffset()*6e4)
+                                  .toISOString().slice(0,10);
+
+if (DIAS.length < 7) {
+  const nomes = SIGLAS.map((s,i) => DIAS.includes(s) ? POR_EXT[i] : null).filter(Boolean);
+  $('dicaDias').textContent = 'Atendo ' +
+    (nomes.length > 1 ? nomes.slice(0,-1).join(', ') + ' e ' + nomes.at(-1) : nomes[0]) + '.';
+}
+
+// Horarios ainda possiveis para a data escolhida. Hoje as 18h, ninguem
+// consegue atender as 9h — e a manicure ainda precisa se deslocar.
+function horariosPara(iso){
+  if (!iso || !ehHoje(iso)) return CONFIG.horarios;
+  const limite = new Date(Date.now() + ANTEC*36e5);
+  const corte  = limite.getHours()*60 + limite.getMinutes();
+  return CONFIG.horarios.filter(h => {
+    const [hh,mm] = h.split(':').map(Number);
+    return hh*60 + mm >= corte;
+  });
+}
+
+function atualizarHorarios(){
+  const iso = $('fData').value;
+  const anterior = $('fHora').value;
+  const livres = iso ? horariosPara(iso) : CONFIG.horarios;
+
+  $('fHora').innerHTML = (livres.length
+    ? '<option value="">Selecione</option>' + livres.map(h=>`<option>${h}</option>`).join('')
+    : '<option value="">Sem horário para esse dia</option>');
+
+  if (livres.includes(anterior)) $('fHora').value = anterior;
+  $('fHora').disabled = livres.length === 0;
+}
+
+$('fData').addEventListener('change', () => {
+  const iso = $('fData').value;
+  const erro = $('eData');
+
+  if (iso && !atendeNo(iso)) {
+    erro.textContent = 'Nesse dia eu não atendo.';
+    erro.classList.add('on');
+  } else if (iso && ehHoje(iso) && horariosPara(iso).length === 0) {
+    erro.textContent = 'Para hoje já não dá mais. Escolhe outro dia.';
+    erro.classList.add('on');
+  } else {
+    erro.textContent = 'Escolhe uma data.';
+    erro.classList.remove('on');
+  }
+  atualizarHorarios();
+});
+
 const F = CONFIG.fotos || {};
 if (F.capa) {
   document.querySelector('.hero-photo').innerHTML =
-    `<img src="${F.capa}" alt="Trabalho de ${CONFIG.profissional}">`;
+    `<img src="${esc(F.capa)}" alt="${esc(CONFIG.profissional)} atendendo uma cliente" fetchpriority="high">`;
 }
 if (Array.isArray(F.galeria)) {
+  // Alt diferente em cada foto: seis vezes o mesmo texto e ruido no leitor de
+  // tela e desperdicio no Google Imagens, que e de onde vem busca nesse ramo.
   document.querySelectorAll('.gal i').forEach((el, i) => {
     const src = F.galeria[i];
-    if (src) el.innerHTML = `<img src="${src}" alt="Unhas feitas por ${CONFIG.profissional}" loading="lazy">`;
+    if (src) el.innerHTML =
+      `<img src="${esc(src)}" alt="Unhas feitas por ${esc(CONFIG.profissional)} — trabalho ${i+1} de ${F.galeria.filter(Boolean).length}" loading="lazy">`;
   });
 }
 
@@ -392,7 +480,61 @@ if (DEPO.length) {
 }
 
 const nomes = CONFIG.servicos.map(s=>s.nome);
-$('strip').innerHTML = (nomes.concat(nomes)).map(n=>`<span>${n}<b> ✳ </b></span>`).join('');
+$('strip').innerHTML = (nomes.concat(nomes)).map(n=>`<span>${esc(n)}<b> ✳ </b></span>`).join('');
+
+// A faixa so anima quando esta na tela. Rodando o tempo todo ela acorda o
+// compositor do navegador e come bateria enquanto a cliente le o resto.
+if ('IntersectionObserver' in window) {
+  const faixa = $('strip');
+  new IntersectionObserver(
+    ([e]) => { faixa.style.animationPlayState = e.isIntersecting ? 'running' : 'paused'; },
+    { threshold: 0 }
+  ).observe(faixa);
+}
+
+/* ---- dados estruturados --------------------------------------------------
+   E o que o Google le para entender que isso e um negocio local, com area de
+   atendimento e faixa de preco. O site vende "aparecer no Google": sem isso a
+   promessa fica so no texto.                                              */
+(() => {
+  const numeros = CONFIG.servicos
+    .map(s => Number(String(s.preco).replace(/[^\d,.]/g,'').replace(',','.')))
+    .filter(n => n > 0);
+
+  const dados = {
+    '@context': 'https://schema.org',
+    '@type': 'HealthAndBeautyBusiness',
+    name: CONFIG.profissional,
+    description: document.querySelector('meta[name="description"]')?.content || '',
+    url: location.origin,
+    image: (CONFIG.fotos && CONFIG.fotos.capa)
+      ? new URL(CONFIG.fotos.capa, location.href).href : undefined,
+    telephone: '+' + CONFIG.whatsapp,
+    priceRange: numeros.length
+      ? `R$${Math.min(...numeros)}–R$${Math.max(...numeros)}` : undefined,
+    // Atende na casa da cliente: area de atendimento, sem endereco publico.
+    areaServed: (CONFIG.pedirBairro && Array.isArray(CONFIG.bairros))
+      ? CONFIG.bairros.filter(b => b && b.toLowerCase() !== 'outro')
+          .map(b => ({ '@type': 'Place', name: b }))
+      : undefined,
+    makesOffer: CONFIG.servicos.map(s => ({
+      '@type': 'Offer',
+      itemOffered: { '@type': 'Service', name: s.nome, description: s.desc },
+      price: String(s.preco).replace(/[^\d,.]/g,'').replace(',','.'),
+      priceCurrency: 'BRL'
+    }))
+  };
+
+  // De proposito sem aggregateRating. A nota que aparece no topo vem do Google
+  // Meu Negocio dela, nao de avaliacoes coletadas aqui — e o Google trata nota
+  // propria declarada pelo site como spam de dados estruturados. O castigo e
+  // justamente sumir da busca, que e o que ela esta pagando para evitar.
+
+  const tag = document.createElement('script');
+  tag.type = 'application/ld+json';
+  tag.textContent = JSON.stringify(dados, (k, v) => v === undefined ? undefined : v);
+  document.head.appendChild(tag);
+})();
 
 const d = new Date(); d.setDate(d.getDate() + CONFIG.diasDeAntecedencia);
 $('fData').min = d.toISOString().slice(0,10);
@@ -406,20 +548,76 @@ if (CONFIG.pedirBairro){
 }
 
 const veil = $('veil');
+let quemAbriu = null;
+
+const focaveis = () => [...veil.querySelectorAll('select,input,button,a[href]')]
+  .filter(e => !e.disabled && e.offsetParent !== null);
+
 document.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>{
   if (b.dataset.servico) {
     $('fServico').value = b.dataset.servico;
     $('eServico').classList.remove('on');
   }
+  quemAbriu = b;
   veil.classList.add('on');
-  window.scrollTo({top:veil.offsetTop-16,behavior:'smooth'});
+  document.body.classList.add('travado');   // a pagina atras para de rolar
+  veil.scrollTop = 0;
+  const primeiro = focaveis()[0];
+  if (primeiro) primeiro.focus();
 }));
+
 document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',off));
 veil.addEventListener('click',e=>{ if(e.target===veil) off(); });
-document.addEventListener('keydown',e=>{ if(e.key==='Escape') off(); });
-function off(){ veil.classList.remove('on'); }
 
-['fServico','fData','fHora','fBairro','fNome','fFone'].forEach(id=>{
+document.addEventListener('keydown',e=>{
+  if (!veil.classList.contains('on')) return;
+  if (e.key === 'Escape') { off(); return; }
+  // Prende o Tab dentro do formulario: sem isso o foco sai para a pagina de
+  // tras, que o leitor de tela continua anunciando.
+  if (e.key === 'Tab') {
+    const lista = focaveis();
+    if (!lista.length) return;
+    const primeiro = lista[0], ultimo = lista[lista.length-1];
+    if (e.shiftKey && document.activeElement === primeiro) { e.preventDefault(); ultimo.focus(); }
+    else if (!e.shiftKey && document.activeElement === ultimo) { e.preventDefault(); primeiro.focus(); }
+  }
+});
+
+function off(){
+  veil.classList.remove('on');
+  document.body.classList.remove('travado');
+  esconderSaida();
+  if (quemAbriu) { quemAbriu.focus(); quemAbriu = null; }
+}
+
+/* ---- telefone ------------------------------------------------------------
+   Formata enquanto digita e exige um numero plausivel: DDD valido (11 a 99)
+   e 8 ou 9 digitos. Antes passava qualquer sequencia de dez numeros, e um
+   telefone errado vira um pedido que ela nao consegue responder.           */
+function mascaraFone(v){
+  const d = v.replace(/\D/g,'').slice(0,11);
+  if (d.length <= 2)  return d;
+  if (d.length <= 6)  return `(${d.slice(0,2)}) ${d.slice(2)}`;
+  if (d.length <= 10) return `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`;
+  return `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`;
+}
+function foneValido(v){
+  const d = v.replace(/\D/g,'');
+  if (d.length !== 10 && d.length !== 11) return false;
+  if (Number(d.slice(0,2)) < 11) return false;              // nao existe DDD abaixo de 11
+  if (d.length === 11 && d[2] !== '9') return false;        // celular comeca com 9
+  if (/^(\d)\1+$/.test(d.slice(2))) return false;           // 99999999999
+  return true;
+}
+$('fFone').addEventListener('input', e => {
+  const fim = e.target.selectionStart === e.target.value.length;
+  e.target.value = mascaraFone(e.target.value);
+  if (fim) e.target.setSelectionRange(e.target.value.length, e.target.value.length);
+});
+
+// fData fica de fora: tem tratamento proprio no 'change', e o 'input'
+// generico apagaria a mensagem de "nesse dia eu nao atendo".
+['fServico','fHora','fBairro','fNome','fFone'].forEach(id=>{
   const el=$(id); if(!el) return;
   el.addEventListener('input',()=>{ const b=$('e'+id.slice(1)); if(b) b.classList.remove('on'); });
 });
@@ -437,11 +635,20 @@ $('enviar').addEventListener('click',()=>{
   const bairro = CONFIG.pedirBairro ? $('fBairro').value : '';
 
   if(!servico) ruim('eServico');
-  if(!data) ruim('eData');
+  if(!data) {
+    $('eData').textContent = 'Escolhe uma data.';
+    ruim('eData');
+  } else if(!atendeNo(data)) {
+    $('eData').textContent = 'Nesse dia eu não atendo.';
+    ruim('eData');
+  } else if(!horariosPara(data).includes(hora) && hora) {
+    $('eHora').textContent = 'Esse horário já passou. Escolhe outro.';
+    ruim('eHora');
+  }
   if(!hora) ruim('eHora');
   if(CONFIG.pedirBairro && !bairro) ruim('eBairro');
   if(!nome) ruim('eNome');
-  if(fone.replace(/\D/g,'').length<10) ruim('eFone');
+  if(!foneValido(fone)) ruim('eFone');
   if(!ok) return;
 
   const t=[`Oi, ${CONFIG.profissional}! Quero agendar pelo site:`,'',
@@ -461,9 +668,24 @@ $('enviar').addEventListener('click',()=>{
     }).catch(() => {});
   } catch (e) {}
 
-  window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(t.join('\n'))}`,'_blank');
-  off();
+  const link = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(t.join('\n'))}`;
+
+  // Navegador embutido (Instagram, Facebook) costuma barrar janela nova. Se
+  // barrar, o modal nao pode simplesmente fechar: ela preencheu tudo e ficaria
+  // achando que o site nao funciona.
+  const aba = window.open(link, '_blank');
+  if (aba) { off(); return; }
+
+  $('linkZap').href = link;
+  $('saida').hidden = false;
+  $('enviar').textContent = 'Reenviar';
+  $('linkZap').focus();
 });
+
+function esconderSaida(){
+  $('saida').hidden = true;
+  $('enviar').textContent = 'Enviar';
+}
 </script>
 </body>
 </html>

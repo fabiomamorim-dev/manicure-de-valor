@@ -59,6 +59,11 @@ const MODELO = {
     { nome: "Pedicure", desc: "Cuidado completo dos pés com hidratação", preco: "R$ 50" }
   ],
   horarios: ["09:00", "10:00", "11:00", "14:00", "15:00", "16:00", "17:00"],
+  // Dias em que ela atende. Fora deles o site recusa a data na hora, em vez
+  // de deixar chegar um pedido que ela vai ter que desmarcar.
+  diasQueAtende: ["seg", "ter", "qua", "qui", "sex", "sab"],
+  // Quanto tempo antes do horario ainda da para pedir. Conta o deslocamento.
+  antecedenciaHoras: 2,
   pedirBairro: true,
   bairros: ["Centro", "Outro"],
   diasDeAntecedencia: 0,
@@ -161,10 +166,50 @@ if (achadas.length) {
   console.log(`descompacte em ${pastaFotos}.`);
 }
 
+// ---- endereco, descricao e imagem de preview -------------------------------
+// O og:image precisa de URL absoluta: o WhatsApp busca a imagem de fora, nao
+// tem como resolver "fotos/capa.webp". Por isso isso e montado aqui, onde o
+// slug e conhecido, e nao dentro do template.
+const url = `https://${slug}.manicuredevalor.com.br`;
+
+// Escape para valor de atributo HTML. O & tem que vir primeiro, senao
+// reescreve os & que as proprias entidades acabaram de inserir.
+const attr = (t) => String(t)
+  .replace(/&/g, "&amp;")
+  .replace(/</g, "&lt;")
+  .replace(/>/g, "&gt;")
+  .replace(/"/g, "&quot;");
+
+const absoluta = (caminho) =>
+  !caminho ? "" : /^https?:\/\//i.test(caminho) ? caminho : `${url}/${String(caminho).replace(/^\//, "")}`;
+
+const atende = (dados.pedirBairro && Array.isArray(dados.bairros))
+  ? dados.bairros.filter((b) => b && b.toLowerCase() !== "outro")
+  : [];
+
+// Uma frase so, porque WhatsApp e Google cortam por volta de 150 caracteres.
+const descricao = dados.descricao || [
+  `Manicure e pedicure em domicílio com ${dados.profissional}.`,
+  atende.length ? `Atendo ${atende.slice(0, 3).join(", ")}${atende.length > 3 ? " e região" : ""}.` : "",
+  "Escolha o horário pelo site."
+].filter(Boolean).join(" ");
+
+const capaAbsoluta = absoluta(dados.fotos && dados.fotos.capa);
+const ogImage = capaAbsoluta
+  ? `<meta property="og:image" content="${attr(capaAbsoluta)}">\n<meta property="og:image:alt" content="Trabalho de ${attr(dados.profissional)}">`
+  : "<!-- sem foto de capa: o link vai sem imagem de preview -->";
+
+if (!capaAbsoluta) {
+  console.log("Aviso: sem foto de capa, o link compartilhado no WhatsApp vai sem imagem.");
+}
+
 const html = readFileSync(join("template", "index.html"), "utf8")
   .replaceAll("__DADOS__", JSON.stringify(dados, null, 2))
   .replaceAll("__NOME__", dados.profissional)
   .replaceAll("__TEMA__", tema)
+  .replaceAll("__DESC__", attr(descricao))
+  .replaceAll("__URL__", attr(url))
+  .replaceAll("__OG_IMAGE__", ogImage)
   .replaceAll("__FONTES__", `<link href="${TEMAS[tema].fontes}" rel="stylesheet">`);
 
 writeFileSync(join(pasta, "index.html"), html);

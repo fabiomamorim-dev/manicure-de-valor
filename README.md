@@ -99,15 +99,18 @@ O script recusa qualquer coisa fora de `[a-z0-9-]`.
 | `whatsapp` | `55` + DDD + número, sem espaço nem hífen. O script valida o formato |
 | `servicos` | alimenta a seção de preços **e** o campo de serviço do agendamento |
 | `horarios` | opções do campo de horário |
+| `diasQueAtende` | dias da semana, em sigla de três letras: `["seg","ter","qua","qui","sex","sab"]`. O site recusa a data na hora se cair fora, em vez de deixar chegar um pedido que ela vai ter que desmarcar. Sem o campo, atende todo dia |
+| `antecedenciaHoras` | quanto tempo antes do horário ainda dá para pedir. Padrão 2. Se a cliente escolhe hoje, os horários que já passaram desse limite somem da lista |
 | `pedirBairro` | `false` esconde o campo e some com a seção "Onde atendo" |
-| `bairros` | lista exibida e opções do campo |
+| `bairros` | lista exibida, opções do campo e área de atendimento nos dados estruturados |
+| `descricao` | opcional. Sobrescreve o texto do preview no WhatsApp e no Google. Sem ele, é montado com o nome e os bairros |
 | `diasDeAntecedencia` | `0` permite agendar hoje; `1` só a partir de amanhã |
 | `diasDeRetorno` | dias até a manutenção, usado no painel. Padrão 21 |
 | `tema` | `soft` (padrão), `pop`, `clean`, `minimal` ou `glam`. Ver Temas abaixo |
 | `instagram` | usuário sem arroba. Vazio esconde o link do topo |
 | `sobre.texto` | seção "Oi, eu sou a ___". Linha em branco separa parágrafo |
 | `sobre.foto` | retrato da profissional. Sem foto, a seção fica só com o texto |
-| `avaliacoes` | `nota`, `quantidade` e `atendimentos`. Cada um aparece só se preenchido |
+| `avaliacoes` | `nota`, `quantidade` e `atendimentos`. Cada um aparece só se preenchido. Só entra número real, dito pela profissional — e de propósito **não** vai para os dados estruturados: nota própria declarada pelo site é tratada pelo Google como spam, e a punição é sumir da busca |
 | `depoimentos` | lista de `{ texto, autora }`. Lista vazia esconde a seção inteira |
 
 Campo vazio nunca vira placeholder: a seção correspondente simplesmente não é
