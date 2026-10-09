@@ -1,0 +1,30 @@
+Manicure de Valor — material do WhatsApp Business
+
+FOTO DE PERFIL
+  Use ../perfil-marrom-1080.png. Na lista de conversas o fundo e claro, entao
+  a versao escura se destaca mais que a creme.
+
+CATALOGO (1080x1080)
+  cat-mensal.png       item "Site mensal"      R$ 39,90
+  cat-trimestral.png   item "Site tres meses"  R$ 99
+  Cada item aceita um link: aponte para o checkout do plano na Base de
+  Clientes. E o caminho mais curto entre ver o preco e pagar.
+
+STATUS (1080x1920)
+  st-abertura.png   a proposta, para quem nunca ouviu falar
+  st-funciona.png   os tres passos
+  st-preco.png      os dois planos
+  st-chamada.png    o convite para mandar mensagem
+
+  O padding de cima e de baixo e de proposito: a barra de progresso cobre o
+  topo e a caixa "Responder" cobre a base. Texto colado na borda some.
+
+REGERAR
+  As pecas sao feitas de HTML, nao de editor de imagem — mexer no texto e
+  mexer no fonte.html.
+
+    npm i @fontsource/fraunces @fontsource/manrope
+    # abra fonte.html no navegador e exporte, ou rode um screenshot headless
+    # de cada .peca (os ids estao no HTML)
+
+  O fonte.html espera as fontes em node_modules/@fontsource/, na mesma pasta.

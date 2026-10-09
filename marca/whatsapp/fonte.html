@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<style>
+@font-face{font-family:Fraunces;src:url('node_modules/@fontsource/fraunces/files/fraunces-latin-600-normal.woff2') format('woff2');font-weight:600}
+@font-face{font-family:Fraunces;src:url('node_modules/@fontsource/fraunces/files/fraunces-latin-700-normal.woff2') format('woff2');font-weight:700}
+@font-face{font-family:Manrope;src:url('node_modules/@fontsource/manrope/files/manrope-latin-400-normal.woff2') format('woff2');font-weight:400}
+@font-face{font-family:Manrope;src:url('node_modules/@fontsource/manrope/files/manrope-latin-500-normal.woff2') format('woff2');font-weight:500}
+@font-face{font-family:Manrope;src:url('node_modules/@fontsource/manrope/files/manrope-latin-700-normal.woff2') format('woff2');font-weight:700}
+
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --marrom:#412e2a;
+  --creme:#fdf7f4;
+  --creme-claro:#fbf1ec;
+  --nude:#e8b4a0;
+  --rosa:#c05267;
+  --rosa-fundo:#a03e52;
+  --muted:#a89894;
+}
+body{background:#888;font-family:Manrope,sans-serif}
+
+.peca{position:relative;overflow:hidden;margin:0 0 40px;display:flex;flex-direction:column}
+.q{width:1080px;height:1080px}
+.v{width:1080px;height:1920px}
+
+.escuro{background:var(--marrom);color:var(--creme-claro)}
+.claro{background:var(--creme);color:var(--marrom)}
+.rosa{background:var(--rosa);color:#fff}
+
+h1,h2,.num{font-family:Fraunces,serif;font-weight:600;line-height:1.02;letter-spacing:-.015em}
+
+/* --- catalogo (1:1) --- */
+.cat{padding:96px 88px;justify-content:space-between}
+.cat .topo{display:flex;align-items:center;gap:20px}
+.cat .topo svg{width:74px;height:80px}
+.cat .marca{font-family:Fraunces,serif;font-weight:600;font-size:34px;line-height:1.05}
+.cat .marca span{display:block;color:var(--nude)}
+.cat h1{font-size:92px;margin-bottom:26px}
+.cat .valor{display:flex;align-items:baseline;gap:16px;margin-bottom:34px}
+.cat .valor .n{font-family:Fraunces,serif;font-weight:600;font-size:128px;color:var(--nude);line-height:.9;letter-spacing:-.03em}
+.cat .valor .u{font-size:40px;color:var(--muted)}
+.cat ul{list-style:none}
+.cat li{font-size:33px;line-height:1.5;padding-left:44px;position:relative;margin-bottom:12px}
+.cat li::before{content:'';position:absolute;left:0;top:16px;width:22px;height:11px;border-left:5px solid var(--nude);border-bottom:5px solid var(--nude);transform:rotate(-45deg)}
+.cat .rodape{font-size:30px;color:var(--muted)}
+
+/* --- status (9:16) --- */
+.st{padding:210px 100px 290px;justify-content:space-between}
+.st .topo{display:flex;align-items:center;gap:24px}
+.st .topo svg{width:94px;height:101px}
+.st .marca{font-family:Fraunces,serif;font-weight:600;font-size:44px;line-height:1.05}
+.st .marca span{display:block;color:var(--nude)}
+.st.rosa .marca span{color:#fde2e6}
+.st h1{font-size:132px}
+.st h1 em{font-style:normal;color:var(--nude)}
+.st.rosa h1 em{color:#ffdfe4}
+.st .sub{font-size:44px;line-height:1.4;color:var(--muted);margin-top:40px}
+.st.rosa .sub{color:#fbdde2}
+.st .pe{font-size:38px;color:var(--muted)}
+.st.rosa .pe{color:#fbdde2}
+
+.passos{display:flex;flex-direction:column;gap:64px}
+.passo{display:flex;gap:40px;align-items:flex-start}
+.passo .num{font-size:96px;color:var(--nude);line-height:.85;min-width:92px}
+.passo b{display:block;font-family:Fraunces,serif;font-weight:600;font-size:56px;margin-bottom:12px;letter-spacing:-.015em}
+.passo p{font-size:38px;line-height:1.4;color:var(--muted)}
+
+.planos{display:flex;flex-direction:column;gap:30px}
+.plano{background:rgba(255,255,255,.08);border-radius:34px;padding:50px 54px}
+.plano .rot{font-size:36px;color:var(--muted);margin-bottom:10px}
+.plano .n{font-family:Fraunces,serif;font-weight:600;font-size:116px;color:var(--nude);line-height:.95;letter-spacing:-.03em}
+.plano .n small{font-family:Manrope,sans-serif;font-weight:400;font-size:38px;color:var(--muted);letter-spacing:0}
+.plano .obs{font-size:34px;color:var(--muted);margin-top:12px}
+</style>
+</head>
+<body>
+
+<!-- ============ CATALOGO 1: MENSAL ============ -->
+<div class="peca q cat escuro" id="cat-mensal">
+  <div class="topo">
+    <svg viewBox="0 0 160 172"><mask id="m1"><path d="M20 26h30l30 80 30-80h30L80 152z" fill="#fff" stroke="#fff" stroke-width="24" stroke-linejoin="round"/></mask><g mask="url(#m1)"><rect width="160" height="172" fill="#fbf1ec"/><path d="M0 62q80 26 160 0v110H0z" fill="#e8b4a0"/></g></svg>
+    <div class="marca">manicure<span>de valor</span></div>
+  </div>
+  <div>
+    <h1>Seu site,<br>plano mensal</h1>
+    <div class="valor"><span class="n">R$ 39,90</span><span class="u">por mês</span></div>
+    <ul>
+      <li>Montado com as suas fotos</li>
+      <li>Agendamento no seu WhatsApp</li>
+      <li>Endereço próprio e hospedagem</li>
+      <li>Google Meu Negócio configurado</li>
+    </ul>
+  </div>
+  <div class="rodape">Sem taxa de entrada. Sem fidelidade.</div>
+</div>
+
+<!-- ============ CATALOGO 2: TRIMESTRAL ============ -->
+<div class="peca q cat escuro" id="cat-trimestral">
+  <div class="topo">
+    <svg viewBox="0 0 160 172"><mask id="m2"><path d="M20 26h30l30 80 30-80h30L80 152z" fill="#fff" stroke="#fff" stroke-width="24" stroke-linejoin="round"/></mask><g mask="url(#m2)"><rect width="160" height="172" fill="#fbf1ec"/><path d="M0 62q80 26 160 0v110H0z" fill="#e8b4a0"/></g></svg>
+    <div class="marca">manicure<span>de valor</span></div>
+  </div>
+  <div>
+    <h1>Seu site,<br>três meses</h1>
+    <div class="valor"><span class="n">R$ 99</span><span class="u">sai R$ 33 por mês</span></div>
+    <ul>
+      <li>Tudo o que tem no mensal</li>
+      <li>Três meses pagos de uma vez</li>
+      <li>Mais barato que pagar mês a mês</li>
+    </ul>
+  </div>
+  <div class="rodape">Sem taxa de entrada.</div>
+</div>
+
+<!-- ============ STATUS 1: ABERTURA ============ -->
+<div class="peca v st escuro" id="st-abertura">
+  <div class="topo">
+    <svg viewBox="0 0 160 172"><mask id="m3"><path d="M20 26h30l30 80 30-80h30L80 152z" fill="#fff" stroke="#fff" stroke-width="24" stroke-linejoin="round"/></mask><g mask="url(#m3)"><rect width="160" height="172" fill="#fbf1ec"/><path d="M0 62q80 26 160 0v110H0z" fill="#e8b4a0"/></g></svg>
+    <div class="marca">manicure<span>de valor</span></div>
+  </div>
+  <div>
+    <h1>Seu trabalho merece <em>um endereço.</em></h1>
+    <p class="sub">Um site com o seu nome, as suas fotos e os seus preços. A cliente escolhe o horário e o pedido chega pronto no seu WhatsApp.</p>
+  </div>
+  <div class="pe">manicuredevalor.com.br</div>
+</div>
+
+<!-- ============ STATUS 2: COMO FUNCIONA ============ -->
+<div class="peca v st claro" id="st-funciona" style="justify-content:flex-start;gap:140px">
+  <div class="topo">
+    <svg viewBox="0 0 160 172"><mask id="m4"><path d="M20 26h30l30 80 30-80h30L80 152z" fill="#fff" stroke="#fff" stroke-width="24" stroke-linejoin="round"/></mask><g mask="url(#m4)"><rect width="160" height="172" fill="#412e2a"/><path d="M0 62q80 26 160 0v110H0z" fill="#c05267"/></g></svg>
+    <div class="marca" style="color:#412e2a">manicure<span style="color:#c05267">de valor</span></div>
+  </div>
+  <div class="passos">
+    <div class="passo"><span class="num" style="color:#c05267">1</span><div><b>Você manda o material</b><p style="color:#846d66">Fotos dos trabalhos, serviços, preços e bairros. Tudo pelo WhatsApp mesmo.</p></div></div>
+    <div class="passo"><span class="num" style="color:#c05267">2</span><div><b>A gente monta</b><p style="color:#846d66">Em até um dia útil você recebe o link para conferir.</p></div></div>
+    <div class="passo"><span class="num" style="color:#c05267">3</span><div><b>Você divulga</b><p style="color:#846d66">Coloca na bio do Instagram. Os pedidos chegam no seu WhatsApp.</p></div></div>
+  </div>
+  <div class="pe" style="color:#846d66;margin-top:auto">Pronto em um dia. Sem fidelidade.</div>
+</div>
+
+<!-- ============ STATUS 3: PRECO ============ -->
+<div class="peca v st escuro" id="st-preco">
+  <div class="topo">
+    <svg viewBox="0 0 160 172"><mask id="m5"><path d="M20 26h30l30 80 30-80h30L80 152z" fill="#fff" stroke="#fff" stroke-width="24" stroke-linejoin="round"/></mask><g mask="url(#m5)"><rect width="160" height="172" fill="#fbf1ec"/><path d="M0 62q80 26 160 0v110H0z" fill="#e8b4a0"/></g></svg>
+    <div class="marca">manicure<span>de valor</span></div>
+  </div>
+  <div>
+    <h1 style="font-size:112px;margin-bottom:60px">Quanto custa</h1>
+    <div class="planos">
+      <div class="plano">
+        <div class="rot">Mensal</div>
+        <div class="n">R$ 39,90 <small>por mês</small></div>
+      </div>
+      <div class="plano">
+        <div class="rot">Três meses</div>
+        <div class="n">R$ 99 <small>sai R$ 33 por mês</small></div>
+        <div class="obs">Pago de uma vez.</div>
+      </div>
+    </div>
+  </div>
+  <div class="pe">Sem taxa de entrada. Sem fidelidade.</div>
+</div>
+
+<!-- ============ STATUS 4: CHAMADA ============ -->
+<div class="peca v st rosa" id="st-chamada">
+  <div class="topo">
+    <svg viewBox="0 0 160 172"><mask id="m6"><path d="M20 26h30l30 80 30-80h30L80 152z" fill="#fff" stroke="#fff" stroke-width="24" stroke-linejoin="round"/></mask><g mask="url(#m6)"><rect width="160" height="172" fill="#fff"/><path d="M0 62q80 26 160 0v110H0z" fill="#ffd9d0"/></g></svg>
+    <div class="marca" style="color:#fff">manicure<span>de valor</span></div>
+  </div>
+  <div>
+    <h1>Manda uma mensagem.</h1>
+    <p class="sub">Conta o que você faz e onde atende. A gente responde com um exemplo do seu site, com o seu nome nele.</p>
+  </div>
+  <div class="pe">(41) 93500-0852</div>
+</div>
+
+</body>
+</html>
