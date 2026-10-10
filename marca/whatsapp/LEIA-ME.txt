@@ -27,6 +27,15 @@ INDICACAO (1080x1080)
   O celular mostra o formulario de agendamento preenchido, nao a galeria:
   e o que a chamada promete, e nao depende de foto nenhuma.
 
+SEMPRE MANDE O LINK COM https://
+  No WhatsApp, "manicuredevalor.com.br" fica azul e abre, mas nao gera o
+  card com imagem e descricao. So "https://manicuredevalor.com.br" gera.
+  Vale para o nosso link e para o site de cada cliente.
+
+  E cole o link e espere dois segundos antes de enviar: o preview e buscado
+  enquanto voce digita. Colar e mandar na hora manda sem card, e aquela
+  mensagem fica sem preview para sempre.
+
 REGERAR
   As pecas sao feitas de HTML, nao de editor de imagem — mexer no texto e
   mexer no fonte.html.

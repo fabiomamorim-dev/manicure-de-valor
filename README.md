@@ -85,6 +85,14 @@ npx wrangler deploy
 
 No ar em `mariasouza.manicuredevalor.com.br`.
 
+### Mandando o link no WhatsApp
+
+Sempre com `https://` na frente. Sem o protocolo o WhatsApp reconhece o
+endereço e deixa azul, mas não busca o preview — o link chega como texto
+cru, sem imagem nem descrição. E cole o link e espere dois segundos antes
+de enviar: o preview é buscado enquanto se digita, e mensagem enviada antes
+disso fica sem card para sempre.
+
 ### Convenção de slug
 
 Nome e sobrenome juntos, minúsculas, sem acento e sem hífen: `carlasilva`.
