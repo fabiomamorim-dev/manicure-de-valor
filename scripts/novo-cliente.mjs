@@ -29,22 +29,27 @@ const G = "https://fonts.googleapis.com/css2?";
 // em html[data-tema="..."].
 const TEMAS = {
   pop: {
+    cor: "#e02e49", fundo: "#fff7f2",
     rotulo: "Pop — o padrao: creme, vermelho-rosa e amarelo, tipografia pesada",
     fontes: G + "family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,800&family=Instrument+Sans:wght@400;500&display=swap"
   },
   clean: {
+    cor: "#b83d55", fundo: "#f8f2ee",
     rotulo: "Clean — creme, bordo e dourado, titulo serifado",
     fontes: G + "family=DM+Serif+Display&family=DM+Sans:wght@400;500&display=swap"
   },
   soft: {
+    cor: "#c05267", fundo: "#fdf7f4",
     rotulo: "Soft — rosa claro, nude e marrom",
     fontes: G + "family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500&display=swap"
   },
   minimal: {
+    cor: "#8a6a52", fundo: "#faf7f4",
     rotulo: "Minimal — off-white, marrom e preto, sem cor forte",
     fontes: G + "family=Instrument+Serif&family=Instrument+Sans:wght@400;500&display=swap"
   },
   glam: {
+    cor: "#a4123c", fundo: "#fbf0f1",
     rotulo: "Glam — bordo, rosa e dourado",
     fontes: G + "family=Playfair+Display:wght@500;700&family=Manrope:wght@400;500&display=swap"
   }
@@ -194,6 +199,18 @@ const descricao = dados.descricao || [
   "Escolha o horário pelo site."
 ].filter(Boolean).join(" ");
 
+// Favicon com a inicial dela, na cor do tema. O site e a marca da
+// profissional, nao a nossa — um V do Manicure de Valor na aba do navegador
+// contradiz o que a gente vende. Vai embutido, sem arquivo e sem requisicao.
+const inicial = (dados.profissional || "?").trim()[0].toUpperCase();
+const svgIcone =
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">` +
+  `<rect width="64" height="64" rx="14" fill="${TEMAS[tema].cor}"/>` +
+  `<text x="32" y="45" text-anchor="middle" font-family="Georgia,serif" ` +
+  `font-size="38" fill="${TEMAS[tema].fundo}">${inicial}</text></svg>`;
+const favicon =
+  `<link rel="icon" href="data:image/svg+xml,${encodeURIComponent(svgIcone)}" type="image/svg+xml">`;
+
 const capaAbsoluta = absoluta(dados.fotos && dados.fotos.capa);
 const ogImage = capaAbsoluta
   ? `<meta property="og:image" content="${attr(capaAbsoluta)}">\n<meta property="og:image:alt" content="Trabalho de ${attr(dados.profissional)}">`
@@ -210,6 +227,7 @@ const html = readFileSync(join("template", "index.html"), "utf8")
   .replaceAll("__DESC__", attr(descricao))
   .replaceAll("__URL__", attr(url))
   .replaceAll("__OG_IMAGE__", ogImage)
+  .replaceAll("__FAVICON__", favicon)
   .replaceAll("__FONTES__", `<link href="${TEMAS[tema].fontes}" rel="stylesheet">`);
 
 writeFileSync(join(pasta, "index.html"), html);
