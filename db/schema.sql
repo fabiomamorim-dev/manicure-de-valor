@@ -22,7 +22,12 @@ CREATE TABLE IF NOT EXISTS pedidos (
 
 CREATE INDEX IF NOT EXISTS pedidos_por_slug ON pedidos (slug, status);
 
--- Limpeza: nada de guardar telefone de cliente para sempre. Rode de tempos em
--- tempos (ou deixe agendado) para apagar o que passou de um ano.
+-- Limpeza: nada de guardar telefone de cliente para sempre. Nao precisa rodar
+-- na mao — o Worker faz isso sozinho todo dia de madrugada (ver [triggers] no
+-- wrangler.toml e a funcao scheduled em worker/index.js):
 --
---   DELETE FROM pedidos WHERE julianday('now') - julianday(criado_em) > 365;
+--   um ano depois do atendimento  →  nome e fone saem, status vira arquivada
+--   dois anos depois              →  a linha sai do banco
+--
+-- A linha anonima fica no meio porque ainda serve para entender demanda:
+-- servico, dia da semana, horario e bairro, sem ninguem identificado.

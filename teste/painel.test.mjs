@@ -175,5 +175,46 @@ r = await worker.fetch(new Request(SITE + "/rota/que/nao/existe"), env);
 ok(r.status === 200 && !r.headers.get("location"),
    "rota desconhecida cai no site sem expor o caminho interno");
 
+console.log("\npedido repetido e teto");
+const mesmo = { nome: "Ana Lima", fone: "11 97777-2222", servico: "Esmaltação",
+                data: diasAtras(0), hora: "10:00", bairro: "Pinheiros", retorno: 21 };
+r = await pedir(mesmo);
+ok(r.status === 200 && (await r.json()).ok === true, "grava o primeiro");
+
+const conta = (sql) => db.prepare(`SELECT COUNT(*) AS n FROM pedidos WHERE ${sql}`).get().n;
+const antes = conta("fone LIKE '%97777%'");
+r = await pedir(mesmo);
+ok((await r.json()).repetido === true && conta("fone LIKE '%97777%'") === antes,
+   "o mesmo pedido de novo não duplica no painel");
+
+const enche = db.prepare(
+  `INSERT INTO pedidos (slug, nome, fone, servico, data, retorno, status, criado_em)
+   VALUES ('carlasilva','Bot','1190000','Manicure',date('now'),21,'pedido',datetime('now'))`);
+for (let i = 0; i < 20; i++) enche.run();
+r = await pedir({ nome: "Z", fone: "11 96666-3333", servico: "Manicure", data: diasAtras(0) });
+ok(r.status === 429, "recusa enxurrada de pedidos na mesma hora");
+
+console.log("\nlimpeza automática");
+const antiga = (dias, fone) => db.prepare(
+  `INSERT INTO pedidos (slug, nome, fone, servico, data, retorno, status, atendida_em, criado_em)
+   VALUES ('carlasilva','Cliente Antiga',?,'Pé e mão',date('now',?),21,'atendida',
+           date('now',?), datetime('now',?))`
+).run(fone, `-${dias} day`, `-${dias} day`, `-${dias} day`);
+antiga(400, "11955554444");
+antiga(800, "11944443333");
+
+let espera;
+await worker.scheduled({}, env, { waitUntil: (p) => { espera = p; } });
+await espera;
+
+const umAno = db.prepare(
+  `SELECT nome, fone, status, servico FROM pedidos WHERE data = date('now','-400 day')`).get();
+ok(umAno && umAno.fone === "" && umAno.nome === "" && umAno.status === "arquivada",
+   "passado um ano, o pedido perde nome e telefone e sai do painel");
+ok(umAno && umAno.servico === "Pé e mão",
+   "mas a linha fica, sem ninguém identificado, para entender a demanda");
+ok(conta("data = date('now','-800 day')") === 0,
+   "passados dois anos, a linha sai do banco");
+
 console.log(falhas ? `\n${falhas} falha(s)\n` : "\ntudo passou\n");
 process.exit(falhas ? 1 : 0);

@@ -74,6 +74,30 @@ export default {
     }
     return resposta;
   },
+
+  // Uma vez por dia, de madrugada. Telefone de cliente dela nao fica guardado
+  // para sempre: passado um ano do atendimento o lembrete de manutencao ja
+  // morreu, entao nome e telefone saem e o pedido vai para arquivada — some do
+  // painel e nao fica um cartao sem nome no topo. A linha continua la, sem
+  // ninguem identificado, servindo para entender demanda: servico, dia, hora,
+  // bairro. Dois anos depois sai inteira.
+  //
+  // Com o D1 desligado isso roda e nao faz nada.
+  async scheduled(evento, env, ctx) {
+    if (!env.DB) return;
+    const limpeza = (async () => {
+      await env.DB.prepare(
+        `UPDATE pedidos SET nome = '', fone = '', status = 'arquivada'
+          WHERE fone <> '' AND COALESCE(atendida_em, data) < date('now', '-365 day')`
+      ).bind().run();
+      await env.DB.prepare(
+        `DELETE FROM pedidos
+          WHERE COALESCE(atendida_em, data) < date('now', '-730 day')`
+      ).bind().run();
+    })();
+    if (ctx && ctx.waitUntil) ctx.waitUntil(limpeza);
+    return limpeza;
+  },
 };
 
 /* ---------------------------------------------------------------- pedidos */
@@ -108,6 +132,25 @@ async function apiPedido(request, env, slug, url) {
   };
   if (!linha.nome || !linha.fone || !linha.servico || !linha.data) {
     return json({ ok: false, motivo: "faltam campos" }, 400);
+  }
+
+  // Dois cliques no botao, ou a pagina recarregada, nao viram dois pedidos
+  // iguais no painel dela.
+  const { results: igual } = await env.DB.prepare(
+    `SELECT id FROM pedidos
+      WHERE slug = ? AND fone = ? AND data = ? AND status = 'pedido' LIMIT 1`
+  ).bind(slug, linha.fone, linha.data).all();
+  if (igual && igual.length) return json({ ok: true, repetido: true });
+
+  // Isso aqui e um POST aberto na internet. Sem teto, qualquer um com um
+  // script enche o painel dela de pedido falso e o produto parece quebrado.
+  // Vinte pedidos numa hora no site de uma manicure sozinha nao e movimento.
+  const { results: recentes } = await env.DB.prepare(
+    `SELECT COUNT(*) AS n FROM pedidos
+      WHERE slug = ? AND criado_em > datetime('now', '-1 hour')`
+  ).bind(slug).all();
+  if (((recentes && recentes[0] && recentes[0].n) || 0) >= 20) {
+    return json({ ok: false, motivo: "muitos pedidos" }, 429);
   }
 
   await env.DB.prepare(

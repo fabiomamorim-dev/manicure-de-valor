@@ -35,3 +35,9 @@ zone_name = "manicuredevalor.com.br"
 # binding = "DB"
 # database_name = "manicure-de-valor"
 # database_id = "cole-o-id-aqui"
+
+# Limpeza do banco, 3h20 de Brasilia. Tira nome e telefone de pedido com mais
+# de um ano e apaga a linha com mais de dois. Com o D1 desligado roda e nao faz
+# nada, entao pode ficar ligado desde ja.
+[triggers]
+crons = ["20 6 * * *"]

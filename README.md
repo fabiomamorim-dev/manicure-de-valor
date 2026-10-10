@@ -249,6 +249,28 @@ tem "Chamar no WhatsApp", "Atendi de novo" — que zera a contagem — e
 
 Dados da cliente final têm regra própria: [`docs/dados-da-cliente.md`](docs/dados-da-cliente.md).
 
+### Quanto tempo o dado fica
+
+O Worker limpa sozinho, 3h20 de Brasília (`[triggers]` no `wrangler.toml`):
+
+| Idade do atendimento | O que acontece |
+|---|---|
+| 1 ano | nome e telefone saem, o pedido vai para arquivada e some do painel |
+| 2 anos | a linha sai do banco |
+
+A linha anônima no meio é de propósito: serviço, dia da semana, horário e
+bairro continuam úteis para entender a demanda do segmento, e nada disso
+identifica ninguém. Telefone de cliente da manicure não é nosso para guardar
+indefinidamente.
+
+### Enxurrada de pedido falso
+
+`/api/pedido` é um POST aberto na internet. Duas defesas no Worker: o mesmo
+telefone pedindo a mesma data duas vezes não duplica, e mais de 20 pedidos numa
+hora no mesmo subdomínio são recusados com 429. Isso protege o painel dela de
+virar lixo — se alguém insistir, vale somar uma regra de rate limiting no painel
+da Cloudflare, na rota `/api/pedido`.
+
 ### Teste
 
 ```bash
