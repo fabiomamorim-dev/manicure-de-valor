@@ -21,20 +21,21 @@ custom_domain = true
 pattern = "*.manicuredevalor.com.br/*"
 zone_name = "manicuredevalor.com.br"
 
-# Banco dos pedidos, usado pelo painel de manutencao. Enquanto estiver
-# comentado, o site funciona igual: o agendamento abre o WhatsApp e nada e
-# guardado. Para ligar:
+# Banco dos pedidos, usado pelo painel de manutencao. Criado em 10/10/2026, com
+# a tabela do db/schema.sql ja rodada.
 #
-#   npx wrangler d1 create manicure-de-valor
-#   npx wrangler d1 execute manicure-de-valor --remote --file=db/schema.sql
+# Falta o segredo que assina os links do painel. Sem ele o site e a gravacao do
+# pedido funcionam igual; so o /painel responde 403:
+#
 #   npx wrangler secret put PAINEL_SEGREDO
 #
-# Cole o database_id que o primeiro comando imprime e descomente as tres linhas.
-#
-# [[d1_databases]]
-# binding = "DB"
-# database_name = "manicure-de-valor"
-# database_id = "cole-o-id-aqui"
+# ou no painel da Cloudflare, em Workers & Pages > manicure-de-valor >
+# Settings > Variables and Secrets > Add > tipo Secret.
+
+[[d1_databases]]
+binding = "DB"
+database_name = "manicure-de-valor"
+database_id = "14c57da4-1eca-4617-a071-e682674e6d0f"
 
 # Limpeza do banco, 3h20 de Brasilia. Tira nome e telefone de pedido com mais
 # de um ano e apaga a linha com mais de dois. Com o D1 desligado roda e nao faz
