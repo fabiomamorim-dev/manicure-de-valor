@@ -85,6 +85,43 @@ npx wrangler deploy
 
 No ar em `mariasouza.manicuredevalor.com.br`.
 
+### Modos de atendimento
+
+Um campo decide tudo. Os quatro casos saem de duas chaves:
+
+```jsonc
+// vai até a cliente
+"atendimento": { "vouAteVoce": true }
+
+// espaço próprio — endereço no site e no Google
+"atendimento": { "recebo": { "endereco": "Rua das Flores, 120 — Centro",
+                             "referencia": "Dentro do Studio Bella" } }
+
+// salão de outra pessoa — sem endereço público
+"atendimento": { "recebo": { "regiao": "Centro" } }
+
+// os dois
+"atendimento": { "vouAteVoce": true, "recebo": { "endereco": "Av. Brasil, 88" } }
+```
+
+O que muda sozinho: hero, terceiro passo, bloco de higiene, a seção "Onde
+atendo", o `<title>`, o rodapé e a descrição do preview.
+
+Três pontos que não são só texto:
+
+**O campo bairro** só existe quando ela se desloca. No modo híbrido quem
+decide é a cliente: aparece a escolha "onde você prefere", e o bairro surge
+só se ela pedir atendimento em casa. A mensagem do WhatsApp diz qual foi.
+
+**O endereço do salão de outra pessoa não vai publicado.** Com `regiao` em
+vez de `endereco`, o site diz "atendo no Centro, mando o endereço quando
+confirmar". Isso evita atrito com a dona do salão, que não combinou de ter o
+endereço dela divulgado por terceiros.
+
+**O `address` nos dados estruturados só entra com endereço próprio.** É ele
+que põe o perfil no mapa — e declarar o ponto de outro negócio como se fosse
+dela é o tipo de coisa que o Google derruba.
+
 ### Mandando o link no WhatsApp
 
 Sempre com `https://` na frente. Sem o protocolo o WhatsApp reconhece o
@@ -109,7 +146,9 @@ O script recusa qualquer coisa fora de `[a-z0-9-]`.
 | `horarios` | opções do campo de horário |
 | `diasQueAtende` | dias da semana, em sigla de três letras: `["seg","ter","qua","qui","sex","sab"]`. O site recusa a data na hora se cair fora, em vez de deixar chegar um pedido que ela vai ter que desmarcar. Sem o campo, atende todo dia |
 | `antecedenciaHoras` | quanto tempo antes do horário ainda dá para pedir. Padrão 2. Se a cliente escolhe hoje, os horários que já passaram desse limite somem da lista |
-| `pedirBairro` | `false` esconde o campo e some com a seção "Onde atendo" |
+| `atendimento` | como ela trabalha — decide os textos do site, a seção "Onde atendo", o campo bairro do agendamento e o endereço nos dados estruturados. Ver "Modos de atendimento" abaixo |
+| `textos` | opcional. Qualquer texto aqui vence o padrão do modo: `heroTitulo`, `heroDestaque`, `heroTexto`, `passo3Titulo`, `passo3Texto`, `higieneTitulo`, `higieneTexto`, `ondeTitulo`, `ondeLead`, `ondeNota`, `profissao` |
+| `pedirBairro` | `false` esconde o campo de bairro. Só tem efeito quando ela vai até a cliente |
 | `bairros` | lista exibida, opções do campo e área de atendimento nos dados estruturados |
 | `descricao` | opcional. Sobrescreve o texto do preview no WhatsApp e no Google. Sem ele, é montado com o nome e os bairros |
 | `diasDeAntecedencia` | `0` permite agendar hoje; `1` só a partir de amanhã |

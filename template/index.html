@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>__NOME__ — Manicure em domicílio</title>
+<title>__NOME__ — __PROFISSAO__</title>
 <meta name="description" content="__DESC__">
 <link rel="canonical" href="__URL__">
 __FAVICON__
@@ -13,7 +13,7 @@ __FAVICON__
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:site_name" content="__NOME__">
-<meta property="og:title" content="__NOME__ — Manicure em domicílio">
+<meta property="og:title" content="__NOME__ — __PROFISSAO__">
 <meta property="og:description" content="__DESC__">
 <meta property="og:url" content="__URL__">
 __OG_IMAGE__
@@ -141,6 +141,11 @@ section{padding-top:96px;padding-bottom:96px;scroll-margin-top:110px}
 .b-mini{background:transparent;color:var(--milk);box-shadow:inset 0 0 0 1.5px var(--noite-linha);padding:9px 18px;font-size:15px}
 .b-mini:hover{background:var(--milk);color:var(--ink);box-shadow:none}
 
+/* endereco do espaco */
+.local{background:#fff;box-shadow:inset 0 0 0 1px var(--line);border-radius:18px;padding:24px 26px;margin-bottom:18px;max-width:46ch}
+.local b{display:block;font-family:var(--fonte-titulo);font-weight:var(--peso-titulo);font-size:clamp(20px,3vw,26px);letter-spacing:var(--ls-titulo);line-height:1.2}
+.local span{display:block;color:var(--muted);font-size:16px;margin-top:6px}
+
 /* bairros */
 .pills{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:16px}
 .pills span{background:#fff;box-shadow:inset 0 0 0 1px var(--line);padding:10px 18px;border-radius:999px;font-size:16px}
@@ -235,7 +240,7 @@ body.travado{overflow:hidden}
 <body>
 
 <div class="top"><div class="top-in">
-  <span class="mark">__NOME__<i>.</i><small>Manicure em domic&#237;lio</small></span>
+  <span class="mark">__NOME__<i>.</i><small id="profissao">Manicure</small></span>
   <div class="top-acts">
     <a class="ig" id="ig" href="#" target="_blank" rel="noopener" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg><span id="igNome"></span></a>
     <button class="b-pop" data-open>Agendar</button>
@@ -243,8 +248,8 @@ body.travado{overflow:hidden}
 </div></div>
 
 <div class="wrap hero">
-  <h1>Unhas bem feitas <em>na sua casa.</em></h1>
-  <p>Levo tudo comigo — material esterilizado, esmaltes e tempo de sobra pra caprichar.</p>
+  <h1><span id="heroT"></span> <em id="heroD"></em></h1>
+  <p id="heroP"></p>
   <div class="proof" id="proof" hidden></div>
   <div class="hero-cta">
     <button class="b-pop b-xl" data-open>Agendar horário</button>
@@ -261,7 +266,7 @@ body.travado{overflow:hidden}
   <div class="steps">
     <div class="step"><span class="step-n">1</span><h3>Escolhe o horário</h3><p>Aqui pelo site, em menos de um minuto.</p></div>
     <div class="step"><span class="step-n">2</span><h3>Eu confirmo</h3><p>Seu pedido chega no meu WhatsApp e eu respondo.</p></div>
-    <div class="step"><span class="step-n">3</span><h3>Chego na sua casa</h3><p>Com tudo pronto, no dia e hora combinados.</p></div>
+    <div class="step"><span class="step-n">3</span><h3 id="p3t"></h3><p id="p3p"></p></div>
   </div>
 </section>
 
@@ -293,16 +298,20 @@ body.travado{overflow:hidden}
   <div class="care">
     <h2 class="h2 care-t">Seu cuidado come&#231;a na higiene.</h2>
     <div><h3>Material esterilizado</h3><p>Alicate, esp&#225;tula e palito passam por esteriliza&#231;&#227;o entre um atendimento e outro.</p></div>
-    <div><h3>Levo tudo comigo</h3><p>Voc&#234; n&#227;o precisa separar nada em casa. Chego com o kit completo, pronto pra come&#231;ar.</p></div>
+    <div><h3 id="higT"></h3><p id="higP"></p></div>
     <div><h3>Lixa e palito descart&#225;veis</h3><p>O que n&#227;o d&#225; pra esterilizar &#233; individual e vai fora na sua frente.</p></div>
   </div>
 </section>
 
 <section class="wrap" id="areas">
-  <h2 class="h2">Onde atendo</h2>
-  <p class="lead">Regiões com atendimento normal, sem taxa extra.</p>
+  <h2 class="h2" id="ondeT"></h2>
+  <p class="lead" id="ondeL"></p>
+  <div class="local" id="local" hidden>
+    <b id="localEnd"></b>
+    <span id="localRef"></span>
+  </div>
   <div class="pills" id="bairros"></div>
-  <p class="note">Mora fora dessas regiões? Me chama que a gente combina o deslocamento.</p>
+  <p class="note" id="ondeNota"></p>
 </section>
 
 <section class="wrap" id="secDepo" hidden>
@@ -318,7 +327,7 @@ body.travado{overflow:hidden}
   </div>
 </section>
 
-<footer>__NOME__ · Manicure em domicílio · 2026</footer>
+<footer>__NOME__ · <span id="profissaoPe">Manicure</span> · 2026</footer>
 
 <button class="zap" data-open aria-label="Agendar pelo WhatsApp">
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.14-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.87 1.22 3.07.15.2 2.1 3.2 5.08 4.49.7.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.42-.08-.12-.27-.2-.57-.35M12.05 21.78h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.89 9.89-9.89 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.89-9.88 9.89M20.46 3.49A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.69 1.45c6.55 0 11.89-5.34 11.89-11.89a11.82 11.82 0 0 0-3.48-8.42Z"/></svg>
@@ -331,6 +340,7 @@ body.travado{overflow:hidden}
     <div class="f"><label for="fServico">Serviço</label><select id="fServico"></select><p class="bad" id="eServico">Escolhe um serviço.</p></div>
     <div class="f"><label for="fData">Data</label><input type="date" id="fData"><p class="dica" id="dicaDias"></p><p class="bad" id="eData">Escolhe uma data.</p></div>
     <div class="f"><label for="fHora">Horário</label><select id="fHora"></select><p class="bad" id="eHora">Escolhe um horário.</p></div>
+    <div class="f" id="wrapOnde" hidden><label for="fOnde">Onde você prefere</label><select id="fOnde"><option value="">Selecione</option><option value="vou">Prefiro que você venha até mim</option><option value="recebo">Prefiro ir até você</option></select><p class="bad" id="eOnde">Escolhe uma das duas.</p></div>
     <div class="f" id="wrapBairro"><label for="fBairro">Bairro</label><select id="fBairro"></select><p class="bad" id="eBairro">Escolhe o bairro.</p></div>
     <div class="f"><label for="fNome">Seu nome</label><input type="text" id="fNome" placeholder="Maria Souza"><p class="bad" id="eNome">Escreve seu nome.</p></div>
     <div class="f"><label for="fFone">Seu WhatsApp</label><input type="tel" id="fFone" placeholder="(41) 93500-0852" inputmode="tel"><p class="bad" id="eFone">Confere o número — precisa do DDD, como (41) 93500-0852.</p></div>
@@ -348,6 +358,103 @@ const CONFIG = __DADOS__;
 
 const $ = i => document.getElementById(i);
 const esc = t => String(t == null ? '' : t).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
+
+/* ---- modo de atendimento -------------------------------------------------
+   Um campo no dados.json decide tudo: se ela vai ate a cliente, se recebe, ou
+   os dois. Os textos abaixo sao o padrao de cada modo; CONFIG.textos
+   sobrescreve qualquer um deles quando a profissional quer o proprio.      */
+const AT = CONFIG.atendimento || { vouAteVoce: true };
+const VAI    = !!AT.vouAteVoce;
+const RECEBE = !!AT.recebo;
+const MODO   = (VAI && RECEBE) ? 'ambos' : RECEBE ? 'espaco' : 'domicilio';
+
+const PADRAO = {
+  domicilio: {
+    profissao:   'Manicure em domicílio',
+    heroTitulo:  'Unhas bem feitas',
+    heroDestaque:'na sua casa.',
+    heroTexto:   'Levo tudo comigo — material esterilizado, esmaltes e tempo de sobra pra caprichar.',
+    passo3Titulo:'Chego na sua casa',
+    passo3Texto: 'Com tudo pronto, no dia e hora combinados.',
+    higieneTitulo:'Levo tudo comigo',
+    higieneTexto:'Você não precisa separar nada em casa. Chego com o kit completo, pronto pra começar.',
+    ondeTitulo:  'Onde atendo',
+    ondeLead:    'Regiões com atendimento normal, sem taxa extra.',
+    ondeNota:    'Mora fora dessas regiões? Me chama que a gente combina o deslocamento.'
+  },
+  espaco: {
+    profissao:   'Manicure',
+    heroTitulo:  'Unhas bem feitas,',
+    heroDestaque:'com hora marcada.',
+    heroTexto:   'Uma cliente por vez, no horário que você escolheu. Sem espera e sem fila.',
+    passo3Titulo:'Te espero no horário',
+    passo3Texto: 'É só chegar. O horário é seu, sem espera.',
+    higieneTitulo:'Cada cliente, um kit',
+    higieneTexto:'O material é separado e esterilizado antes de você sentar. Nada passa de uma pessoa para outra.',
+    ondeTitulo:  'Onde me encontrar',
+    ondeLead:    'Fica fácil de chegar, com ponto de referência.',
+    ondeNota:    ''          // nada sobre deslocamento: aqui ele nao existe
+  },
+  ambos: {
+    profissao:   'Manicure',
+    heroTitulo:  'Unhas bem feitas,',
+    heroDestaque:'aqui ou na sua casa.',
+    heroTexto:   'Você escolhe: vem até mim ou eu vou até você, com tudo pronto.',
+    passo3Titulo:'A gente se encontra',
+    passo3Texto: 'Aqui ou na sua casa, no dia e hora combinados.',
+    higieneTitulo:'O mesmo cuidado nos dois',
+    higieneTexto:'Aqui ou na sua casa, o material sai esterilizado e separado só para você.',
+    ondeTitulo:  'Onde a gente se encontra',
+    ondeLead:    'Venha até mim, ou eu vou até você nessas regiões.',
+    ondeNota:    'Mora fora dessas regiões? Me chama que a gente combina o deslocamento.'
+  }
+};
+
+const T = Object.assign({}, PADRAO[MODO], CONFIG.textos || {});
+
+$('profissao').textContent   = T.profissao;
+$('profissaoPe').textContent = T.profissao;
+$('heroT').textContent = T.heroTitulo;
+$('heroD').textContent = T.heroDestaque;
+$('heroP').textContent = T.heroTexto;
+$('p3t').textContent   = T.passo3Titulo;
+$('p3p').textContent   = T.passo3Texto;
+$('higT').textContent  = T.higieneTitulo;
+$('higP').textContent  = T.higieneTexto;
+
+// Onde atendo: endereco, bairros, ou os dois
+(() => {
+  const sec = $('areas');
+  const temBairros = VAI && CONFIG.pedirBairro && Array.isArray(CONFIG.bairros) && CONFIG.bairros.length;
+  const r = AT.recebo || {};
+  const temEndereco = RECEBE && !!r.endereco;
+
+  if (!temBairros && !RECEBE) { sec.hidden = true; return; }
+
+  $('ondeT').textContent = T.ondeTitulo;
+  $('ondeL').textContent = T.ondeLead;
+
+  if (temEndereco) {
+    $('localEnd').textContent = r.endereco;
+    if (r.referencia) $('localRef').textContent = r.referencia;
+    $('local').hidden = false;
+  } else if (RECEBE) {
+    // Salao de outra pessoa: o endereco nao vai publicado, ela manda depois.
+    $('localEnd').textContent = r.regiao ? `Atendo no ${r.regiao}` : 'Atendo com hora marcada';
+    $('localRef').textContent = 'Mando o endereço quando confirmar o seu horário.';
+    $('local').hidden = false;
+  }
+
+  if (temBairros) {
+    $('bairros').innerHTML = CONFIG.bairros
+      .filter(b => b && b.toLowerCase() !== 'outro')
+      .map(b => `<span>${esc(b)}</span>`).join('');
+  }
+
+  if (T.ondeNota && temBairros) $('ondeNota').textContent = T.ondeNota;
+  else $('ondeNota').hidden = true;
+})();
+
 
 $('precos').innerHTML = CONFIG.servicos.map(s =>
   `<div class="price">
@@ -513,10 +620,16 @@ if ('IntersectionObserver' in window) {
     telephone: '+' + CONFIG.whatsapp,
     priceRange: numeros.length
       ? `R$${Math.min(...numeros)}–R$${Math.max(...numeros)}` : undefined,
-    // Atende na casa da cliente: area de atendimento, sem endereco publico.
-    areaServed: (CONFIG.pedirBairro && Array.isArray(CONFIG.bairros))
+    // Quem vai ate a cliente entra como area de atendimento, sem endereco
+    // publico. Quem tem espaco entra com o endereco — e e isso que coloca o
+    // perfil no mapa. Salao de outra pessoa nao declara endereco: o ponto ja
+    // e de outro negocio.
+    areaServed: (VAI && CONFIG.pedirBairro && Array.isArray(CONFIG.bairros))
       ? CONFIG.bairros.filter(b => b && b.toLowerCase() !== 'outro')
           .map(b => ({ '@type': 'Place', name: b }))
+      : undefined,
+    address: (RECEBE && (AT.recebo || {}).endereco)
+      ? { '@type': 'PostalAddress', streetAddress: AT.recebo.endereco, addressCountry: 'BR' }
       : undefined,
     makesOffer: CONFIG.servicos.map(s => ({
       '@type': 'Offer',
@@ -540,12 +653,27 @@ if ('IntersectionObserver' in window) {
 const d = new Date(); d.setDate(d.getDate() + CONFIG.diasDeAntecedencia);
 $('fData').min = d.toISOString().slice(0,10);
 
-if (CONFIG.pedirBairro){
-  $('bairros').innerHTML = CONFIG.bairros.filter(b=>b.toLowerCase()!=='outro').map(b=>`<span>${b}</span>`).join('');
-  $('fBairro').innerHTML = '<option value="">Selecione</option>' + CONFIG.bairros.map(b=>`<option>${b}</option>`).join('');
-}else{
-  $('wrapBairro').style.display='none';
-  $('areas').style.display='none';
+/* O bairro so faz sentido quando ela se desloca. No modo hibrido quem decide
+   e a cliente, entao o campo aparece depois da escolha — e some junto com ela
+   se a cliente preferir ir ate o espaco.                                   */
+const TEM_BAIRROS = CONFIG.pedirBairro && Array.isArray(CONFIG.bairros) && CONFIG.bairros.length;
+const PEDE_BAIRRO = VAI && TEM_BAIRROS;
+
+if (PEDE_BAIRRO) {
+  $('fBairro').innerHTML = '<option value="">Selecione</option>' +
+    CONFIG.bairros.map(b => `<option>${esc(b)}</option>`).join('');
+}
+
+if (MODO === 'ambos') {
+  $('wrapOnde').hidden = false;
+  $('wrapBairro').hidden = true;          // so aparece se ela escolher receber em casa
+  $('fOnde').addEventListener('change', () => {
+    const emCasa = $('fOnde').value === 'vou';
+    $('wrapBairro').hidden = !(emCasa && PEDE_BAIRRO);
+    $('eOnde').classList.remove('on');
+  });
+} else if (!PEDE_BAIRRO) {
+  $('wrapBairro').hidden = true;
 }
 
 const veil = $('veil');
@@ -618,7 +746,7 @@ $('fFone').addEventListener('input', e => {
 
 // fData fica de fora: tem tratamento proprio no 'change', e o 'input'
 // generico apagaria a mensagem de "nesse dia eu nao atendo".
-['fServico','fHora','fBairro','fNome','fFone'].forEach(id=>{
+['fServico','fHora','fBairro','fNome','fFone','fOnde'].forEach(id=>{
   const el=$(id); if(!el) return;
   el.addEventListener('input',()=>{ const b=$('e'+id.slice(1)); if(b) b.classList.remove('on'); });
 });
@@ -633,7 +761,9 @@ $('enviar').addEventListener('click',()=>{
   let ok=true; const ruim=i=>{ $(i).classList.add('on'); ok=false; };
   const servico=$('fServico').value, data=$('fData').value, hora=$('fHora').value;
   const nome=$('fNome').value.trim(), fone=$('fFone').value.trim();
-  const bairro = CONFIG.pedirBairro ? $('fBairro').value : '';
+  const onde   = MODO === 'ambos' ? $('fOnde').value : (VAI ? 'vou' : 'recebo');
+  const pedeBairroAgora = PEDE_BAIRRO && onde === 'vou';
+  const bairro = pedeBairroAgora ? $('fBairro').value : '';
 
   if(!servico) ruim('eServico');
   if(!data) {
@@ -647,14 +777,18 @@ $('enviar').addEventListener('click',()=>{
     ruim('eHora');
   }
   if(!hora) ruim('eHora');
-  if(CONFIG.pedirBairro && !bairro) ruim('eBairro');
+  if(MODO === 'ambos' && !onde) ruim('eOnde');
+  if(pedeBairroAgora && !bairro) ruim('eBairro');
   if(!nome) ruim('eNome');
   if(!foneValido(fone)) ruim('eFone');
   if(!ok) return;
 
   const t=[`Oi, ${CONFIG.profissional}! Quero agendar pelo site:`,'',
            `Serviço: ${servico}`,`Data: ${extenso(data)}`,`Horário: ${hora}`];
-  if(bairro) t.push(`Bairro: ${bairro}`);
+  if (MODO === 'ambos') {
+    t.push(onde === 'vou' ? 'Local: na minha casa' : 'Local: no seu espaço');
+  }
+  if (bairro) t.push(`Bairro: ${bairro}`);
   t.push('',`Meu nome: ${nome}`,`Meu WhatsApp: ${fone}`);
 
   // Registra o pedido para o lembrete de manutencao. Nao espera resposta:

@@ -67,6 +67,17 @@ const MODELO = {
   // Dias em que ela atende. Fora deles o site recusa a data na hora, em vez
   // de deixar chegar um pedido que ela vai ter que desmarcar.
   diasQueAtende: ["seg", "ter", "qua", "qui", "sex", "sab"],
+  // Como ela trabalha. Dai saem os textos do site, a secao "Onde atendo",
+  // o campo bairro do agendamento e o endereco nos dados estruturados.
+  //   vai ate a cliente .... { "vouAteVoce": true }
+  //   espaco proprio ....... { "recebo": { "endereco": "...", "referencia": "..." } }
+  //   salao de outra pessoa  { "recebo": { "regiao": "Centro" } }   sem endereco publico
+  //   os dois .............. os dois campos juntos
+  atendimento: { vouAteVoce: true },
+  // Opcional. Qualquer texto aqui vence o padrao do modo:
+  // heroTitulo, heroDestaque, heroTexto, passo3Titulo, passo3Texto,
+  // higieneTitulo, higieneTexto, ondeTitulo, ondeLead, ondeNota, profissao.
+  textos: {},
   // Quanto tempo antes do horario ainda da para pedir. Conta o deslocamento.
   antecedenciaHoras: 2,
   pedirBairro: true,
@@ -188,16 +199,32 @@ const attr = (t) => String(t)
 const absoluta = (caminho) =>
   !caminho ? "" : /^https?:\/\//i.test(caminho) ? caminho : `${url}/${String(caminho).replace(/^\//, "")}`;
 
-const atende = (dados.pedirBairro && Array.isArray(dados.bairros))
+const at     = dados.atendimento || { vouAteVoce: true };
+const vai    = !!at.vouAteVoce;
+const recebe = !!at.recebo;
+const modo   = (vai && recebe) ? "ambos" : recebe ? "espaco" : "domicilio";
+
+const PROFISSAO = { domicilio: "Manicure em domicílio", espaco: "Manicure", ambos: "Manicure" };
+const profissao = (dados.textos && dados.textos.profissao) || PROFISSAO[modo];
+
+// Bairros so entram na descricao de quem realmente se desloca.
+const atende = (vai && dados.pedirBairro && Array.isArray(dados.bairros))
   ? dados.bairros.filter((b) => b && b.toLowerCase() !== "outro")
   : [];
 
 // Uma frase so, porque WhatsApp e Google cortam por volta de 150 caracteres.
-const descricao = dados.descricao || [
-  `Manicure e pedicure em domicílio com ${dados.profissional}.`,
-  atende.length ? `Atendo ${atende.slice(0, 3).join(", ")}${atende.length > 3 ? " e região" : ""}.` : "",
-  "Escolha o horário pelo site."
-].filter(Boolean).join(" ");
+const abertura = {
+  domicilio: `Manicure e pedicure em domicílio com ${dados.profissional}.`,
+  espaco:    `Manicure e pedicure com ${dados.profissional}, com hora marcada.`,
+  ambos:     `Manicure e pedicure com ${dados.profissional}, no meu espaço ou na sua casa.`
+}[modo];
+
+const ondeTexto = atende.length
+  ? `Atendo ${atende.slice(0, 3).join(", ")}${atende.length > 3 ? " e região" : ""}.`
+  : (recebe && at.recebo.endereco ? `Fico em ${at.recebo.endereco}.` : "");
+
+const descricao = dados.descricao || [abertura, ondeTexto, "Escolha o horário pelo site."]
+  .filter(Boolean).join(" ");
 
 // Favicon com a inicial dela, na cor do tema. O site e a marca da
 // profissional, nao a nossa — um V do Manicure de Valor na aba do navegador
@@ -223,6 +250,7 @@ if (!capaAbsoluta) {
 const html = readFileSync(join("template", "index.html"), "utf8")
   .replaceAll("__DADOS__", JSON.stringify(dados, null, 2))
   .replaceAll("__NOME__", dados.profissional)
+  .replaceAll("__PROFISSAO__", attr(profissao))
   .replaceAll("__TEMA__", tema)
   .replaceAll("__DESC__", attr(descricao))
   .replaceAll("__URL__", attr(url))
