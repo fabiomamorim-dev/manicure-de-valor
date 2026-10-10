@@ -99,6 +99,13 @@ a.btn:active,button:active{transform:scale(.97)}
 
 /* dores */
 .pains{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:28px;margin-top:48px}
+.perfis{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:26px;margin-top:48px}
+.perfil{background:#fff;border-radius:18px;padding:30px;border:1px solid var(--line);display:flex;flex-direction:column}
+.perfil .rot{font-size:14px;color:var(--rose-deep);margin-bottom:12px}
+.perfil b{display:block;font-family:var(--fonte-titulo);font-weight:var(--peso-titulo);font-size:23px;letter-spacing:var(--ls-titulo);line-height:1.1;margin-bottom:12px}
+.perfil p{color:var(--muted);font-size:16px}
+.perfil .ganho{margin-top:auto;padding-top:18px;font-size:15px;color:var(--plum)}
+.perfil .ganho u{text-decoration:none;display:block;font-size:13px;color:var(--muted);margin-bottom:3px}
 .pain{background:#fff;border-radius:18px;padding:28px;border:1px solid var(--line)}
 .pain b{display:block;font-family:var(--fonte-titulo);font-weight:var(--peso-titulo);font-size:20px;letter-spacing:var(--ls-titulo);margin-bottom:8px}
 .pain p{color:var(--muted);font-size:16px}
@@ -196,7 +203,7 @@ footer b{color:var(--cream);font-weight:500}
 <section class="hero">
   <div class="wrap hero-in">
     <div>
-      <p class="tagline">Para quem atende em domicílio</p>
+      <p class="tagline">Para manicure autônoma — em casa, no seu espaço ou no salão</p>
       <h1>Sua cliente marca sozinha. <em>Você só confirma.</em></h1>
       <p>Seus preços, seus serviços, seus bairros e seus horários num site com o seu nome. A cliente escolhe tudo antes de te chamar, e o pedido chega pronto no seu WhatsApp.</p>
       <div class="hero-cta">
@@ -243,17 +250,46 @@ footer b{color:var(--cream);font-weight:500}
   </div>
 </section>
 
+<section class="wrap">
+  <h2 class="h2">Você trabalha de que jeito?</h2>
+  <p class="lead">O site é o mesmo. O que ele resolve na sua vida é que muda.</p>
+  <div class="perfis">
+
+    <div class="perfil">
+      <span class="rot">Você vai até a cliente</span>
+      <b>Ser achada por quem ainda não te conhece</b>
+      <p>Quem precisa de manicure hoje procura no Google e no mapa. Com o site e o perfil configurados, você aparece para quem busca no seu bairro — e seu endereço de casa fica oculto.</p>
+      <div class="ganho"><u>O que muda</u>Cliente nova sem depender de indicação.</div>
+    </div>
+
+    <div class="perfil">
+      <span class="rot">Você tem o seu espaço</span>
+      <b>Aparecer no mapa para quem está perto</b>
+      <p>Seu endereço no Google, com fotos, horário e o caminho até a porta. “Manicure perto de mim” é a busca que mais leva cliente a um espaço — e ela decide pelo que vê antes de ir.</p>
+      <div class="ganho"><u>O que muda</u>Quem passa perto descobre que você existe.</div>
+    </div>
+
+    <div class="perfil">
+      <span class="rot">Você atende no salão de outra pessoa</span>
+      <b>A clientela passa a ser sua</b>
+      <p>O site é com o seu nome, e o agendamento cai no seu WhatsApp. A cliente marca com você, não com o salão — e isso vai junto se um dia você mudar de lugar.</p>
+      <div class="ganho"><u>O que muda</u>Você para de recomeçar a cada mudança.</div>
+    </div>
+
+  </div>
+</section>
+
 <section class="dark">
   <div class="wrap">
     <h2 class="h2">O que vem junto</h2>
     <p class="lead">Tudo montado por nós. Você não precisa mexer em nada.</p>
     <div class="gets">
       <div class="get"><b>Um endereço que é seu</b><p>seunome.manicuredevalor.com.br, com cadeado de segurança. O link que você põe na bio e manda pra quem pergunta.</p></div>
-      <div class="get"><b>Aparecer no Google</b><p>Configuramos seu Perfil da Empresa no Google, ligado ao site. É o que faz você aparecer no mapa pra quem busca “manicure em domicílio” no seu bairro — sem publicar seu endereço de casa.</p></div>
+      <div class="get"><b>Aparecer no Google</b><p>Configuramos seu Perfil da Empresa no Google, ligado ao site: com endereço, se você tem um espaço; como área de atendimento, se você vai até a cliente — aí seu endereço de casa fica oculto.</p></div>
       <div class="get"><b>Agendamento no WhatsApp</b><p>A cliente escolhe serviço, dia e horário. A mensagem chega pronta para você confirmar.</p></div>
       <div class="get"><b>Suas fotos em destaque</b><p>Galeria organizada com os seus trabalhos. É o que mais convence quem nunca te contratou.</p></div>
       <div class="get"><b>Preços escritos</b><p>Cada serviço com valor e descrição. Menos negociação, menos surpresa na hora.</p></div>
-      <div class="get"><b>Regiões que você atende</b><p>Você define os bairros. Quem está longe já sabe antes de chamar.</p></div>
+      <div class="get"><b>Onde você atende</b><p>Os bairros que você cobre, ou o endereço do seu espaço. Quem está longe já sabe antes de chamar.</p></div>
       <div class="get"><b>O visual que você escolher</b><p>Cinco estilos, do mais discreto ao mais chamativo. Você escolhe o seu — o site não sai com cara de modelo repetido.</p></div>
     </div>
   </div>
@@ -296,7 +332,7 @@ footer b{color:var(--cream);font-weight:500}
       <li>Site montado com as suas fotos, sem taxa de entrada</li>
       <li>Agendamento ligado ao seu WhatsApp</li>
       <li>Endereço próprio e hospedagem</li>
-      <li>Perfil no Google Meu Negócio</li>
+      <li>Perfil no Google, com endereço ou como área de atendimento</li>
       <li>Ajustes de fotos e preços quando precisar</li>
       <li>Suporte por WhatsApp</li>
     </ul>
@@ -312,6 +348,7 @@ footer b{color:var(--cream);font-weight:500}
     <details><summary>O site marca o horário sozinho na minha agenda?</summary><p>Não. Ele monta o pedido e manda para você — quem confirma, remarca ou recusa é você. Isso é proposital: assim nada entra na sua agenda sem o seu aval.</p></details>
     <details><summary>Paguei três meses e quero parar antes. Como fica?</summary><p>O site fica no ar até o fim dos três meses que você pagou, e a diferença não é devolvida — é por isso que o trimestral sai mais barato. Se você quer poder sair a qualquer momento, o mensal existe exatamente para isso.</p></details>
     <details><summary>E se eu parar de pagar?</summary><p>O site sai do ar, mas suas fotos e seus dados continuam sendo seus e devolvemos tudo se você pedir. O endereço fica reservado por 60 dias, caso você queira voltar.</p></details>
+    <details><summary>Trabalho no salão de outra pessoa. Posso ter um site meu?</summary><p>Pode, e é onde ele faz mais diferença: o site leva o seu nome e o agendamento cai no seu WhatsApp, então a cliente marca com você. Se um dia você mudar de salão, isso vai junto. O endereço do salão não vai publicado — você manda na hora de confirmar. Sobre o Google: o ponto onde o salão fica já costuma ter o perfil dele, e o Google não aceita dois no mesmo endereço. Nesse caso o que você ganha é o site e o agendamento; o perfil no mapa fica para quando o espaço for seu.</p></details>
     <details><summary>Vou ter que publicar meu endereço de casa no Google?</summary><p>Não. Quem atende na casa da cliente entra no Google como área de atendimento: você escolhe os bairros que atende e o endereço fica oculto. Aparece no mapa, sem ninguém saber onde você mora. A gente configura assim.</p></details>
     <details><summary>Preciso ter CNPJ?</summary><p>Não. A maioria das profissionais que atendemos trabalha como pessoa física.</p></details>
     <details><summary>Posso usar um endereço só meu, sem o manicuredevalor?</summary><p>Pode. Nesse caso você compra o domínio no seu nome e a gente aponta para o site — a mensalidade continua a mesma.</p></details>
@@ -330,7 +367,7 @@ footer b{color:var(--cream);font-weight:500}
   <a class="ig-pe" href="https://instagram.com/soumanicuredevalor" target="_blank" rel="noopener">@soumanicuredevalor</a>
   <span class="sep-pe">·</span>
   <a class="ig-pe" href="mailto:contato@manicuredevalor.com.br">contato@manicuredevalor.com.br</a><br>
-  <b>Manicure de Valor</b> · Sites para quem atende em domicílio · 2026<br>
+  <b>Manicure de Valor</b> · Sites para manicure autônoma · 2026<br>
   Uma marca <b>Revene</b>
 </footer>
 
