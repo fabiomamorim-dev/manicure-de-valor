@@ -19,6 +19,14 @@ STATUS (1080x1920)
   O padding de cima e de baixo e de proposito: a barra de progresso cobre o
   topo e a caixa "Responder" cobre a base. Texto colado na borda some.
 
+INDICACAO (1080x1080)
+  indica.png
+  Para conhecido mandar junto com o link, numa conversa. A manicure entende
+  o que e sem precisar clicar — e muita gente nao clica em link de
+  desconhecido na primeira mensagem.
+  O celular mostra o formulario de agendamento preenchido, nao a galeria:
+  e o que a chamada promete, e nao depende de foto nenhuma.
+
 REGERAR
   As pecas sao feitas de HTML, nao de editor de imagem — mexer no texto e
   mexer no fonte.html.

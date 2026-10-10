@@ -1,0 +1,87 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><style>
+@font-face{font-family:Fraunces;src:url('node_modules/@fontsource/fraunces/files/fraunces-latin-600-normal.woff2') format('woff2');font-weight:600}
+@font-face{font-family:Manrope;src:url('node_modules/@fontsource/manrope/files/manrope-latin-400-normal.woff2') format('woff2');font-weight:400}
+@font-face{font-family:Manrope;src:url('node_modules/@fontsource/manrope/files/manrope-latin-500-normal.woff2') format('woff2');font-weight:500}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Manrope,sans-serif;background:#999}
+
+#indica{width:1080px;height:1080px;background:#412e2a;color:#fbf1ec;position:relative;overflow:hidden;
+  display:grid;grid-template-columns:1fr 400px;gap:50px;padding:76px 70px}
+
+.topo{display:flex;align-items:center;gap:16px;margin-bottom:34px}
+.topo svg{width:58px;height:62px}
+.marca{font-family:Fraunces,serif;font-weight:600;font-size:28px;line-height:1.05}
+.marca span{display:block;color:#e8b4a0}
+
+.quem{display:inline-block;background:rgba(232,180,160,.16);color:#e8b4a0;font-size:27px;
+  padding:13px 26px;border-radius:999px;margin-bottom:30px}
+h1{font-family:Fraunces,serif;font-weight:600;font-size:80px;line-height:1.03;letter-spacing:-.015em;margin-bottom:28px}
+h1 em{font-style:normal;color:#e8b4a0}
+
+ul{list-style:none;margin-bottom:34px}
+li{font-size:29px;line-height:1.45;padding-left:42px;position:relative;margin-bottom:16px;color:#d8c6c1}
+li::before{content:'';position:absolute;left:0;top:14px;width:20px;height:10px;
+  border-left:5px solid #e8b4a0;border-bottom:5px solid #e8b4a0;transform:rotate(-45deg)}
+
+.preco{font-family:Fraunces,serif;font-weight:600;font-size:60px;color:#e8b4a0;letter-spacing:-.02em;line-height:1}
+.preco small{font-family:Manrope,sans-serif;font-weight:400;font-size:27px;color:#a89894;letter-spacing:0}
+.site{font-size:28px;color:#a89894;margin-top:auto;padding-top:28px}
+
+/* celular */
+.col-fone{display:flex;align-items:flex-end;margin-bottom:-70px}
+.fone{width:400px;background:#17100f;border-radius:46px;padding:11px;box-shadow:0 30px 70px rgba(0,0,0,.4)}
+.tela{background:#fdf7f4;border-radius:36px;overflow:hidden}
+.barra{background:#412e2a;padding:17px 19px;display:flex;justify-content:space-between;align-items:center}
+.barra b{font-family:Fraunces,serif;font-weight:600;font-size:21px;color:#fdf7f4;line-height:1.1}
+.barra b i{color:#c05267;font-style:normal}
+.barra b u{display:block;text-decoration:none;font-family:Manrope,sans-serif;font-weight:400;font-size:12px;color:#aa9894;margin-top:2px}
+.barra em{font-style:normal;background:#c05267;color:#fff;font-size:14px;padding:8px 16px;border-radius:999px}
+.corpo{padding:20px 19px 26px}
+.corpo h4{font-family:Fraunces,serif;font-weight:600;font-size:33px;line-height:1.05;color:#3b2a26;letter-spacing:-.01em}
+.corpo h4 i{color:#c05267;font-style:normal}
+.corpo p{font-size:14px;color:#846d66;margin:11px 0 15px;line-height:1.4}
+.btn{background:#c05267;color:#fff;font-size:15px;padding:12px 24px;border-radius:999px;display:inline-block;margin-bottom:18px}
+.campo{margin-bottom:13px}
+.campo span{display:block;font-size:13px;font-weight:500;color:#3b2a26;margin-bottom:5px}
+.campo div{background:#fff;box-shadow:inset 0 0 0 1.5px #eddcd4;border-radius:11px;
+  padding:12px 14px;font-size:15px;color:#3b2a26;display:flex;justify-content:space-between;align-items:center}
+.campo div b{font-weight:400}
+.campo div u{text-decoration:none;color:#b9a79f;font-size:13px}
+.enviar{background:#c05267;color:#fff;font-size:15px;padding:13px;border-radius:999px;text-align:center;margin-top:16px}
+</style></head><body>
+
+<div id="indica">
+  <div style="display:flex;flex-direction:column">
+    <div class="topo">
+      <svg viewBox="0 0 160 172"><mask id="v"><path d="M20 26h30l30 80 30-80h30L80 152z" fill="#fff" stroke="#fff" stroke-width="24" stroke-linejoin="round"/></mask><g mask="url(#v)"><rect width="160" height="172" fill="#fbf1ec"/><path d="M0 62q80 26 160 0v110H0z" fill="#e8b4a0"/></g></svg>
+      <div class="marca">manicure<span>de valor</span></div>
+    </div>
+
+    <span class="quem">Para quem atende em domicílio</span>
+    <h1>Sua cliente marca <em>sozinha.</em></h1>
+    <ul>
+      <li>Um site com o seu nome e as suas fotos</li>
+      <li>Ela escolhe serviço, dia e horário</li>
+      <li>O pedido chega pronto no seu WhatsApp</li>
+    </ul>
+    <div class="preco">R$ 39,90 <small>por mês</small></div>
+    <div class="site">manicuredevalor.com.br</div>
+  </div>
+
+  <div class="col-fone">
+    <div class="fone"><div class="tela">
+      <div class="barra"><b>Carla Silva<i>.</i><u>Manicure em domicílio</u></b><em>Agendar</em></div>
+      <div class="corpo">
+        <h4>Agendar</h4>
+        <p>Preenche aqui e envia. A conversa abre no WhatsApp já com tudo escrito.</p>
+        <div class="campo"><span>Serviço</span><div><b>Manicure</b><u>▾</u></div></div>
+        <div class="campo"><span>Data</span><div><b>14/10/2026</b><u>▾</u></div></div>
+        <div class="campo"><span>Horário</span><div><b>14:00</b><u>▾</u></div></div>
+        <div class="campo"><span>Bairro</span><div><b>Centro</b><u>▾</u></div></div>
+        <div class="enviar">Enviar</div>
+      </div>
+    </div></div>
+  </div>
+</div>
+
+</body></html>
