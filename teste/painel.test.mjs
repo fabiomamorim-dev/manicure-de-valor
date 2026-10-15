@@ -347,7 +347,11 @@ ok(r.status === 200 && !r.headers.get("location") && html.includes("O que você 
 r = await worker.fetch(new Request(SITE + "/fotos/naoexiste.webp"), env);
 ok(r.status === 404, "foto inexistente dá 404");
 html = await (await worker.fetch(new Request("https://manicuredevalor.com.br/painel?k=" + chave), env)).text();
-ok(!html.includes("Sua agenda"), "domínio raiz não serve painel");
+// Confere pela estrutura, não por texto: toda tela do painel sai com noindex,
+// e o institucional nunca. Prender isso numa frase quebra o deploy no dia em
+// que o site de vendas usar a mesma palavra — que foi o que aconteceu.
+ok(!html.includes('content="noindex"') && html.includes("Manicure de Valor"),
+   "domínio raiz serve o institucional, nunca o painel");
 r = await worker.fetch(new Request(SITE + "/clientes/carlasilva/"), env, { redirect: "manual" });
 ok(r.status === 301 && new URL(r.headers.get("location")).pathname === "/",
    "caminho interno pedido direto volta para a raiz");
