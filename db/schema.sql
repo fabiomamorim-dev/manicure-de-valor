@@ -21,12 +21,31 @@ DROP TABLE IF EXISTS pedidos;
 -- derrubaria o link de todas as profissionais de uma vez. Com um token por
 -- pessoa, revogar o de uma é apagar uma linha.
 CREATE TABLE IF NOT EXISTS profissionais (
-  slug       TEXT NOT NULL PRIMARY KEY,
-  token      TEXT NOT NULL,
-  criado_em  TEXT NOT NULL
+  slug        TEXT NOT NULL PRIMARY KEY,
+  token       TEXT NOT NULL,
+  pin_hash    TEXT,                       -- vazio = ela ainda não criou o PIN
+  pin_salt    TEXT,
+  erros       INTEGER NOT NULL DEFAULT 0, -- tentativas erradas seguidas
+  travado_ate TEXT,                       -- depois de cinco erros, espera
+  criado_em   TEXT NOT NULL
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS profissionais_por_token ON profissionais (token);
+
+-- O link sozinho não abre a agenda. Na primeira vez em cada aparelho ela
+-- digita um PIN de quatro números; dando certo, o aparelho entra aqui e não
+-- pergunta mais. É o que impede que o link, que fica para sempre na conversa
+-- de WhatsApp dela, seja suficiente para alguém entrar.
+--
+-- Perdeu o celular: apagar as linhas do slug dela derruba todos os aparelhos.
+CREATE TABLE IF NOT EXISTS dispositivos (
+  token      TEXT NOT NULL PRIMARY KEY,
+  slug       TEXT NOT NULL,
+  criado_em  TEXT NOT NULL,
+  ultimo_em  TEXT
+);
+
+CREATE INDEX IF NOT EXISTS dispositivos_por_slug ON dispositivos (slug);
 
 CREATE TABLE IF NOT EXISTS clientes (
   id         INTEGER PRIMARY KEY AUTOINCREMENT,

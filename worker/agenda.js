@@ -237,4 +237,91 @@ export function sobramHoje(livres, horaAgora, antecedenciaHoras = 0) {
   return livres.filter(h => emMinutos(h) >= corte);
 }
 
-export const _teste = { emMinutos, emHora };
+/* ------------------------------------------------------------ o PIN dela */
+
+// Quatro números são dez mil combinações: pouco, se alguém puder tentar à
+// vontade. O que segura é o conjunto — precisa do link E do PIN — mais o
+// travamento depois de cinco erros. O hash é lento de propósito.
+const TENTATIVAS = 5;
+const MINUTOS_TRAVADO = 15;
+
+export const pinValido = p => /^\d{4}$/.test(String(p || ""));
+
+export async function hashPin(pin, salt) {
+  const base = await crypto.subtle.importKey(
+    "raw", new TextEncoder().encode(String(pin)), "PBKDF2", false, ["deriveBits"]);
+  const bits = await crypto.subtle.deriveBits(
+    { name: "PBKDF2", salt: new TextEncoder().encode(salt), iterations: 100000, hash: "SHA-256" },
+    base, 256);
+  return [...new Uint8Array(bits)].map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+export const sorteia = (bytes = 16) =>
+  [...crypto.getRandomValues(new Uint8Array(bytes))]
+    .map(b => b.toString(16).padStart(2, "0")).join("");
+
+export async function profissionalPorToken(env, token) {
+  const { results } = await env.DB.prepare(
+    `SELECT slug, pin_hash, pin_salt, erros, travado_ate
+       FROM profissionais WHERE token = ? LIMIT 1`
+  ).bind(token).all();
+  return (results && results[0]) || null;
+}
+
+export async function criarPin(env, slug, pin) {
+  const salt = sorteia(8);
+  const hash = await hashPin(pin, salt);
+  await env.DB.prepare(
+    `UPDATE profissionais SET pin_hash = ?, pin_salt = ?, erros = 0, travado_ate = NULL
+      WHERE slug = ?`).bind(hash, salt, slug).run();
+}
+
+// Devolve { ok } ou { ok:false, travado, faltam }.
+export async function conferirPin(env, prof, pin, agoraISO) {
+  if (prof.travado_ate && prof.travado_ate > agoraISO) {
+    return { ok: false, travado: true };
+  }
+  const hash = await hashPin(pin, prof.pin_salt);
+  if (hash === prof.pin_hash) {
+    await env.DB.prepare(
+      `UPDATE profissionais SET erros = 0, travado_ate = NULL WHERE slug = ?`
+    ).bind(prof.slug).run();
+    return { ok: true };
+  }
+
+  const erros = (Number(prof.erros) || 0) + 1;
+  if (erros >= TENTATIVAS) {
+    const ate = new Date(Date.now() + MINUTOS_TRAVADO * 60000)
+      .toISOString().slice(0, 19).replace("T", " ");
+    await env.DB.prepare(
+      `UPDATE profissionais SET erros = ?, travado_ate = ? WHERE slug = ?`
+    ).bind(erros, ate, prof.slug).run();
+    return { ok: false, travado: true };
+  }
+  await env.DB.prepare(
+    `UPDATE profissionais SET erros = ? WHERE slug = ?`).bind(erros, prof.slug).run();
+  return { ok: false, faltam: TENTATIVAS - erros };
+}
+
+/* ------------------------------------------------------- aparelhos dela */
+
+export async function lembrarAparelho(env, slug, agoraISO) {
+  const token = sorteia(24);
+  await env.DB.prepare(
+    `INSERT INTO dispositivos (token, slug, criado_em, ultimo_em) VALUES (?, ?, ?, ?)`
+  ).bind(token, slug, agoraISO, agoraISO).run();
+  return token;
+}
+
+export async function aparelhoConhecido(env, token, slug, agoraISO) {
+  if (!token || token.length < 20 || token.length > 80) return false;
+  const { results } = await env.DB.prepare(
+    `SELECT slug FROM dispositivos WHERE token = ? LIMIT 1`).bind(token).all();
+  const dono = results && results[0] && results[0].slug;
+  if (dono !== slug) return false;
+  await env.DB.prepare(
+    `UPDATE dispositivos SET ultimo_em = ? WHERE token = ?`).bind(agoraISO, token).run();
+  return true;
+}
+
+export const _teste = { emMinutos, emHora, TENTATIVAS };

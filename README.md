@@ -287,9 +287,21 @@ Sai um token novo, o SQL para gravá-lo no banco e o link pronto. Esse link é
 a senha: mande pela conversa dela e peça para salvar na tela de início do
 celular.
 
-Não existe segredo para guardar. Rodar o comando de novo troca o token daquela
-profissional e derruba o link antigo — só o dela. É assim que se revoga, se ela
-perder o celular ou parar de ser cliente.
+Na primeira vez em cada celular ela cria (ou digita) um **PIN de quatro
+números**. Depois disso aquele aparelho não pergunta mais. Só o link não abre a
+agenda, e é de propósito: o link fica para sempre na conversa de WhatsApp dela,
+e quem rolasse a conversa entraria.
+
+Cinco PINs errados seguidos travam as tentativas por quinze minutos — quatro
+números são dez mil combinações, e sem isso daria para tentar todas.
+
+| Ela | Você |
+|---|---|
+| esqueceu o PIN | apaga o `pin_hash` dela; ela cria outro ao abrir |
+| perdeu o celular | apaga as linhas dela em `dispositivos` |
+| saiu da base | roda o script de novo: troca o token e o link velho morre |
+
+O script imprime o SQL de cada um desses casos. Nada disso mexe no das outras.
 
 ### O que ela vê
 

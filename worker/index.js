@@ -5,6 +5,8 @@ import {
   lancar, jaPediu, pedidosNaUltimaHora,
   agendaEntre, pedidosAbertos, horaDeVoltar, listaDeClientes, historico,
   livresNoDia, sobramHoje,
+  pinValido, criarPin, conferirPin, profissionalPorToken,
+  lembrarAparelho, aparelhoConhecido,
 } from "./agenda.js";
 
 const RAIZ = ["manicuredevalor.com.br", "www.manicuredevalor.com.br"];
@@ -33,7 +35,8 @@ export default {
       if (p === "/api/horarios")         return apiHorarios(env, slug, url);
       if (p === "/api/marcar"   && post) return apiMarcar(request, env, slug, url);
       if (p === "/api/lancar"   && post) return apiLancar(request, env, slug, url);
-      if (p === "/api/cliente")          return apiCliente(env, slug, url);
+      if (p === "/api/pin"      && post) return apiPin(request, env, slug, url);
+      if (p === "/api/cliente")          return apiCliente(env, slug, url, request);
       if (p === "/painel")               return painel(request, env, slug, url);
     }
 
@@ -212,8 +215,8 @@ async function apiHorarios(env, slug, url) {
 
 /* -------------------------------------------------------------- o painel */
 
-async function apiCliente(env, slug, url) {
-  if (!(await autorizado(env, slug, url))) return json({ ok: false }, 403);
+async function apiCliente(env, slug, url, request) {
+  if (!(await autorizado(env, slug, url, request))) return json({ ok: false }, 403);
   if (!env.DB) return json({ ok: false, motivo: "sem banco" }, 500);
 
   const fone = String(url.searchParams.get("fone") || "");
@@ -230,8 +233,50 @@ async function apiCliente(env, slug, url) {
   });
 }
 
+// Cria o PIN na primeira vez, ou confere o que ela já tem. Dando certo, este
+// aparelho passa a ser conhecido e o PIN não é pedido de novo nele.
+async function apiPin(request, env, slug, url) {
+  if (!env.DB) return new Response("Banco não configurado", { status: 500 });
+  const dona = await donaDoLink(env, slug, url);
+  if (!dona) return new Response("Link inválido", { status: 403 });
+
+  const form = await request.formData();
+  const pin = String(form.get("pin") || "").trim();
+  const pin2 = String(form.get("pin2") || "").trim();
+  const chave = url.searchParams.get("k") || "";
+  const volta = aviso => paraOPainel(url, chave, aviso);
+
+  if (!pinValido(pin)) return volta("curto");
+
+  if (!dona.pin_hash) {
+    if (pin !== pin2) return volta("diferente");
+    await criarPin(env, slug, pin);
+  } else {
+    const r = await conferirPin(env, dona, pin, agoraISO());
+    if (!r.ok) return volta(r.travado ? "travado" : "errado");
+  }
+
+  const aparelho = await lembrarAparelho(env, slug, agoraISO());
+  return paraOPainel(url, chave, null, aparelho);
+}
+
+// Redirect com cookie precisa ser montado na mão: a resposta do
+// Response.redirect vem com cabeçalhos imutáveis.
+function paraOPainel(url, chave, aviso, aparelho) {
+  const destino = new URL("/painel", url.origin);
+  destino.searchParams.set("k", chave);
+  if (aviso) destino.searchParams.set("pin", aviso);
+
+  const headers = { location: destino.toString() };
+  if (aparelho) {
+    headers["set-cookie"] =
+      `${COOKIE}=${aparelho}; Path=/; Max-Age=15552000; HttpOnly; Secure; SameSite=Lax`;
+  }
+  return new Response(null, { status: 303, headers });
+}
+
 async function apiLancar(request, env, slug, url) {
-  if (!(await autorizado(env, slug, url))) return new Response("Link inválido", { status: 403 });
+  if (!(await autorizado(env, slug, url, request))) return new Response("Link inválido", { status: 403 });
   if (!env.DB) return new Response("Banco não configurado", { status: 500 });
 
   const form = await request.formData();
@@ -259,7 +304,7 @@ async function apiLancar(request, env, slug, url) {
 }
 
 async function apiMarcar(request, env, slug, url) {
-  if (!(await autorizado(env, slug, url))) return new Response("Link inválido", { status: 403 });
+  if (!(await autorizado(env, slug, url, request))) return new Response("Link inválido", { status: 403 });
   if (!env.DB) return new Response("Banco não configurado", { status: 500 });
 
   const form = await request.formData();
@@ -301,7 +346,8 @@ async function painel(request, env, slug, url) {
   if (!env.DB) {
     return pagina("Agenda", `<p class="vazio">O banco de dados ainda não foi ligado.</p>`, 500);
   }
-  if (!(await autorizado(env, slug, url))) {
+  const dona = await donaDoLink(env, slug, url);
+  if (!dona) {
     return pagina("Link inválido", `<p class="vazio">Esse link não abre esta agenda.
       Peça o link certo para quem montou seu site.</p>`, 403);
   }
@@ -311,10 +357,50 @@ async function painel(request, env, slug, url) {
   const chave = url.searchParams.get("k") || "";
   const hoje = hojeSP();
 
+  // O link está certo, mas este aparelho ainda não foi confirmado: ou ela
+  // cria o PIN (primeira vez de todas) ou digita o que já tem.
+  const conhecido = await aparelhoConhecido(
+    env, biscoito(request, COOKIE), slug, agoraISO());
+  if (!conhecido) return telaPin(dona, chave, prof, url.searchParams.get("pin"));
+
   if (url.searchParams.get("ver") === "clientes") {
     return await telaClientes(env, slug, chave, prof, hoje);
   }
   return await telaAgenda(env, slug, url, chave, prof, cfg, hoje);
+}
+
+/* ------------------------------------------------------------- tela: PIN */
+
+function telaPin(dona, chave, prof, aviso) {
+  const primeira = !dona.pin_hash;
+  const avisos = {
+    errado: "PIN errado. Tenta de novo.",
+    travado: "Muita tentativa errada. Espera quinze minutos e tenta de novo.",
+    curto: "O PIN tem que ter quatro números.",
+    diferente: "Os dois PINs não bateram.",
+  };
+  const recado = avisos[aviso];
+
+  const corpo = `
+    <div class="pino">
+      <h1>${primeira ? "Crie seu PIN" : `Oi, ${esc(String(prof).split(" ")[0])}`}</h1>
+      <p class="sub">${primeira
+        ? "Quatro números que só você sabe. Vão ser pedidos a primeira vez em cada celular — depois esse aparelho não pergunta mais."
+        : "Digite seu PIN de quatro números para abrir sua agenda neste aparelho."}</p>
+      ${recado ? `<p class="erro">${esc(recado)}</p>` : ""}
+      <form method="POST" action="/api/pin?k=${encodeURIComponent(chave)}">
+        <input name="pin" type="password" inputmode="numeric" pattern="[0-9]*"
+               maxlength="4" autocomplete="off" required autofocus
+               placeholder="${primeira ? "Seu PIN" : "PIN"}">
+        ${primeira ? `<input name="pin2" type="password" inputmode="numeric" pattern="[0-9]*"
+               maxlength="4" autocomplete="off" required placeholder="Repita o PIN">` : ""}
+        <button class="b b-zap" type="submit">${primeira ? "Criar e entrar" : "Entrar"}</button>
+      </form>
+      <p class="rodape">${primeira
+        ? "Se esquecer, quem montou seu site apaga e você cria outro."
+        : "Esqueceu? Chama quem montou seu site que ele libera."}</p>
+    </div>`;
+  return pagina(`Agenda · ${prof}`, corpo, 200);
 }
 
 /* ---------------------------------------------------------- tela: agenda */
@@ -533,33 +619,45 @@ function botao(chave, id, acao, rotulo) {
 
 /* ------------------------------------------------------------------ apoio */
 
-// O link do painel carrega o token da profissional, que vive no banco. O
-// token de uma não abre o painel de outra porque a linha guarda o slug junto.
+// Para entrar na agenda são precisas duas coisas: o link, que ela salva na
+// tela de início, e um PIN de quatro números na primeira vez em cada
+// aparelho. Só o link não basta — ele fica para sempre na conversa de
+// WhatsApp dela, e quem rolasse a conversa entraria.
 //
-// Era um HMAC de um segredo único do Worker. Trocado porque alguém tinha que
-// guardar a frase para sempre, e porque trocá-la derrubaria o link de todas
-// de uma vez — com uma linha por pessoa, revogar o de uma é apagar a linha.
-async function autorizado(env, slug, url) {
+// Depois do PIN, o aparelho fica conhecido e não pergunta mais.
+const COOKIE = "mdv_aparelho";
+
+const biscoito = (request, nome) => {
+  const c = (request && request.headers.get("cookie")) || "";
+  const m = c.match(new RegExp("(?:^|;\\s*)" + nome + "=([^;]+)"));
+  return m ? m[1] : "";
+};
+
+// Devolve a profissional dona do link, ou null se o link não vale.
+async function donaDoLink(env, slug, url) {
   const chave = url.searchParams.get("k") || "";
-  if (!env.DB || !chave || chave.length < 20 || chave.length > 80) return false;
+  if (!env.DB || !chave || chave.length < 20 || chave.length > 80) return null;
+  const prof = await profissionalPorToken(env, chave);
+  if (!prof) return null;
 
-  const { results } = await env.DB.prepare(
-    `SELECT slug FROM profissionais WHERE token = ? LIMIT 1`
-  ).bind(chave).all();
-
-  const dono = results && results[0] && results[0].slug;
-  if (!dono) return false;
-
-  // Comparação de tempo constante no slug: o token já veio do índice, mas o
-  // dono não pode ser confirmado por um != que vaza na primeira letra.
-  if (dono.length !== slug.length) return false;
+  // Comparação de tempo constante: o token já veio do índice, mas o dono não
+  // pode ser confirmado por um != que vaza na primeira letra.
+  if (prof.slug.length !== slug.length) return null;
   let iguais = 0;
-  for (let i = 0; i < dono.length; i++) iguais |= dono.charCodeAt(i) ^ slug.charCodeAt(i);
-  return iguais === 0;
+  for (let i = 0; i < prof.slug.length; i++) iguais |= prof.slug.charCodeAt(i) ^ slug.charCodeAt(i);
+  return iguais === 0 ? prof : null;
+}
+
+async function autorizado(env, slug, url, request) {
+  if (!(await donaDoLink(env, slug, url))) return false;
+  return aparelhoConhecido(env, biscoito(request, COOKIE), slug,
+                           new Date().toISOString().slice(0, 19).replace("T", " "));
 }
 
 const esc = t => String(t ?? "").replace(/[&<>"]/g, c =>
   ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+
+const agoraISO = () => new Date().toISOString().slice(0, 19).replace("T", " ");
 
 function semanas(dias) {
   const s = Math.round(dias / 7);
@@ -633,6 +731,17 @@ h3 i{font-style:normal;color:#866d65;font-weight:400}
 .tipo label{display:flex;align-items:center;gap:6px;cursor:pointer}
 .dupla{display:flex;gap:10px}
 .achou{font-size:14px;color:#c05267;margin-top:-4px}
+.pino{max-width:340px;margin:8vh auto 0}
+.pino h1{margin-bottom:10px}
+.pino .sub{margin-bottom:22px}
+.pino form{display:flex;flex-direction:column;gap:10px}
+.pino input{font:22px/1 inherit;letter-spacing:.5em;text-align:center;padding:16px 14px;
+  border:1px solid #efe0d7;border-radius:13px;background:#fff;color:#171110;width:100%}
+.pino input:focus{outline:none;border-color:#c05267}
+.pino .b{margin-top:4px;text-align:center}
+.pino .erro{background:#c05267;color:#fff7f2;border-radius:12px;padding:11px 15px;
+  font-size:15px;margin-bottom:18px}
+.pino .rodape{margin-top:22px;border:none;padding:0}
 </style>
 ${corpo}
 </html>`, { status, headers: { "content-type": "text/html; charset=utf-8" } });

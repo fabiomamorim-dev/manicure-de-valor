@@ -37,7 +37,19 @@ console.log(sql);
 console.log("\n2 · E mande este link para ela:\n");
 console.log(`https://${slug}.manicuredevalor.com.br/painel?k=${token}`);
 console.log(`
-Esse link é a senha. Mande pela conversa dela e peça para salvar na tela
-de início do celular. Rodar este comando de novo troca o token e derruba
-o link antigo — só o dela, as outras continuam valendo.
+Na primeira vez em cada celular ela cria (ou digita) um PIN de quatro
+números. Depois disso aquele aparelho não pergunta mais. Só o link não
+abre a agenda — é o que protege ela de o link vazar na conversa.
+
+Peça para salvar na tela de início do celular.
+
+Se ela esquecer o PIN, apague o que está guardado e ela cria outro na
+próxima vez que abrir:
+
+  UPDATE profissionais SET pin_hash = NULL, pin_salt = NULL, erros = 0,
+         travado_ate = NULL WHERE slug = '${slug}';
+
+Se ela perder o celular, derrube todos os aparelhos já confirmados:
+
+  DELETE FROM dispositivos WHERE slug = '${slug}';
 `);

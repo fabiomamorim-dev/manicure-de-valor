@@ -56,7 +56,8 @@ pior que um link secreto bem feito.
 
 O que isso exige:
 
-- O link carrega um token aleatório que vive no banco, um por profissional. Sem ele
+- O link carrega um token aleatório que vive no banco, um por profissional, e na
+  primeira vez em cada aparelho ela ainda digita um PIN de quatro números. Sem os dois
   não dá para adivinhar o link de ninguém.
 - O painel pede para o Google não indexar (`noindex`), mas o que protege de
   verdade é o segredo, não a meta tag.

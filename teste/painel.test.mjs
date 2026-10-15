@@ -101,13 +101,29 @@ const pedir = (corpo, ambiente = env, site = SITE) =>
     body: JSON.stringify(corpo),
   }), ambiente);
 
-const form = (rota, campos) =>
-  worker.fetch(new Request(`${SITE}${rota}?k=${chave}`, {
-    method: "POST", body: new URLSearchParams(campos), redirect: "manual",
+// Depois do PIN, o aparelho fica conhecido por um cookie. O harness guarda o
+// dele aqui para as chamadas seguintes, como faria o celular dela.
+let aparelho = "";
+const comCookie = (extra = {}) =>
+  aparelho ? { ...extra, cookie: `mdv_aparelho=${aparelho}` } : extra;
+
+const form = (rota, campos, k = chave) =>
+  worker.fetch(new Request(`${SITE}${rota}?k=${k}`, {
+    method: "POST", body: new URLSearchParams(campos),
+    headers: comCookie(), redirect: "manual",
   }), env);
 
 const abrirPainel = async (q = "") =>
-  (await worker.fetch(new Request(`${SITE}/painel?k=${chave}${q}`), env)).text();
+  (await worker.fetch(new Request(`${SITE}/painel?k=${chave}${q}`,
+    { headers: comCookie() }), env)).text();
+
+const digitarPin = async (pin, pin2) => {
+  const campos = pin2 === undefined ? { pin } : { pin, pin2 };
+  const r = await form("/api/pin", campos);
+  const posto = r.headers.get("set-cookie");
+  if (posto) aparelho = posto.split(";")[0].split("=")[1];
+  return r;
+};
 
 /* ------------------------------------------------------------- unidades */
 
@@ -183,8 +199,48 @@ ok(ontem.horarios.length === 0, "dia que já passou não oferece horário");
 
 /* ------------------------------------------------------------- o painel */
 
-console.log("\npainel");
+console.log("\nPIN");
 let html = await abrirPainel();
+ok(html.includes("Crie seu PIN"), "primeira vez, o link pede para criar o PIN");
+ok(!html.includes("Marina Souza"), "e não mostra nada da agenda antes disso");
+
+r = await digitarPin("12", "12");
+ok(new URL(r.headers.get("location")).searchParams.get("pin") === "curto",
+   "recusa PIN que não tem quatro números");
+r = await digitarPin("1234", "4321");
+ok(new URL(r.headers.get("location")).searchParams.get("pin") === "diferente",
+   "na criação, os dois campos têm que bater");
+
+r = await digitarPin("2468", "2468");
+ok(r.status === 303 && aparelho.length > 20, "PIN criado e o aparelho fica conhecido");
+ok((await abrirPainel()).includes("Marina Souza"), "com o aparelho conhecido, a agenda abre");
+
+// Outro celular: tem o link, não tem o cookie.
+const guardado = aparelho;
+aparelho = "";
+html = await abrirPainel();
+ok(html.includes("Oi, Carla") && !html.includes("Marina Souza"),
+   "outro aparelho com o mesmo link cai no PIN, não na agenda");
+
+r = await form("/api/lancar", { tipo: "feito", nome: "Invasor", fone: "41911112222",
+                                servico: "X", data: HOJE });
+ok(r.status === 403, "e nem consegue lançar atendimento só com o link");
+
+for (let i = 0; i < 4; i++) await digitarPin("0000");
+r = await digitarPin("0000");
+ok(new URL(r.headers.get("location")).searchParams.get("pin") === "travado",
+   "cinco erros seguidos travam as tentativas");
+r = await digitarPin("2468");
+ok(new URL(r.headers.get("location")).searchParams.get("pin") === "travado",
+   "e o PIN certo também espera, enquanto está travado");
+
+db.prepare("UPDATE profissionais SET erros = 0, travado_ate = NULL WHERE slug='carlasilva'").run();
+r = await digitarPin("2468");
+ok(r.status === 303 && aparelho.length > 20, "passado o castigo, o PIN certo entra");
+aparelho = guardado;
+
+console.log("\npainel");
+html = await abrirPainel();
 ok(html.includes("Marina Souza"), "mostra quem pediu");
 ok(html.includes("Pedidos novos"), "separa os pedidos novos");
 ok(html.includes('name="robots" content="noindex"'), "pede para o google não indexar");
@@ -212,11 +268,13 @@ ok(new URL(r.headers.get("location")).searchParams.get("aviso") === "faltou",
    "sem os campos, avisa em vez de gravar");
 
 const lookup = await (await worker.fetch(
-  new Request(`${SITE}/api/cliente?k=${chave}&fone=41988887777`), env)).json();
+  new Request(`${SITE}/api/cliente?k=${chave}&fone=41988887777`,
+    { headers: comCookie() }), env)).json();
 ok(lookup.achou && lookup.nome === "Ana Lima" && lookup.ultimo.servico === "Pé e mão",
    "digitar um telefone conhecido traz o nome e o último serviço");
-r = await worker.fetch(new Request(`${SITE}/api/cliente?fone=41988887777`), env);
-ok(r.status === 403, "a consulta de cliente exige o link assinado");
+r = await worker.fetch(new Request(`${SITE}/api/cliente?fone=41988887777`,
+  { headers: comCookie() }), env);
+ok(r.status === 403, "a consulta de cliente exige o link certo");
 
 /* ---------------------------------------------------------- hora de voltar */
 
