@@ -77,9 +77,12 @@ Chamar.
 
 ## 9 · fecho
 
-**Tela:** logo, preço, endereço.
+**Tela:** logo entrando junto com o nome falado, preço, endereço escrito.
 
-> Seu site e sua agenda. Trinta e nove e noventa por mês.
+> Seu site e sua agenda. Trinta e nove e noventa por mês. Manicure de Valor.
+
+O endereço não é falado: "manicuredevalor ponto com ponto br" é travado de
+ouvir, e o nome da marca já é o endereço. Escrito na tela basta.
 
 ---
 
