@@ -28,7 +28,9 @@ const INI = Number(arg("ini", 0));
 const FIM = Number(arg("fim", 23.40));
 const FPS = Number(arg("fps", 30));
 const NOME = arg("nome", `cenas-${INI}-${FIM}`);
-const LARGURA = 1920, ALTURA = 1080;
+// --empe monta o 9:16 de reels e stories, do mesmo cenas.html
+const EM_PE = process.argv.includes("--empe");
+const LARGURA = EM_PE ? 1080 : 1920, ALTURA = EM_PE ? 1920 : 1080;
 
 const QUADROS = dentro("quadros");
 const MIX = dentro("mix.wav");
@@ -59,7 +61,8 @@ const p = await ctx.newPage();
 const erros = [];
 p.on("pageerror", e => erros.push(e.message));
 
-await p.goto("file://" + dentro("cenas.html"), { waitUntil: "load" });
+await p.goto("file://" + dentro("cenas.html") + (EM_PE ? "?v=1" : ""),
+  { waitUntil: "load" });
 // Sem isso o primeiro segundo sai com a fonte do sistema e o vídeo "pula".
 await p.evaluate(() => document.fonts.ready);
 await p.waitForTimeout(250);

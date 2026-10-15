@@ -18,6 +18,10 @@
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:1920px;height:1080px;overflow:hidden}
+/* ?v=1 → 9:16 para reels e stories. Mesmas cenas, mesmos tempos, mesma
+   função desenhar(): só a arrumação muda. Dois arquivos separados sempre
+   acabam desencontrando quando um dos dois é corrigido. */
+html.v,body.v{width:1080px;height:1920px}
 body{background:var(--creme);font-family:Manrope,sans-serif;color:var(--marrom);
      -webkit-font-smoothing:antialiased}
 .palco{position:absolute;inset:0}
@@ -164,6 +168,47 @@ body{background:var(--creme);font-family:Manrope,sans-serif;color:var(--marrom);
 .fecho .site{font-size:34px;font-weight:500;color:var(--marrom);margin-top:40px;
   border:1px solid var(--linha);background:#fff;border-radius:999px;
   padding:16px 36px;opacity:0}
+
+/* ===================================================== 9:16 · reels ===== */
+/* Em pé não existe "a coluna da direita": tudo que estava ao lado do
+   celular desce para debaixo dele. */
+.v .legenda{bottom:108px;max-width:940px;white-space:normal;text-align:center;
+  line-height:1.3;font-size:30px;padding:18px 34px;border-radius:30px}
+
+/* cenas 1 e 2 */
+.v .c12-esq, .v .horas{left:80px;top:150px;width:900px}
+.v .num{font-size:220px}
+.v .numlegenda{font-size:36px;max-width:600px}
+.v .hora u{font-size:94px}
+.v .hora span{font-size:34px}
+.v .horasep{width:520px}
+.v .fone{left:325px;right:auto;top:580px}
+
+/* cena 4 */
+.v .virada p{font-size:72px;max-width:900px}
+.v .marca-palavra .tinta{height:44px;bottom:4px}
+
+/* cenas 5 a 8 · o celular no alto, o texto embaixo */
+/* A tela fica mais curta de propósito: em pé, um celular inteiro deixa meia
+   tela de branco embaixo quando a página é curta. Cortar mostra a mesma
+   informação e devolve o espaço para o texto. */
+.v .aparelho{left:325px !important;top:260px !important;height:664px}
+.v .janela{height:620px}
+.v .passos{left:90px;top:1090px;width:900px}
+.v .passo-l{margin-bottom:34px}
+.v .passo-l b{font-size:48px;width:46px}
+.v .passo-l span{font-size:38px}
+.v .aviso-zap{left:90px;top:1120px;width:900px}
+.v .rotulo{left:90px;font-size:66px}
+.v .rotulo u{font-size:34px;max-width:880px}
+.v .pronta{left:90px;top:1180px;width:900px;font-size:35px}
+.v .nota{left:90px}
+
+/* cena 9 */
+.v .fecho .simbolo{width:170px;height:183px}
+.v .fecho .marca-nome{font-size:80px}
+.v .fecho .frase{font-size:38px}
+.v .fecho .preco{font-size:84px}
 </style>
 </head>
 <body>
@@ -266,6 +311,21 @@ body{background:var(--creme);font-family:Manrope,sans-serif;color:var(--marrom);
 <script>
 const $ = id => document.getElementById(id);
 
+/* ---------------------------------------------------------------- formato */
+// Tudo que o CSS resolve, resolve no CSS (classe .v). Aqui ficam só as
+// posições que o JS precisa calcular — nomes soltos, chips, alturas de
+// rótulo — e a escala do celular.
+const EM_PE = new URLSearchParams(location.search).get("v") === "1";
+if (EM_PE) { document.documentElement.classList.add("v"); document.body.classList.add("v"); }
+
+const ARRANJO = EM_PE ? {
+  escala: 1.20, notaTop: 1530, rotuloTop: 1100,
+  foneEscala: 1.16, foneGiro: 5,
+} : {
+  escala: 1.05, notaTop: 620,  rotuloTop: 412,
+  foneEscala: 1.00, foneGiro: 9,
+};
+
 /* ---------------------------------------------------------------- tempo */
 // Nada de animação em CSS: tudo é função do tempo, para o frame N sair igual
 // toda vez que for pedido. É isso que deixa render e áudio baterem.
@@ -293,8 +353,13 @@ $("conversa").innerHTML =
    <div class="tarde" id="tarde">tarde demais</div>`;
 const baloes = [...document.querySelectorAll(".balao:not(.meu)")];
 
-// no vão entre o número e o celular, para não tampar a conversa
-const CHIPS = [
+// Deitado: no vão entre o número e o celular, para não tampar a conversa.
+// Em pé não há vão — aí entram por cima da conversa mesmo, como citação.
+const CHIPS = EM_PE ? [
+  ["Quanto é a unha em gel?", 95, 720, 4.70],
+  ["Tem sábado?", 530, 1030, 6.25],
+  ["Você vem no <em>Água Verde</em>?", 75, 1340, 7.35],
+] : [
   ["Quanto é a unha em gel?", 840, 214, 4.70],
   ["Tem sábado?", 980, 412, 6.25],
   ["Você vem no <em>Água Verde</em>?", 800, 606, 7.35],
@@ -310,8 +375,17 @@ const esq = document.querySelector(".c12-esq");
 
 // Nomes soltos no quadro: é a agenda dela, que não está em lugar nenhum.
 // nome, nota, x, y, tamanho, segundo em que aparece
-// Nada abaixo de y=800: ali embaixo mora a legenda.
-const NOMES = [
+// Nada na faixa da legenda: y>800 deitado, y>1600 em pé.
+const NOMES = EM_PE ? [
+  ["Juliana",  "faz 3 semanas",  90, 290, 62, 14.90],
+  ["Camila",   "amanhã, 10h",   650, 215, 44, 15.08],
+  ["Renata",   "faz 2 semanas", 640, 480, 52, 15.24],
+  ["Aline",    "faz 2 semanas", 110, 715, 50, 15.40],
+  ["Letícia",  "faz 1 mês",     640, 1190, 54, 15.56],
+  ["Bianca",   "sexta, 9h",     110, 1420, 48, 15.72],
+  ["Patrícia", "quinta, 15h",   610, 1430, 44, 15.88],
+  ["Marina",   "faz quanto tempo?", 120, 920, 92, 16.34],  // esta some
+] : [
   ["Juliana",  "faz 3 semanas", 190,  168, 66, 14.90],
   ["Camila",   "amanhã, 10h",   1120, 148, 48, 15.08],
   ["Renata",   "faz 2 semanas", 1470, 298, 58, 15.24],
@@ -355,12 +429,12 @@ const passosL = [...document.querySelectorAll(".passo-l")];
 
 // Um lugar só para o celular nas quatro cenas: ele não dança pela tela, o
 // que muda é o que está dentro dele.
-for (const id of TELAS) { $(id).style.left = "280px"; $(id).style.top = "44px"; }
+if (!EM_PE) for (const id of TELAS) { $(id).style.left = "280px"; $(id).style.top = "44px"; }
 
 function aparelho(id, opacidade, rolagem = 0) {
   const el = $(id);
   el.style.opacity = opacidade;
-  el.style.transform = `scale(1.05)`;
+  el.style.transform = `scale(${ARRANJO.escala})`;
   el.querySelector("iframe").style.transform = `translateY(${-Math.round(rolagem)}px)`;
 }
 const apagaTelas = () => TELAS.forEach(id => { $(id).style.opacity = 0; });
@@ -414,7 +488,8 @@ function desenhar(t) {
     // o celular inclina de leve quando os balões começam a empilhar
     const inc = trecho(t, 4.4, 1.2);
     $("fone").style.transform =
-      `perspective(1600px) rotateY(${-inc * 9}deg) rotateX(${inc * 3}deg) scale(${1 - inc * .03})`;
+      `perspective(1600px) rotateY(${-inc * ARRANJO.foneGiro}deg) ` +
+      `rotateX(${inc * 3}deg) scale(${ARRANJO.foneEscala - inc * .03})`;
 
     chips.forEach((c, i) => {
       const p = trecho(t, CHIPS[i][3], 0.34);
@@ -535,7 +610,7 @@ function desenhar(t) {
     const rot = $("rotulo");
     if (R) {
       rot.innerHTML = R[2] + `<u>${R[3]}</u>`;
-      rot.style.top = "412px";
+      rot.style.top = ARRANJO.rotuloTop + "px";
       const p = Math.min(trecho(t, R[0], 0.38), 1 - trecho(t, R[1], 0.32));
       sobe(rot, Math.max(0, p), 20);
     } else {
@@ -545,14 +620,14 @@ function desenhar(t) {
     // A mesma tarja serve duas vezes, em momentos distantes: decide texto,
     // lugar e opacidade num ponto só, para não sobrar estado da vez anterior.
     const NOTAS = [
-      [29.90, 31.10, "só os que cabem no seu dia", 620],
-      [41.30, 42.30, "2 minutos para cadastrar",   640],
+      [29.90, 31.10, "só os que cabem no seu dia"],
+      [41.30, 42.30, "2 minutos para cadastrar"],
     ];
     const N = NOTAS.find(([a, b]) => t >= a - 0.1 && t <= b + 0.4);
     const nota = $("nota");
     if (N) {
       nota.textContent = N[2];
-      nota.style.top = N[3] + "px";
+      nota.style.top = ARRANJO.notaTop + "px";
       const p = Math.min(trecho(t, N[0], 0.4), 1 - trecho(t, N[1], 0.36));
       nota.style.opacity = Math.max(0, p);
       nota.style.transform = `scale(${0.86 + Math.max(0, p) * 0.14})`;
