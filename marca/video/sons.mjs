@@ -194,30 +194,34 @@ function cama(segundos = 57) {
     for (const f of acordes[idx]) {
       v += sine(f, i) * 0.30;
       v += sine(f * 1.004, i, 0.7) * 0.22;   // desafinação, dá corpo
-      v += sine(f * 2, i, 1.3) * 0.06;
+      // harmônicos ímpares baixinhos: seno puro soa como tom de teste,
+      // é a sujeira que faz parecer instrumento
+      v += sine(f * 3, i, 0.4) * 0.05;
+      v += sine(f * 5, i, 1.1) * 0.02;
     }
     pad[i] = v * sw;
   }
 
-  // Arpejo: plucks curtos subindo pelas notas do acorde. Fica alto e baixo no
-  // volume, só para o fundo andar para frente.
-  const passo = 0.44;
+  // O movimento vem de baixo, não de cima. A versão com arpejo agudo soou
+  // como caixinha de música: nota pura, aguda e rápida é registro de
+  // brinquedo. Aqui é a fundamental do acorde pulsando devagar, grave e
+  // macia — dá o andar para frente sem tilintar.
+  const passo = 0.875;
   for (let k = 0; k * passo < segundos; k++) {
     const t0 = k * passo;
     const idx = Math.floor(t0 / porAcorde) % acordes.length;
-    const notas = acordes[idx];
-    const f = notas[[0, 1, 2, 1][k % 4]] * 2;        // uma oitava acima do pad
-    const i0 = Math.round(t0 * SR), dur = Math.round(0.4 * SR);
+    const f = acordes[idx][0] / 2;                  // uma oitava abaixo do pad
+    const i0 = Math.round(t0 * SR), dur = Math.round(0.8 * SR);
     for (let i = 0; i < dur && i0 + i < n; i++) {
-      const e = Math.pow(Math.max(0, 1 - i / dur), 3.2);
-      arp[i0 + i] += (sine(f, i) * 0.6 + sine(f * 2, i) * 0.12) * e;
+      const e = Math.pow(Math.max(0, 1 - i / dur), 1.8) * (1 - Math.exp(-i / (SR * 0.02)));
+      arp[i0 + i] += (sine(f, i) * 0.7 + sine(f * 2, i) * 0.18 + sine(f * 3, i) * 0.05) * e;
     }
   }
 
   const y = new Float32Array(n);
-  const padF = passaBaixa(pad, 4500);
-  const arpF = passaBaixa(arp, 6500);
-  for (let i = 0; i < n; i++) y[i] = padF[i] * 0.85 + arpF[i] * 0.3;
+  const padF = passaBaixa(pad, 3000);   // nem abafado (1400) nem fino (4500)
+  const graveF = passaBaixa(arp, 900);
+  for (let i = 0; i < n; i++) y[i] = padF[i] * 0.72 + graveF[i] * 0.42;
 
   const fade = Math.round(1.8 * SR);
   for (let i = 0; i < fade; i++) { y[i] *= i / fade; y[n - 1 - i] *= i / fade; }
