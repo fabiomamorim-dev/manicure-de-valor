@@ -7,9 +7,22 @@
 // segredo. Trocar o segredo invalida todos os links de uma vez.
 
 import { createHmac } from "node:crypto";
+import { readFileSync, existsSync } from "node:fs";
+
+// Segredo da Cloudflare não dá para ler de volta — é só de escrita, por
+// projeto. Então a cópia local vive no .dev.vars, que já está no .gitignore e
+// é o mesmo arquivo que o `wrangler dev` usa. Escreve uma vez e esquece.
+function doDevVars() {
+  if (!existsSync(".dev.vars")) return null;
+  for (const linha of readFileSync(".dev.vars", "utf8").split("\n")) {
+    const m = linha.match(/^\s*PAINEL_SEGREDO\s*=\s*(.*)$/);
+    if (m) return m[1].trim().replace(/^["']|["']$/g, "");
+  }
+  return null;
+}
 
 const slug = process.argv[2];
-const segredo = process.env.PAINEL_SEGREDO;
+const segredo = process.env.PAINEL_SEGREDO || doDevVars();
 
 if (!slug) {
   console.error("Falta o slug.  Ex: node scripts/link-painel.mjs carlasilva");
@@ -20,8 +33,14 @@ if (!/^[a-z0-9-]+$/.test(slug)) {
   process.exit(1);
 }
 if (!segredo) {
-  console.error("Falta a variável PAINEL_SEGREDO — a mesma que está no Worker.");
-  console.error("No Worker:  npx wrangler secret put PAINEL_SEGREDO");
+  console.error("Falta o PAINEL_SEGREDO — o mesmo que está no Worker.");
+  console.error("");
+  console.error("Guarde no .dev.vars (já ignorado pelo git), numa linha:");
+  console.error('  PAINEL_SEGREDO="a sua frase"');
+  console.error("");
+  console.error("E no Worker:  npx wrangler secret put PAINEL_SEGREDO");
+  console.error("ou pelo painel: Workers & Pages > manicure-de-valor >");
+  console.error("Settings > Variables and Secrets.");
   process.exit(1);
 }
 
