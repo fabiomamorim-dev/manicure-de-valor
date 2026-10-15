@@ -1,7 +1,7 @@
 {
   "tema": "soft",
   "profissional": "Carla Silva",
-  "whatsapp": "5511987654321",
+  "whatsapp": "5541987654321",
   "servicos": [
     {
       "nome": "Manicure",
@@ -63,13 +63,13 @@
   "antecedenciaHoras": 2,
   "pedirBairro": true,
   "bairros": [
+    "Água Verde",
+    "Batel",
+    "Portão",
+    "Rebouças",
+    "Vila Izabel",
     "Centro",
-    "Vila Mariana",
-    "Pinheiros",
-    "Moema",
-    "Ipiranga",
-    "Saúde",
-    "Jabaquara",
+    "Bigorrilho",
     "Outro"
   ],
   "diasDeAntecedencia": 0,
