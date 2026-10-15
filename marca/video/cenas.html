@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Manicure de Valor — cenas</title>
+<style>
+/* Fonte local: o Google Fonts não é alcançável daqui, e vídeo precisa das
+   letras certas no primeiro frame — font-display:block espera, não substitui. */
+@font-face{font-family:Fraunces;src:url(fontes/fraunces/files/fraunces-latin-600-normal.woff2) format('woff2');font-weight:600;font-display:block}
+@font-face{font-family:Fraunces;src:url(fontes/fraunces/files/fraunces-latin-700-normal.woff2) format('woff2');font-weight:700;font-display:block}
+@font-face{font-family:Manrope;src:url(fontes/manrope/files/manrope-latin-400-normal.woff2) format('woff2');font-weight:400;font-display:block}
+@font-face{font-family:Manrope;src:url(fontes/manrope/files/manrope-latin-500-normal.woff2) format('woff2');font-weight:500;font-display:block}
+@font-face{font-family:Manrope;src:url(fontes/manrope/files/manrope-latin-700-normal.woff2) format('woff2');font-weight:700;font-display:block}
+
+:root{
+  --marrom:#412e2a; --creme:#fdf7f4; --rosa:#c05267; --nude:#e8b4a0;
+  --cinza:#8a7873; --linha:#eddcd4;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden}
+body{background:var(--creme);font-family:Manrope,sans-serif;color:var(--marrom);
+     -webkit-font-smoothing:antialiased}
+.palco{position:absolute;inset:0}
+.cena{position:absolute;inset:0;opacity:0}
+
+/* ------------------------------------------------------------- legenda */
+.legenda{position:absolute;left:50%;bottom:62px;transform:translateX(-50%);
+  background:#fff;border:1px solid var(--linha);border-radius:999px;
+  padding:15px 32px;font-size:25px;font-weight:500;color:#b4a29c;
+  white-space:nowrap;box-shadow:0 6px 22px rgba(65,46,42,.07);opacity:0}
+.legenda b{color:var(--marrom);font-weight:700}
+
+/* --------------------------------------------------------- cena 1 e 2 */
+.c12-esq{position:absolute;left:150px;top:300px;width:640px}
+.dia{font-size:30px;font-weight:500;color:var(--cinza);letter-spacing:.04em;
+     text-transform:lowercase;margin-bottom:6px}
+.num{font-family:Fraunces,serif;font-weight:700;font-size:250px;line-height:.86;
+     letter-spacing:-.04em}
+.numlegenda{font-size:31px;color:var(--cinza);margin-top:14px;max-width:470px;line-height:1.3}
+
+.fone{position:absolute;right:130px;top:96px;width:430px;height:888px;
+  background:#fff;border-radius:52px;border:1px solid var(--linha);
+  box-shadow:0 40px 90px rgba(65,46,42,.16);overflow:hidden;
+  transform-origin:50% 50%}
+.fonetopo{position:absolute;top:0;left:0;right:0;z-index:2;
+  height:84px;background:#faf3ef;border-bottom:1px solid var(--linha);
+  display:flex;align-items:flex-end;padding:0 26px 16px;gap:14px}
+.avatar{width:42px;height:42px;border-radius:50%;background:var(--nude)}
+.fonetopo b{font-size:22px;font-weight:700}
+/* altura fixa e alinhado embaixo: mensagem nova empurra as antigas para cima e
+   elas somem atrás do cabeçalho, como em conversa de verdade */
+.conversa{position:absolute;top:84px;left:0;right:0;bottom:0;overflow:hidden;
+  padding:26px 24px;display:flex;flex-direction:column;justify-content:flex-end;
+  gap:16px}
+.balao{max-width:300px;background:#f1eae6;border-radius:20px 20px 20px 6px;
+  padding:15px 19px;font-size:22px;line-height:1.3;color:#5b4842;opacity:0;
+  transform:translateY(16px)}
+.balao i{display:block;font-style:normal;font-size:16px;color:#a2918b;margin-top:7px}
+/* a resposta dela, tarde da noite */
+.balao.meu{align-self:flex-end;background:#f7e2d8;color:#4b3933;
+  border-radius:20px 20px 6px 20px}
+.balao.meu i{color:#b08d7c}
+.tarde{align-self:flex-end;background:var(--rosa);color:#fff;font-size:19px;
+  font-weight:700;padding:8px 16px;border-radius:999px;opacity:0;
+  box-shadow:0 10px 26px rgba(192,82,103,.34);letter-spacing:.01em}
+
+.chip{position:absolute;background:#fff;border:1px solid var(--linha);
+  border-radius:16px;padding:14px 22px;font-size:25px;font-weight:500;
+  box-shadow:0 12px 32px rgba(65,46,42,.13);opacity:0;white-space:nowrap}
+.chip em{font-style:normal;color:var(--rosa)}
+
+.horas{position:absolute;left:150px;top:300px;width:700px;opacity:0}
+.hora{display:flex;align-items:baseline;gap:22px;margin-bottom:22px}
+.hora u{text-decoration:none;font-family:Fraunces,serif;font-weight:700;
+        font-size:86px;letter-spacing:-.03em}
+.hora span{font-size:30px;color:var(--cinza)}
+.horasep{height:1px;background:var(--linha);margin:14px 0 26px;width:420px}
+
+
+/* --------------------------------- cena 3 · a agenda que mora na cabeça */
+.nome{position:absolute;font-family:Fraunces,serif;font-weight:600;
+  color:var(--marrom);white-space:nowrap;opacity:0}
+.nome u{text-decoration:none;display:block;font-family:Manrope,sans-serif;
+  font-weight:500;color:var(--cinza);margin-top:6px}
+.carimbo{position:absolute;background:var(--rosa);color:#fff;
+  font-family:Fraunces,serif;font-weight:700;font-size:58px;padding:20px 34px;
+  border-radius:14px;opacity:0;box-shadow:0 18px 44px rgba(192,82,103,.32)}
+
+/* ------------------------------------------------------------- cena 4 */
+.virada{position:absolute;inset:0;display:flex;align-items:center;
+  justify-content:center;flex-direction:column;opacity:0}
+.virada p{font-family:Fraunces,serif;font-weight:600;font-size:96px;
+  line-height:1.16;letter-spacing:-.022em;text-align:center;max-width:1280px}
+.marca-palavra{position:relative;display:inline-block}
+.marca-palavra .tinta{position:absolute;left:-12px;bottom:4px;
+  height:46px;background:rgba(192,82,103,.3);border-radius:4px;width:0;
+  max-width:calc(100% + 24px)}
+.marca-palavra span{position:relative}
+</style>
+</head>
+<body>
+<div class="palco">
+
+  <!-- 1 e 2 · a conversa ----------------------------------------------- -->
+  <section class="cena" id="c12">
+    <div class="c12-esq">
+      <div class="dia">terça-feira</div>
+      <div class="num" id="numero">0</div>
+      <div class="numlegenda" id="numlegenda">mensagens</div>
+    </div>
+
+    <div class="horas" id="horas">
+      <div class="hora"><u>14:20</u><span>ela mandou</span></div>
+      <div class="horasep"></div>
+      <div class="hora"><u id="horaResp">22:40</u><span>você respondeu</span></div>
+    </div>
+
+    <div class="fone" id="fone">
+      <div class="fonetopo"><div class="avatar"></div><b>Clientes</b></div>
+      <div class="conversa" id="conversa"></div>
+    </div>
+  </section>
+
+  <!-- 3 · a agenda que mora na cabeça ----------------------------------- -->
+  <section class="cena" id="c3">
+    <div id="nomes"></div>
+    <div class="carimbo" id="carimbo">2 meses</div>
+  </section>
+
+  <!-- 4 · a virada ------------------------------------------------------ -->
+  <section class="cena" id="c4">
+    <div class="virada" id="virada">
+      <p>No Manicure de Valor,<br>a cliente marca
+        <span class="marca-palavra"><i class="tinta" id="tinta"></i><span>sozinha</span></span>.</p>
+    </div>
+  </section>
+
+  <div class="legenda" id="legenda"></div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+/* ---------------------------------------------------------------- tempo */
+// Nada de animação em CSS: tudo é função do tempo, para o frame N sair igual
+// toda vez que for pedido. É isso que deixa render e áudio baterem.
+const clamp = v => Math.max(0, Math.min(1, v));
+const ease = v => { v = clamp(v); return v < .5 ? 4*v*v*v : 1 - Math.pow(-2*v+2, 3)/2; };
+const trecho = (t, ini, dur) => ease((t - ini) / dur);
+const sobe = (el, p, px = 22) => {
+  el.style.opacity = p;
+  el.style.transform = `translateY(${(1 - p) * px}px)`;
+};
+
+/* ------------------------------------------------------------- conteúdo */
+const MENSAGENS = [
+  ["Oi! Quanto fica a unha em gel?", "08:12"],
+  ["Vc atende sábado?", "09:40"],
+  ["Bom dia, tem horário essa semana?", "11:03"],
+  ["Vc vai no Água Verde?", "12:55"],
+  ["Quanto é o pé e mão?", "13:20"],
+  ["Oi, tudo bem? Queria marcar", "14:20"],
+  ["Ainda tem vaga pra sexta?", "16:07"],
+];
+$("conversa").innerHTML =
+  MENSAGENS.map(([txt, h]) => `<div class="balao">${txt}<i>${h}</i></div>`).join("") +
+  `<div class="balao meu" id="resposta">Oi! Tenho sim, quer marcar?<i>22:40 ✓✓</i></div>
+   <div class="tarde" id="tarde">tarde demais</div>`;
+const baloes = [...document.querySelectorAll(".balao:not(.meu)")];
+
+// no vão entre o número e o celular, para não tampar a conversa
+const CHIPS = [
+  ["Quanto é a unha em gel?", 840, 214, 4.70],
+  ["Tem sábado?", 980, 412, 6.25],
+  ["Você vem no <em>Água Verde</em>?", 800, 606, 7.35],
+];
+CHIPS.forEach(([txt, x, y]) => {
+  const d = document.createElement("div");
+  d.className = "chip"; d.innerHTML = txt;
+  d.style.left = x + "px"; d.style.top = y + "px";
+  $("c12").appendChild(d);
+});
+const chips = [...document.querySelectorAll(".chip")];
+const esq = document.querySelector(".c12-esq");
+
+// Nomes soltos no quadro: é a agenda dela, que não está em lugar nenhum.
+// nome, nota, x, y, tamanho, segundo em que aparece
+// Nada abaixo de y=800: ali embaixo mora a legenda.
+const NOMES = [
+  ["Juliana",  "faz 3 semanas", 190,  168, 66, 14.90],
+  ["Camila",   "amanhã, 10h",   1120, 148, 48, 15.08],
+  ["Renata",   "faz 2 semanas", 1470, 298, 58, 15.24],
+  ["Aline",    "faz 2 semanas", 230,  638, 56, 15.40],
+  ["Letícia",  "faz 1 mês",     1150, 560, 60, 15.56],
+  ["Bianca",   "sexta, 9h",     1450, 698, 52, 15.72],
+  ["Patrícia", "quinta, 15h",   700,  716, 48, 15.88],
+  ["Marina",   "faz quanto tempo?", 620, 380, 104, 16.34],  // esta some
+];
+$("nomes").innerHTML = NOMES.map(([n, nota, x, y, tam]) =>
+  `<div class="nome" style="left:${x}px;top:${y}px;font-size:${tam}px">
+     ${n}<u style="font-size:${Math.round(tam * .40)}px">${nota}</u></div>`).join("");
+const nomes = [...document.querySelectorAll(".nome")];
+const MARINA = NOMES.length - 1;
+
+// Legendas: o tempo veio da transcrição, palavra por palavra.
+const LEGENDAS = [
+  [0.12, 4.10, "Terça-feira. <b>Sete mensagens</b> perguntando preço e horário."],
+  [4.56, 8.32, "<b>Quanto é a unha em gel?</b> Tem sábado? Você vem no Água Verde?"],
+  [8.78, 11.56, "Você responde <b>à noite</b>, entre uma cliente e outra."],
+  [11.92, 14.40, "E quando responde, <b>ela já marcou com outra</b>."],
+  [14.92, 16.88, "A agenda você guarda <b>de cabeça</b>."],
+  [17.38, 20.10, "Até perceber que a Marina sumiu faz <b>dois meses</b>."],
+  // a cena 4 não tem legenda: a frase já está grande na tela, e repetir
+  // embaixo só rouba atenção do marcador
+];
+
+/* -------------------------------------------------------------- desenho */
+function desenhar(t) {
+  // qual cena está no ar
+  const c12 = t < 14.66, c3 = t >= 14.66 && t < 20.36, c4 = t >= 20.36;
+  $("c12").style.opacity = c12 ? 1 : 0;
+  $("c3").style.opacity  = c3  ? 1 : 0;
+  $("c4").style.opacity  = c4  ? 1 : 0;
+
+  /* ---- cena 1 e 2 */
+  if (c12) {
+    // as mensagens entram uma a uma, e o número conta junto
+    const t0 = 0.55, passo = 0.42;
+    let vistas = 0;
+    baloes.forEach((b, i) => {
+      const p = trecho(t, t0 + i * passo, 0.36);
+      // display none até a hora: assim o balão não ocupa espaço antes e as
+      // mensagens empurram as anteriores para cima de verdade
+      b.style.display = p > 0 ? "block" : "none";
+      sobe(b, p, 16);
+      if (p > 0.5) vistas = i + 1;
+    });
+    $("numero").textContent = vistas;
+    sobe($("numlegenda"), trecho(t, 2.6, 0.5), 12);
+
+    // o celular inclina de leve quando os balões começam a empilhar
+    const inc = trecho(t, 4.4, 1.2);
+    $("fone").style.transform =
+      `perspective(1600px) rotateY(${-inc * 9}deg) rotateX(${inc * 3}deg) scale(${1 - inc * .03})`;
+
+    chips.forEach((c, i) => {
+      const p = trecho(t, CHIPS[i][3], 0.34);
+      const sai = t > 8.6 ? 1 - trecho(t, 8.6, 0.5) : 1;
+      c.style.opacity = p * sai;
+      c.style.transform = `translate(${(1 - p) * 26}px, ${(1 - p) * -12}px) scale(${.92 + p * .08})`;
+    });
+
+    // o contraste de horário substitui o número
+    const ph = trecho(t, 8.8, 0.55);
+    $("horas").style.opacity = ph;
+    $("horas").style.transform = `translateY(${(1 - ph) * 20}px)`;
+    esq.style.opacity = 1 - ph;
+
+    // ela finalmente responde — e logo depois chega o carimbo
+    const pr = trecho(t, 11.95, 0.40);
+    const resp = $("resposta");
+    resp.style.display = pr > 0 ? "block" : "none";
+    sobe(resp, pr, 14);
+
+    const pt = trecho(t, 13.45, 0.40);
+    const tag = $("tarde");
+    tag.style.display = pt > 0 ? "block" : "none";
+    tag.style.opacity = pt;
+    tag.style.transform = `scale(${.78 + pt * .22})`;
+  }
+
+  /* ---- cena 3 */
+  if (c3) {
+    // os nomes surgem fora de ordem, como lembrança — e o conjunto todo
+    // esmaece quando a atenção vai para a Marina
+    const foco = trecho(t, 17.20, 0.8);      // as outras recuam
+    const esquece = trecho(t, 17.55, 1.5);   // e a Marina apaga
+    nomes.forEach((el, i) => {
+      const p = trecho(t, NOMES[i][5], 0.45);
+      const marina = i === MARINA;
+      // ela não foi riscada: foi esquecida. Por isso desbota, não é cortada.
+      const forca = marina ? 1 - esquece * 0.78 : 1 - foco * 0.62;
+      el.style.opacity = p * forca;
+      el.style.transform = `translateY(${(1 - p) * 16}px)`;
+      el.style.filter = marina ? `blur(${esquece * 2.6}px)` : "none";
+    });
+    // o carimbo encosta no nome dela, não cobre — o nome é a notícia
+    const pc = trecho(t, 19.18, 0.38);
+    const c = $("carimbo");
+    c.style.left = (NOMES[MARINA][2] + nomes[MARINA].offsetWidth + 34) + "px";
+    c.style.top = (NOMES[MARINA][3] + 6) + "px";
+    c.style.opacity = pc;
+    c.style.transform = `rotate(${-9 + (1 - pc) * 7}deg) scale(${.72 + pc * .28})`;
+  }
+
+  /* ---- cena 4 */
+  if (c4) {
+    const p = trecho(t, 20.5, 0.6);
+    $("virada").style.opacity = p;
+    $("virada").style.transform = `translateY(${(1 - p) * 26}px)`;
+    // o marcador passa exatamente quando ela diz a palavra
+    $("tinta").style.width = (trecho(t, 22.68, 0.42) * 112) + "%";
+  }
+
+  /* ---- legenda */
+  const L = LEGENDAS.find(([a, b]) => t >= a - 0.18 && t <= b + 0.30);
+  const el = $("legenda");
+  if (L) {
+    el.innerHTML = L[2];
+    const dentro = Math.min(trecho(t, L[0] - 0.18, 0.22), 1 - trecho(t, L[1] + 0.06, 0.22));
+    el.style.opacity = Math.max(0, dentro);
+    el.style.transform = `translateX(-50%) translateY(${(1 - Math.max(0, dentro)) * 10}px)`;
+  } else {
+    el.style.opacity = 0;
+  }
+}
+window.desenhar = desenhar;
+desenhar(0);
+</script>
+</body>
+</html>
