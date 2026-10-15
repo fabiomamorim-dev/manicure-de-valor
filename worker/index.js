@@ -710,7 +710,11 @@ h3 i{font-style:normal;color:#866d65;font-weight:400}
 .ja{color:#a08c84;font-size:14px}
 .feito{color:#866d65;font-size:15px}
 .acoes{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px;align-items:center}
-.b{font:500 15px/1 inherit;cursor:pointer;border:none;text-decoration:none;display:inline-block;
+/* Longhand de propósito: "font:500 15px/1 inherit" não é shorthand válido —
+   inherit não serve como família ali — e o navegador descarta a regra toda.
+   O resultado era botão menor que link lado a lado no mesmo cartão. */
+.b{font-family:inherit;font-size:15px;font-weight:500;line-height:1;
+   cursor:pointer;border:none;text-decoration:none;display:inline-block;
    border-radius:999px;padding:11px 18px}
 .b-zap{background:#c05267;color:#fff}
 .b-line{background:transparent;color:#171110;box-shadow:inset 0 0 0 1.5px #efe0d7}
