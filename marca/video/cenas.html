@@ -96,6 +96,74 @@ body{background:var(--creme);font-family:Manrope,sans-serif;color:var(--marrom);
   height:46px;background:rgba(192,82,103,.3);border-radius:4px;width:0;
   max-width:calc(100% + 24px)}
 .marca-palavra span{position:relative}
+
+/* ------------------------------ cenas 5 a 8 · as telas de verdade */
+/* O celular mostra o HTML que o Worker devolve, dentro de um iframe, em vez
+   de print. Assim a tela do vídeo não envelhece: mexeu no produto, mexeu no
+   vídeo. O iframe tem a altura inteira da página e eu rolo movendo ele. */
+.aparelho{position:absolute;width:430px;height:888px;border-radius:52px;
+  background:#fff;border:1px solid var(--linha);opacity:0;
+  box-shadow:0 44px 100px rgba(65,46,42,.2);transform-origin:50% 50%}
+.janela{position:absolute;left:20px;top:22px;width:390px;height:844px;
+  overflow:hidden;border-radius:34px;background:var(--creme)}
+.janela iframe{position:absolute;left:0;top:0;width:390px;border:0;display:block}
+
+.passos{position:absolute;left:1020px;top:230px;width:740px}
+.passo-l{display:flex;gap:26px;align-items:flex-start;margin-bottom:46px;opacity:0}
+.passo-l b{font-family:Fraunces,serif;font-weight:700;font-size:54px;
+  color:var(--nude);line-height:1;width:52px;flex:none}
+.passo-l span{font-size:40px;font-weight:500;line-height:1.26;padding-top:4px}
+.nota{position:absolute;left:1092px;top:620px;background:var(--rosa);color:#fff;
+  font-size:30px;font-weight:700;padding:16px 28px;border-radius:999px;opacity:0;
+  box-shadow:0 16px 40px rgba(192,82,103,.3)}
+
+/* o aviso de WhatsApp caindo por cima */
+.aviso-zap{position:absolute;left:1020px;top:240px;width:720px;background:#fff;
+  border-radius:26px;padding:28px 32px;opacity:0;
+  box-shadow:0 26px 70px rgba(65,46,42,.2);border:1px solid var(--linha)}
+.aviso-zap em{display:flex;align-items:center;gap:12px;font-style:normal;
+  font-size:22px;font-weight:700;color:#25a35a;letter-spacing:.04em;
+  text-transform:uppercase;margin-bottom:14px}
+.aviso-zap em i{width:13px;height:13px;border-radius:50%;background:#25a35a;
+  font-style:normal;display:block}
+.aviso-zap b{display:block;font-size:34px;margin-bottom:8px}
+.aviso-zap p{font-size:29px;color:#6b564f;line-height:1.35}
+
+/* rótulo que acompanha a rolagem do painel */
+.rotulo{position:absolute;left:1020px;font-family:Fraunces,serif;font-weight:600;
+  font-size:62px;line-height:1.14;opacity:0}
+.rotulo u{display:block;text-decoration:none;font-family:Manrope,sans-serif;
+  font-weight:500;font-size:31px;color:var(--cinza);margin-top:16px;max-width:660px}
+
+/* anel que destaca um cartão dentro da tela */
+.anel{position:absolute;border:4px solid var(--rosa);border-radius:22px;
+  opacity:0;pointer-events:none;box-shadow:0 0 0 10px rgba(192,82,103,.14)}
+/* o dedo tocando no botão */
+.toque{position:absolute;width:76px;height:76px;border-radius:50%;
+  background:rgba(192,82,103,.28);opacity:0}
+
+/* a mensagem pronta, do lado do painel */
+.pronta{position:absolute;left:1020px;top:430px;width:700px;background:#f7e2d8;
+  border-radius:24px 24px 24px 8px;padding:28px 32px;font-size:30px;
+  line-height:1.4;color:#4b3933;opacity:0;
+  box-shadow:0 22px 56px rgba(65,46,42,.14)}
+.pronta i{display:block;font-style:normal;font-size:23px;color:#a8826f;
+  margin-top:14px}
+
+/* ------------------------------------------------- cena 9 · o fecho */
+.fecho{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:0;opacity:0}
+.fecho .simbolo{width:150px;height:161px;opacity:0}
+.fecho .marca-nome{font-family:Fraunces,serif;font-weight:700;font-size:92px;
+  letter-spacing:-.02em;margin-top:34px;opacity:0}
+.fecho .frase{font-size:40px;color:var(--cinza);margin-top:18px;opacity:0}
+.fecho .preco{font-family:Fraunces,serif;font-weight:700;font-size:86px;
+  color:var(--rosa);margin-top:46px;opacity:0}
+.fecho .preco small{font-family:Manrope,sans-serif;font-weight:500;
+  font-size:34px;color:var(--cinza)}
+.fecho .site{font-size:34px;font-weight:500;color:var(--marrom);margin-top:40px;
+  border:1px solid var(--linha);background:#fff;border-radius:999px;
+  padding:16px 36px;opacity:0}
 </style>
 </head>
 <body>
@@ -132,6 +200,63 @@ body{background:var(--creme);font-family:Manrope,sans-serif;color:var(--marrom);
     <div class="virada" id="virada">
       <p>No Manicure de Valor,<br>a cliente marca
         <span class="marca-palavra"><i class="tinta" id="tinta"></i><span>sozinha</span></span>.</p>
+    </div>
+  </section>
+
+  <!-- 5 a 8 · o produto ------------------------------------------------ -->
+  <section class="cena" id="c58">
+    <!-- um aparelho por tela: carregam todos de uma vez, no início, para o
+         render não depender de nada chegar no meio do caminho -->
+    <div class="aparelho" id="apSite"><div class="janela">
+      <iframe src="telas/site.html" style="height:7200px"></iframe></div></div>
+    <div class="aparelho" id="apDia"><div class="janela">
+      <iframe src="telas/agendar-dia.html" style="height:844px"></iframe></div></div>
+    <div class="aparelho" id="apHora"><div class="janela">
+      <iframe src="telas/agendar-hora.html" style="height:844px"></iframe></div></div>
+    <div class="aparelho" id="apAgenda"><div class="janela">
+      <iframe src="telas/agenda.html" style="height:2100px"></iframe></div>
+      <div class="anel" id="anel"></div><div class="toque" id="toque"></div></div>
+    <div class="aparelho" id="apClientes"><div class="janela">
+      <iframe src="telas/clientes.html" style="height:1560px"></iframe></div></div>
+
+    <div class="passos" id="passos">
+      <div class="passo-l"><b>1</b><span>Ela te acha no Google</span></div>
+      <div class="passo-l"><b>2</b><span>Vê seus preços escritos</span></div>
+      <div class="passo-l"><b>3</b><span>Escolhe o dia e o horário</span></div>
+    </div>
+    <div class="nota" id="nota">só os que cabem no seu dia</div>
+
+    <div class="aviso-zap" id="avisoZap">
+      <em><i></i>WhatsApp · agora</em>
+      <b>Sofia Berti</b>
+      <p>pediu 16 de outubro às 16:00 — Unhas em gel</p>
+    </div>
+
+    <div class="rotulo" id="rotulo"></div>
+
+    <div class="pronta" id="pronta">
+      Oi, Marina Souza! Aqui é a Carla Silva. Já deu 8 semanas desde a sua
+      última sessão de unhas em gel — quer marcar a manutenção? Me diz um dia
+      que eu te encaixo.
+      <i>já vem escrita · sai do seu número</i>
+    </div>
+  </section>
+
+  <!-- 9 · o fecho -------------------------------------------------------- -->
+  <section class="cena" id="c9">
+    <div class="fecho" id="fecho">
+      <svg class="simbolo" id="simbolo" viewBox="0 0 160 172" xmlns="http://www.w3.org/2000/svg">
+        <mask id="v"><path d="M20 26h30l30 80 30-80h30L80 152z" fill="#fff"
+          stroke="#fff" stroke-width="24" stroke-linejoin="round"/></mask>
+        <g mask="url(#v)">
+          <rect width="160" height="172" fill="#412e2a"/>
+          <path d="M0 62q80 26 160 0v110H0z" fill="#e8b4a0"/>
+        </g>
+      </svg>
+      <div class="marca-nome" id="fNome">Manicure de Valor</div>
+      <div class="frase" id="fFrase">Seu site e sua agenda.</div>
+      <div class="preco" id="fPreco">R$ 39,90 <small>por mês</small></div>
+      <div class="site" id="fSite">manicuredevalor.com.br</div>
     </div>
   </section>
 
@@ -212,15 +337,63 @@ const LEGENDAS = [
   [17.38, 20.10, "Até perceber que a Marina sumiu faz <b>dois meses</b>."],
   // a cena 4 não tem legenda: a frase já está grande na tela, e repetir
   // embaixo só rouba atenção do marcador
+  [23.55, 25.20, "Ela te acha no <b>Google</b>."],
+  [25.34, 27.00, "Vê seus <b>preços escritos</b>."],
+  [27.18, 31.00, "Escolhe o dia e o horário — <b>só os que cabem</b> no seu dia."],
+  [31.30, 34.14, "O pedido cai no seu <b>WhatsApp</b>. E na sua <b>agenda</b>."],
+  [34.50, 39.30, "As clientes de hoje, as dos próximos dias, e o <b>histórico</b> de cada uma."],
+  [39.50, 42.15, "As que você já atende entram em <b>dois minutos</b>."],
+  [42.60, 45.30, "Quando passa do tempo, <b>a agenda te avisa</b>."],
+  [45.46, 47.40, "A mensagem <b>já vem escrita</b>."],
+  [47.60, 49.92, "Você só toca e manda — <b>do seu número</b>."],
+  // a cena 9 também não tem: é cartela de marca, tudo já está escrito grande
 ];
+
+/* ------------------------------------------------- os aparelhos (5 a 8) */
+const TELAS = ["apSite", "apDia", "apHora", "apAgenda", "apClientes"];
+const passosL = [...document.querySelectorAll(".passo-l")];
+
+// Um lugar só para o celular nas quatro cenas: ele não dança pela tela, o
+// que muda é o que está dentro dele.
+for (const id of TELAS) { $(id).style.left = "280px"; $(id).style.top = "44px"; }
+
+function aparelho(id, opacidade, rolagem = 0) {
+  const el = $(id);
+  el.style.opacity = opacidade;
+  el.style.transform = `scale(1.05)`;
+  el.querySelector("iframe").style.transform = `translateY(${-Math.round(rolagem)}px)`;
+}
+const apagaTelas = () => TELAS.forEach(id => { $(id).style.opacity = 0; });
+
+// de coordenada da página para coordenada do aparelho
+const naTela = (x, y, rolagem) => ({ x: 20 + x, y: 22 + y - rolagem });
+
+function marcar(el, caixa, p) {
+  el.style.opacity = p;
+  if (!caixa) return;
+  el.style.left = caixa.x + "px"; el.style.top = caixa.y + "px";
+  if (caixa.w) { el.style.width = caixa.w + "px"; el.style.height = caixa.h + "px"; }
+  el.style.transform = `scale(${0.94 + p * 0.06})`;
+}
+
+// posições medidas na tela de verdade, não chutadas
+const SOFIA  = { x: 18, y: 243,  w: 354, h: 204 };
+const MARINA_C = { x: 18, y: 1435, w: 354, h: 136 };
+const BOTAO_MARINA = { x: 136, y: 1536 };
 
 /* -------------------------------------------------------------- desenho */
 function desenhar(t) {
   // qual cena está no ar
-  const c12 = t < 14.66, c3 = t >= 14.66 && t < 20.36, c4 = t >= 20.36;
+  const c12 = t < 14.66,
+        c3  = t >= 14.66 && t < 20.36,
+        c4  = t >= 20.36 && t < 23.40,
+        c58 = t >= 23.40 && t < 50.09,
+        c9  = t >= 50.09;
   $("c12").style.opacity = c12 ? 1 : 0;
   $("c3").style.opacity  = c3  ? 1 : 0;
   $("c4").style.opacity  = c4  ? 1 : 0;
+  $("c58").style.opacity = c58 ? 1 : 0;
+  $("c9").style.opacity  = c9  ? 1 : 0;
 
   /* ---- cena 1 e 2 */
   if (c12) {
@@ -300,6 +473,129 @@ function desenhar(t) {
     $("virada").style.transform = `translateY(${(1 - p) * 26}px)`;
     // o marcador passa exatamente quando ela diz a palavra
     $("tinta").style.width = (trecho(t, 22.68, 0.42) * 112) + "%";
+  }
+
+  /* ---- cenas 5 a 8 · o produto na mão */
+  if (c58) {
+    apagaTelas();
+
+    // 5 · o caminho da cliente ------------------------------------------
+    // o site rola até os preços; depois o celular troca para a tela de
+    // agendar, que já vem no passo certo
+    const entra = trecho(t, 23.50, 0.55);
+    const rolaPreco = trecho(t, 25.42, 0.95) * (2846 - 110);
+    const paraDia  = trecho(t, 27.94, 0.42);
+    const paraHora = trecho(t, 29.22, 0.42);
+
+    const paraAgenda = trecho(t, 33.42, 0.42);
+
+    if (t < 28.50) aparelho("apSite", entra * (1 - paraDia), rolaPreco);
+    if (t >= 27.80 && t < 29.80) aparelho("apDia", paraDia * (1 - paraHora));
+    // some junto com a entrada do painel, senão abre um vão de creme no meio
+    if (t >= 29.10 && t < 34.00) aparelho("apHora", paraHora * (1 - paraAgenda));
+
+    passosL.forEach((el, i) => {
+      const quando = [24.28, 25.42, 27.94][i];
+      const p = trecho(t, quando, 0.42) * (1 - trecho(t, 31.10, 0.4));
+      sobe(el, p, 18);
+    });
+
+    // 6 · o pedido chega -------------------------------------------------
+    const pz = trecho(t, 32.30, 0.42) * (1 - trecho(t, 34.30, 0.4));
+    sobe($("avisoZap"), pz, 26);
+    // o painel entra já com o pedido novo à mostra
+    if (t >= 33.30 && t < 39.60) {
+      const rolagem = 150
+        + trecho(t, 34.60, 1.0) * (478 - 110 - 150)      // até Hoje
+        + trecho(t, 36.95, 1.1) * (827 - 478);           // até Próximos dias
+      const saiParaClientes = trecho(t, 39.12, 0.42);
+      aparelho("apAgenda", paraAgenda * (1 - saiParaClientes), rolagem);
+      const sofia = naTela(SOFIA.x, SOFIA.y, 150);
+      marcar($("anel"),
+        { ...sofia, w: SOFIA.w, h: SOFIA.h },
+        trecho(t, 33.66, 0.34) * (1 - trecho(t, 35.00, 0.5)));
+    }
+
+    // 7 · a agenda por dentro --------------------------------------------
+    if (t >= 39.00 && t < 42.80) {
+      aparelho("apClientes",
+        trecho(t, 39.12, 0.42) * (1 - trecho(t, 42.58, 0.42)), 0);
+    }
+
+    const ROTULOS = [
+      [34.60, 36.80, "hoje", "quem você atende daqui a pouco"],
+      // "fora da sua cabeça" fecha com a cena 3, onde a agenda estava lá
+      [36.95, 39.00, "os próximos dias", "a semana inteira, fora da sua cabeça"],
+      [39.30, 42.20, "o histórico", "o que cada uma fez e quando"],
+      [42.70, 45.20, "hora de voltar", "quem passou do prazo aparece sozinha"],
+      // nada depois de 45.2: dali em diante o lado direito é da mensagem
+      // pronta, e rótulo ali nasce por trás dela
+    ];
+    const R = ROTULOS.find(([a, b]) => t >= a - 0.1 && t <= b + 0.3);
+    const rot = $("rotulo");
+    if (R) {
+      rot.innerHTML = R[2] + `<u>${R[3]}</u>`;
+      rot.style.top = "412px";
+      const p = Math.min(trecho(t, R[0], 0.38), 1 - trecho(t, R[1], 0.32));
+      sobe(rot, Math.max(0, p), 20);
+    } else {
+      rot.style.opacity = 0;
+    }
+
+    // A mesma tarja serve duas vezes, em momentos distantes: decide texto,
+    // lugar e opacidade num ponto só, para não sobrar estado da vez anterior.
+    const NOTAS = [
+      [29.90, 31.10, "só os que cabem no seu dia", 620],
+      [41.30, 42.30, "2 minutos para cadastrar",   640],
+    ];
+    const N = NOTAS.find(([a, b]) => t >= a - 0.1 && t <= b + 0.4);
+    const nota = $("nota");
+    if (N) {
+      nota.textContent = N[2];
+      nota.style.top = N[3] + "px";
+      const p = Math.min(trecho(t, N[0], 0.4), 1 - trecho(t, N[1], 0.36));
+      nota.style.opacity = Math.max(0, p);
+      nota.style.transform = `scale(${0.86 + Math.max(0, p) * 0.14})`;
+    } else {
+      nota.style.opacity = 0;
+    }
+
+    // 8 · o lembrete ------------------------------------------------------
+    if (t >= 42.40) {
+      const voltar = 1400 - 110;
+      aparelho("apAgenda", trecho(t, 42.58, 0.46), voltar);
+      const m = naTela(MARINA_C.x, MARINA_C.y, voltar);
+      marcar($("anel"), { ...m, w: MARINA_C.w, h: MARINA_C.h },
+        trecho(t, 44.46, 0.36));
+
+      // a mensagem pronta, com o texto que o produto escreve de verdade
+      sobe($("pronta"), trecho(t, 45.60, 0.5), 24);
+
+      // o dedo toca no botão que de fato existe no cartão
+      const pt = trecho(t, 48.20, 0.30);
+      const b = naTela(BOTAO_MARINA.x, BOTAO_MARINA.y, voltar);
+      const toq = $("toque");
+      toq.style.left = (b.x - 38) + "px";
+      toq.style.top = (b.y - 38) + "px";
+      // pulsa: cresce e some, como toque de dedo
+      const pulso = pt < 1 ? pt : 1 - trecho(t, 48.50, 0.45);
+      toq.style.opacity = Math.max(0, pulso);
+      toq.style.transform = `scale(${0.5 + trecho(t, 48.20, 0.75) * 1.3})`;
+    }
+  }
+
+  /* ---- cena 9 · o fecho */
+  if (c9) {
+    $("fecho").style.opacity = 1;
+    const ps = trecho(t, 50.30, 0.55);
+    $("simbolo").style.opacity = ps;
+    $("simbolo").style.transform = `scale(${0.82 + ps * 0.18})`;
+    sobe($("fNome"),  trecho(t, 50.86, 0.5), 18);
+    sobe($("fFrase"), trecho(t, 51.34, 0.5), 14);
+    const pp = trecho(t, 52.16, 0.5);
+    $("fPreco").style.opacity = pp;
+    $("fPreco").style.transform = `scale(${0.88 + pp * 0.12})`;
+    sobe($("fSite"), trecho(t, 54.10, 0.55), 14);
   }
 
   /* ---- legenda */

@@ -514,7 +514,9 @@ function cartaoPedido(a, chave, prof) {
 }
 
 function cartaoVoltar(v, chave, prof) {
-  const texto = `Oi, ${v.nome}! Aqui é a ${prof}. Já deu ${semanas(v.dias)} desde a sua última ${
+  // "sua última unhas em gel" não concorda. "sessão de X" serve para todos os
+  // nomes de serviço, que a profissional escreve como quiser.
+  const texto = `Oi, ${v.nome}! Aqui é a ${prof}. Já deu ${semanas(v.dias)} desde a sua última sessão de ${
     String(v.servico).toLowerCase()} — quer marcar a manutenção? Me diz um dia que eu te encaixo.`;
   const quanto = v.faltam <= 0
     ? `faz ${v.dias} dias · passou ${-v.faltam} do prazo`
