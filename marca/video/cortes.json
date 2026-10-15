@@ -1,0 +1,29 @@
+{
+  "_": "Fronteiras das nove falas na locucao-v1.mp3, no meio da pausa entre a última palavra de uma e a primeira da seguinte. Tempos vindos da transcrição com marcação por palavra (ElevenLabs Scribe), não estimados.",
+  "audio": "marca/video/locucao-v1.mp3",
+  "duracao": 55.48,
+  "cenas": [
+    { "n": 1, "ini": 0.00,  "fim": 4.33,  "fala": "Terça-feira. Sete mensagens perguntando preço e horário." },
+    { "n": 2, "ini": 4.33,  "fim": 14.66, "fala": "Quanto é a unha em gel? Tem sábado? Você vem no Água Verde? Você responde à noite, entre uma cliente e outra — e quando responde, ela já marcou com outra." },
+    { "n": 3, "ini": 14.66, "fim": 20.36, "fala": "A agenda você guarda de cabeça. Até perceber que a Marina sumiu faz dois meses." },
+    { "n": 4, "ini": 20.36, "fim": 23.40, "fala": "No Manicure de Valor, a cliente marca sozinha." },
+    { "n": 5, "ini": 23.40, "fim": 31.19, "fala": "Ela te acha no Google. Vê seus preços escritos. Escolhe o dia e o horário — só os que cabem de verdade no seu dia." },
+    { "n": 6, "ini": 31.19, "fim": 34.32, "fala": "O pedido cai no seu WhatsApp. E na sua agenda." },
+    { "n": 7, "ini": 34.32, "fim": 42.35, "fala": "Lá estão as clientes de hoje, as dos próximos dias, e o histórico de cada uma. As que você já atende entram em dois minutos." },
+    { "n": 8, "ini": 42.35, "fim": 50.09, "fala": "E quando passa do tempo, a agenda te avisa. A mensagem já vem escrita. Você só toca e manda — do seu número." },
+    { "n": 9, "ini": 50.09, "fim": 55.48, "fala": "Seu site e sua agenda. Trinta e nove e noventa por mês. Manicure de Valor." }
+  ],
+  "marcos": {
+    "_": "Palavras-chave para a animação bater no instante certo.",
+    "sozinha": 22.68,
+    "Google": 24.28,
+    "precos": 25.42,
+    "horario": 27.94,
+    "WhatsApp": 32.38,
+    "agenda": 33.70,
+    "dois_minutos": 41.34,
+    "avisa": 44.50,
+    "preco_falado": 52.22,
+    "marca_falada": 54.22
+  }
+}
