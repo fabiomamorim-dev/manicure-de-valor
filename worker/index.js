@@ -296,12 +296,14 @@ function voltaAoPainel(url, aviso) {
 }
 
 async function painel(request, env, slug, url) {
+  // O banco vem antes do link: sem ele não existe nem token para conferir, e
+  // "link inválido" mandaria ela procurar um problema que não é dela.
+  if (!env.DB) {
+    return pagina("Agenda", `<p class="vazio">O banco de dados ainda não foi ligado.</p>`, 500);
+  }
   if (!(await autorizado(env, slug, url))) {
     return pagina("Link inválido", `<p class="vazio">Esse link não abre esta agenda.
       Peça o link certo para quem montou seu site.</p>`, 403);
-  }
-  if (!env.DB) {
-    return pagina("Agenda", `<p class="vazio">O banco de dados ainda não foi ligado.</p>`, 500);
   }
 
   const cfg = await config(env, slug, url);
@@ -531,25 +533,29 @@ function botao(chave, id, acao, rotulo) {
 
 /* ------------------------------------------------------------------ apoio */
 
-// O link do painel é HMAC do slug com um segredo do Worker: nada para guardar,
-// e o link de uma profissional não abre o painel de outra.
+// O link do painel carrega o token da profissional, que vive no banco. O
+// token de uma não abre o painel de outra porque a linha guarda o slug junto.
+//
+// Era um HMAC de um segredo único do Worker. Trocado porque alguém tinha que
+// guardar a frase para sempre, e porque trocá-la derrubaria o link de todas
+// de uma vez — com uma linha por pessoa, revogar o de uma é apagar a linha.
 async function autorizado(env, slug, url) {
   const chave = url.searchParams.get("k") || "";
-  if (!env.PAINEL_SEGREDO || !chave) return false;
-  const esperado = await token(slug, env.PAINEL_SEGREDO);
-  if (chave.length !== esperado.length) return false;
-  let iguais = 0;
-  for (let i = 0; i < esperado.length; i++) iguais |= chave.charCodeAt(i) ^ esperado.charCodeAt(i);
-  return iguais === 0;
-}
+  if (!env.DB || !chave || chave.length < 20 || chave.length > 80) return false;
 
-async function token(slug, segredo) {
-  const cripto = crypto.subtle;
-  const chave = await cripto.importKey("raw", new TextEncoder().encode(segredo),
-    { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
-  const assinatura = await cripto.sign("HMAC", chave, new TextEncoder().encode(slug));
-  return [...new Uint8Array(assinatura)].slice(0, 12)
-    .map(b => b.toString(16).padStart(2, "0")).join("");
+  const { results } = await env.DB.prepare(
+    `SELECT slug FROM profissionais WHERE token = ? LIMIT 1`
+  ).bind(chave).all();
+
+  const dono = results && results[0] && results[0].slug;
+  if (!dono) return false;
+
+  // Comparação de tempo constante no slug: o token já veio do índice, mas o
+  // dono não pode ser confirmado por um != que vaza na primeira letra.
+  if (dono.length !== slug.length) return false;
+  let iguais = 0;
+  for (let i = 0; i < dono.length; i++) iguais |= dono.charCodeAt(i) ^ slug.charCodeAt(i);
+  return iguais === 0;
 }
 
 const esc = t => String(t ?? "").replace(/[&<>"]/g, c =>

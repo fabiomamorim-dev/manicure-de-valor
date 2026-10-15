@@ -24,13 +24,9 @@ zone_name = "manicuredevalor.com.br"
 # Banco dos pedidos, usado pelo painel de manutencao. Criado em 10/10/2026, com
 # a tabela do db/schema.sql ja rodada.
 #
-# Falta o segredo que assina os links do painel. Sem ele o site e a gravacao do
-# pedido funcionam igual; so o /painel responde 403:
-#
-#   npx wrangler secret put PAINEL_SEGREDO
-#
-# ou no painel da Cloudflare, em Workers & Pages > manicure-de-valor >
-# Settings > Variables and Secrets > Add > tipo Secret.
+# O link da agenda de cada profissional sai de
+#   node scripts/link-painel.mjs <slug>
+# que imprime o SQL para rodar no console do D1. Nao existe secret a guardar.
 
 [[d1_databases]]
 binding = "DB"

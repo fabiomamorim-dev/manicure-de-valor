@@ -6,7 +6,6 @@
 // Precisa de node 22.5 ou mais novo (por causa do node:sqlite).
 
 import { readFileSync } from "node:fs";
-import { createHmac } from "node:crypto";
 
 let DatabaseSync;
 try {
@@ -31,7 +30,6 @@ const worker = (await import(
 
 const { normFone, foneValido, livresNoDia, sobramHoje, hojeSP, somaDias } = agenda;
 
-const SEGREDO = "segredo-de-teste";
 const SITE = "https://carlasilva.manicuredevalor.com.br";
 
 const db = new DatabaseSync(":memory:");
@@ -75,8 +73,17 @@ const ASSETS = {
   },
 };
 
-const env = { ASSETS, DB, PAINEL_SEGREDO: SEGREDO };
-const chave = createHmac("sha256", SEGREDO).update("carlasilva").digest("hex").slice(0, 24);
+const env = { ASSETS, DB };
+
+// O link da agenda é um token por profissional, guardado no banco.
+const poeToken = (slug, token) => db.prepare(
+  `INSERT INTO profissionais (slug, token, criado_em) VALUES (?, ?, datetime('now'))`
+).run(slug, token);
+
+const chave = "a".repeat(16) + "1234567890abcdef";
+const chaveOutra = "b".repeat(16) + "1234567890abcdef";
+poeToken("carlasilva", chave);
+poeToken("mariasouza", chaveOutra);
 
 let falhas = 0;
 const ok = (cond, oque) => {
@@ -183,9 +190,10 @@ ok(html.includes("Pedidos novos"), "separa os pedidos novos");
 ok(html.includes('name="robots" content="noindex"'), "pede para o google não indexar");
 ok(html.includes("Lançar atendimento"), "tem a entrada manual");
 
-r = await worker.fetch(new Request(`${SITE}/painel?k=erradoerradoerrado1234`), env);
-ok(r.status === 403, "recusa link errado");
-const chaveOutra = createHmac("sha256", SEGREDO).update("mariasouza").digest("hex").slice(0, 24);
+r = await worker.fetch(new Request(`${SITE}/painel?k=erradoerradoerradoerrado1234`), env);
+ok(r.status === 403, "recusa token que não existe");
+r = await worker.fetch(new Request(`${SITE}/painel`), env);
+ok(r.status === 403, "recusa sem token");
 r = await worker.fetch(new Request(`${SITE}/painel?k=${chaveOutra}`), env);
 ok(r.status === 403, "link de uma profissional não abre a agenda de outra");
 

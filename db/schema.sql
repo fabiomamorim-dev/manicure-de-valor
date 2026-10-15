@@ -12,6 +12,22 @@
 -- Nunca chegou a ter dado real: foi criada e substituída no mesmo dia.
 DROP TABLE IF EXISTS pedidos;
 
+-- Quem abre o painel. O link privado de cada profissional é o token daqui:
+--
+--   https://<slug>.manicuredevalor.com.br/painel?k=<token>
+--
+-- Antes isso era um HMAC de um segredo único do Worker, e tinha dois
+-- problemas: alguém precisava guardar a frase para sempre, e trocá-la um dia
+-- derrubaria o link de todas as profissionais de uma vez. Com um token por
+-- pessoa, revogar o de uma é apagar uma linha.
+CREATE TABLE IF NOT EXISTS profissionais (
+  slug       TEXT NOT NULL PRIMARY KEY,
+  token      TEXT NOT NULL,
+  criado_em  TEXT NOT NULL
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS profissionais_por_token ON profissionais (token);
+
 CREATE TABLE IF NOT EXISTS clientes (
   id         INTEGER PRIMARY KEY AUTOINCREMENT,
   slug       TEXT    NOT NULL,            -- de qual profissional é essa cliente

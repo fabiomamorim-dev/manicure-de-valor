@@ -56,11 +56,12 @@ pior que um link secreto bem feito.
 
 O que isso exige:
 
-- O link é assinado com `PAINEL_SEGREDO`, que fica só no Worker. Sem o segredo
+- O link carrega um token aleatório que vive no banco, um por profissional. Sem ele
   não dá para adivinhar o link de ninguém.
 - O painel pede para o Google não indexar (`noindex`), mas o que protege de
   verdade é o segredo, não a meta tag.
-- Se um link vazar, troque o `PAINEL_SEGREDO` — todos os links mudam de uma vez
+- Se um link vazar, rode `node scripts/link-painel.mjs <slug>` de novo: troca o token
+  dela e derruba o link antigo, sem mexer no das outras
   e você gera os novos com `scripts/link-painel.mjs`.
 - Oriente a profissional a salvar o link na tela de início e não mandar em
   grupo.

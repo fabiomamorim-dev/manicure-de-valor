@@ -274,19 +274,22 @@ simplesmente não acontece.
 # cole o database_id no wrangler.toml e descomente o bloco [[d1_databases]]
 
 npx wrangler d1 execute manicure-de-valor --remote --file=db/schema.sql
-npx wrangler secret put PAINEL_SEGREDO   # invente uma frase longa e guarde
 npx wrangler deploy
 ```
 
 ### Link de uma profissional
 
 ```bash
-PAINEL_SEGREDO="a mesma frase" node scripts/link-painel.mjs carlasilva
+node scripts/link-painel.mjs carlasilva
 ```
 
-Sai o link com a assinatura dela. Esse link é a senha: mande pela conversa
-dela e peça para salvar na tela de início do celular. Trocar o
-`PAINEL_SEGREDO` invalida todos os links de uma vez.
+Sai um token novo, o SQL para gravá-lo no banco e o link pronto. Esse link é
+a senha: mande pela conversa dela e peça para salvar na tela de início do
+celular.
+
+Não existe segredo para guardar. Rodar o comando de novo troca o token daquela
+profissional e derruba o link antigo — só o dela. É assim que se revoga, se ela
+perder o celular ou parar de ser cliente.
 
 ### O que ela vê
 
@@ -349,7 +352,7 @@ repositório (Settings → Secrets and variables → Actions):
 | `CLOUDFLARE_API_TOKEN` | painel da Cloudflare → API Tokens → template "Edit Cloudflare Workers", mais D1:Edit e Zone DNS:Edit, limitado à zona manicuredevalor.com.br |
 | `CLOUDFLARE_ACCOUNT_ID` | `npx wrangler whoami`, ou a coluna da direita na página de Workers |
 
-O `PAINEL_SEGREDO` não entra aqui: ele é secret do Worker
+O token do painel não entra aqui: ele vive no banco
 (`npx wrangler secret put`), não do GitHub, e o deploy não mexe nele.
 
 Para publicar do seu computador, sem Actions:
