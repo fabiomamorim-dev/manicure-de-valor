@@ -243,7 +243,7 @@ body.travado{overflow:hidden}
   <span class="mark">__NOME__<i>.</i><small id="profissao">Manicure</small></span>
   <div class="top-acts">
     <a class="ig" id="ig" href="#" target="_blank" rel="noopener" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg><span id="igNome"></span></a>
-    <button class="b-pop" data-open>Agendar</button>
+    <a class="btn b-pop" href="/agendar">Agendar</a>
   </div>
 </div></div>
 
@@ -252,7 +252,7 @@ body.travado{overflow:hidden}
   <p id="heroP"></p>
   <div class="proof" id="proof" hidden></div>
   <div class="hero-cta">
-    <button class="b-pop b-xl" data-open>Agendar horário</button>
+    <a class="btn b-pop b-xl" href="/agendar">Agendar horário</a>
     <a class="btn b-line b-xl" href="#trabalhos">Ver trabalhos</a>
   </div>
   <div class="hero-photo"></div>
@@ -323,35 +323,15 @@ body.travado{overflow:hidden}
   <div class="end">
     <h2>Vamos marcar?</h2>
     <p>Escolhe o dia e o horário. Eu confirmo pelo WhatsApp.</p>
-    <button class="b-milk b-xl" data-open>Agendar horário</button>
+    <a class="btn b-milk b-xl" href="/agendar">Agendar horário</a>
   </div>
 </section>
 
 <footer>__NOME__ · <span id="profissaoPe">Manicure</span> · 2026</footer>
 
-<button class="zap" data-open aria-label="Agendar pelo WhatsApp">
+<a class="zap" href="/agendar" aria-label="Agendar horário">
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.14-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.87 1.22 3.07.15.2 2.1 3.2 5.08 4.49.7.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.42-.08-.12-.27-.2-.57-.35M12.05 21.78h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.89 9.89-9.89 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.89-9.88 9.89M20.46 3.49A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.69 1.45c6.55 0 11.89-5.34 11.89-11.89a11.82 11.82 0 0 0-3.48-8.42Z"/></svg>
-</button>
-
-<div class="veil" id="veil">
-  <div class="card" role="dialog" aria-modal="true" aria-labelledby="ct">
-    <h3 id="ct">Agendar</h3>
-    <p>Preenche aqui e envia. A conversa abre no WhatsApp já com tudo escrito.</p>
-    <div class="f"><label for="fServico">Serviço</label><select id="fServico"></select><p class="bad" id="eServico">Escolhe um serviço.</p></div>
-    <div class="f"><label for="fData">Data</label><input type="date" id="fData"><p class="dica" id="dicaDias"></p><p class="bad" id="eData">Escolhe uma data.</p></div>
-    <div class="f"><label for="fHora">Horário</label><select id="fHora"></select><p class="bad" id="eHora">Escolhe um horário.</p></div>
-    <div class="f" id="wrapOnde" hidden><label for="fOnde">Onde você prefere</label><select id="fOnde"><option value="">Selecione</option><option value="vou">Prefiro que você venha até mim</option><option value="recebo">Prefiro ir até você</option></select><p class="bad" id="eOnde">Escolhe uma das duas.</p></div>
-    <div class="f" id="wrapBairro"><label for="fBairro">Bairro</label><select id="fBairro"></select><p class="bad" id="eBairro">Escolhe o bairro.</p></div>
-    <div class="f"><label for="fNome">Seu nome</label><input type="text" id="fNome" placeholder="Maria Souza"><p class="bad" id="eNome">Escreve seu nome.</p></div>
-    <div class="f"><label for="fFone">Seu WhatsApp</label><input type="tel" id="fFone" placeholder="(41) 93500-0852" inputmode="tel"><p class="bad" id="eFone">Confere o número — precisa do DDD, como (41) 93500-0852.</p></div>
-    <p class="mini">Seus dados v&#227;o s&#243; para <b>__NOME__</b>, para confirmar o hor&#225;rio e lembrar da sua manuten&#231;&#227;o.</p>
-    <div class="acts"><button class="b-line" data-close>Cancelar</button><button class="b-pop" id="enviar">Enviar</button></div>
-    <div class="saida" id="saida" hidden>
-      <p>Seu pedido está pronto. O navegador não abriu o WhatsApp sozinho — toque no botão abaixo.</p>
-      <a class="btn b-pop" id="linkZap" href="#" target="_blank" rel="noopener">Abrir a conversa</a>
-    </div>
-  </div>
-</div>
+</a>
 
 <script>
 const CONFIG = __DADOS__;
@@ -459,110 +439,8 @@ $('higP').textContent  = T.higieneTexto;
 $('precos').innerHTML = CONFIG.servicos.map(s =>
   `<div class="price">
      <div class="price-info"><h3>${esc(s.nome)}</h3><p>${esc(s.desc)}</p></div>
-     <div class="price-right"><b>${esc(s.preco)}</b><button class="b-mini" data-open data-servico="${esc(s.nome)}">Agendar</button></div>
+     <div class="price-right"><b>${esc(s.preco)}</b><a class="b-mini btn" href="/agendar?servico=${encodeURIComponent(s.nome)}">Agendar</a></div>
    </div>`).join('');
-// A duração viaja junto com o serviço: é ela que diz quanto tempo da agenda
-// dela aquele atendimento ocupa. Sem isso, um "manicure + pedicure" de duas
-// horas bloquearia só um horário e a cliente seguinte cairia em cima.
-$('fServico').innerHTML = '<option value="">Selecione</option>' +
-  CONFIG.servicos.map(s=>`<option value="${esc(s.nome)}" data-duracao="${Number(s.duracao)||60}">${esc(s.nome)}</option>`).join('');
-
-const duracaoDoServico = nome => {
-  const s = (CONFIG.servicos || []).find(s => s.nome === nome);
-  return (s && Number(s.duracao)) || 60;
-};
-$('fHora').innerHTML = '<option value="">Selecione</option>' + CONFIG.horarios.map(h=>`<option>${h}</option>`).join('');
-
-/* ---- dias que ela atende e horarios ainda possiveis ----------------------
-   new Date('2026-10-11') e lido como UTC: em Brasilia volta o dia anterior e
-   o getDay() erra. Por isso a data do input e quebrada na mao.             */
-const SIGLAS  = ['dom','seg','ter','qua','qui','sex','sab'];
-const POR_EXT = ['domingo','segunda','terça','quarta','quinta','sexta','sábado'];
-
-const DIAS = Array.isArray(CONFIG.diasQueAtende) && CONFIG.diasQueAtende.length
-  ? CONFIG.diasQueAtende.map(d => String(d).toLowerCase().slice(0,3))
-  : SIGLAS;                        // sem o campo, segue atendendo todo dia
-const ANTEC = Number(CONFIG.antecedenciaHoras) >= 0 ? Number(CONFIG.antecedenciaHoras) : 2;
-
-const dataLocal = iso => { const [a,m,d] = iso.split('-').map(Number); return new Date(a, m-1, d); };
-const atendeNo  = iso => DIAS.includes(SIGLAS[dataLocal(iso).getDay()]);
-const ehHoje    = iso => iso === new Date(Date.now() - new Date().getTimezoneOffset()*6e4)
-                                  .toISOString().slice(0,10);
-
-if (DIAS.length < 7) {
-  const nomes = SIGLAS.map((s,i) => DIAS.includes(s) ? POR_EXT[i] : null).filter(Boolean);
-  $('dicaDias').textContent = 'Atendo ' +
-    (nomes.length > 1 ? nomes.slice(0,-1).join(', ') + ' e ' + nomes.at(-1) : nomes[0]) + '.';
-}
-
-// Horarios ainda possiveis para a data escolhida. Hoje as 18h, ninguem
-// consegue atender as 9h — e a manicure ainda precisa se deslocar.
-function horariosPara(iso){
-  if (!iso || !ehHoje(iso)) return CONFIG.horarios;
-  const limite = new Date(Date.now() + ANTEC*36e5);
-  const corte  = limite.getHours()*60 + limite.getMinutes();
-  return CONFIG.horarios.filter(h => {
-    const [hh,mm] = h.split(':').map(Number);
-    return hh*60 + mm >= corte;
-  });
-}
-
-// O que está na tela agora. A validação do envio confere contra isto, e nao
-// contra a lista fixa: o que vale é o que ela podia escolher.
-let LIVRES = CONFIG.horarios.slice();
-let consulta = 0;
-
-function mostrarHorarios(livres){
-  const anterior = $('fHora').value;
-  LIVRES = livres;
-  $('fHora').innerHTML = (livres.length
-    ? '<option value="">Selecione</option>' + livres.map(h=>`<option>${h}</option>`).join('')
-    : '<option value="">Sem horário para esse dia</option>');
-  if (livres.includes(anterior)) $('fHora').value = anterior;
-  $('fHora').disabled = livres.length === 0;
-}
-
-function atualizarHorarios(){
-  const iso = $('fData').value;
-  mostrarHorarios(iso ? horariosPara(iso) : CONFIG.horarios);
-  if (!iso) return;
-
-  // Pergunta para a agenda dela o que de fato está livre. A lista local já
-  // está na tela enquanto a resposta nao chega — e se nao chegar, continua
-  // valendo. Melhor oferecer um horario que ela vai ter que remarcar do que
-  // deixar a cliente sem conseguir marcar nada.
-  const minha = ++consulta;
-  const dur = duracaoDoServico($('fServico').value);
-  fetch('/api/horarios?data=' + encodeURIComponent(iso) + '&duracao=' + dur)
-    .then(r => r.json())
-    .then(d => {
-      if (minha !== consulta) return;   // resposta atrasada de uma data antiga
-      if (d && d.ok && Array.isArray(d.horarios)) mostrarHorarios(d.horarios);
-    })
-    .catch(()=>{});
-}
-
-$('fData').addEventListener('change', () => {
-  const iso = $('fData').value;
-  const erro = $('eData');
-
-  if (iso && !atendeNo(iso)) {
-    erro.textContent = 'Nesse dia eu não atendo.';
-    erro.classList.add('on');
-  } else if (iso && ehHoje(iso) && horariosPara(iso).length === 0) {
-    erro.textContent = 'Para hoje já não dá mais. Escolhe outro dia.';
-    erro.classList.add('on');
-  } else {
-    erro.textContent = 'Escolhe uma data.';
-    erro.classList.remove('on');
-  }
-  atualizarHorarios();
-});
-
-// Trocar de serviço muda a duração, e a duração muda o que cabe no dia: um
-// combinado de duas horas nao entra num vao de uma.
-$('fServico').addEventListener('change', atualizarHorarios);
-
 const F = CONFIG.fotos || {};
 if (F.capa) {
   document.querySelector('.hero-photo').innerHTML =
@@ -685,177 +563,6 @@ if ('IntersectionObserver' in window) {
   document.head.appendChild(tag);
 })();
 
-const d = new Date(); d.setDate(d.getDate() + CONFIG.diasDeAntecedencia);
-$('fData').min = d.toISOString().slice(0,10);
-
-/* O bairro so faz sentido quando ela se desloca. No modo hibrido quem decide
-   e a cliente, entao o campo aparece depois da escolha — e some junto com ela
-   se a cliente preferir ir ate o espaco.                                   */
-const TEM_BAIRROS = CONFIG.pedirBairro && Array.isArray(CONFIG.bairros) && CONFIG.bairros.length;
-const PEDE_BAIRRO = VAI && TEM_BAIRROS;
-
-if (PEDE_BAIRRO) {
-  $('fBairro').innerHTML = '<option value="">Selecione</option>' +
-    CONFIG.bairros.map(b => `<option>${esc(b)}</option>`).join('');
-}
-
-if (MODO === 'ambos') {
-  $('wrapOnde').hidden = false;
-  $('wrapBairro').hidden = true;          // so aparece se ela escolher receber em casa
-  $('fOnde').addEventListener('change', () => {
-    const emCasa = $('fOnde').value === 'vou';
-    $('wrapBairro').hidden = !(emCasa && PEDE_BAIRRO);
-    $('eOnde').classList.remove('on');
-  });
-} else if (!PEDE_BAIRRO) {
-  $('wrapBairro').hidden = true;
-}
-
-const veil = $('veil');
-let quemAbriu = null;
-
-const focaveis = () => [...veil.querySelectorAll('select,input,button,a[href]')]
-  .filter(e => !e.disabled && e.offsetParent !== null);
-
-document.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>{
-  if (b.dataset.servico) {
-    $('fServico').value = b.dataset.servico;
-    $('eServico').classList.remove('on');
-  }
-  quemAbriu = b;
-  veil.classList.add('on');
-  document.body.classList.add('travado');   // a pagina atras para de rolar
-  veil.scrollTop = 0;
-  const primeiro = focaveis()[0];
-  if (primeiro) primeiro.focus();
-}));
-
-document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',off));
-veil.addEventListener('click',e=>{ if(e.target===veil) off(); });
-
-document.addEventListener('keydown',e=>{
-  if (!veil.classList.contains('on')) return;
-  if (e.key === 'Escape') { off(); return; }
-  // Prende o Tab dentro do formulario: sem isso o foco sai para a pagina de
-  // tras, que o leitor de tela continua anunciando.
-  if (e.key === 'Tab') {
-    const lista = focaveis();
-    if (!lista.length) return;
-    const primeiro = lista[0], ultimo = lista[lista.length-1];
-    if (e.shiftKey && document.activeElement === primeiro) { e.preventDefault(); ultimo.focus(); }
-    else if (!e.shiftKey && document.activeElement === ultimo) { e.preventDefault(); primeiro.focus(); }
-  }
-});
-
-function off(){
-  veil.classList.remove('on');
-  document.body.classList.remove('travado');
-  esconderSaida();
-  if (quemAbriu) { quemAbriu.focus(); quemAbriu = null; }
-}
-
-/* ---- telefone ------------------------------------------------------------
-   Formata enquanto digita e exige um numero plausivel: DDD valido (11 a 99)
-   e 8 ou 9 digitos. Antes passava qualquer sequencia de dez numeros, e um
-   telefone errado vira um pedido que ela nao consegue responder.           */
-function mascaraFone(v){
-  const d = v.replace(/\D/g,'').slice(0,11);
-  if (d.length <= 2)  return d;
-  if (d.length <= 6)  return `(${d.slice(0,2)}) ${d.slice(2)}`;
-  if (d.length <= 10) return `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`;
-  return `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`;
-}
-function foneValido(v){
-  const d = v.replace(/\D/g,'');
-  if (d.length !== 10 && d.length !== 11) return false;
-  if (Number(d.slice(0,2)) < 11) return false;              // nao existe DDD abaixo de 11
-  if (d.length === 11 && d[2] !== '9') return false;        // celular comeca com 9
-  if (/^(\d)\1+$/.test(d.slice(2))) return false;           // 99999999999
-  return true;
-}
-$('fFone').addEventListener('input', e => {
-  const fim = e.target.selectionStart === e.target.value.length;
-  e.target.value = mascaraFone(e.target.value);
-  if (fim) e.target.setSelectionRange(e.target.value.length, e.target.value.length);
-});
-
-// fData fica de fora: tem tratamento proprio no 'change', e o 'input'
-// generico apagaria a mensagem de "nesse dia eu nao atendo".
-['fServico','fHora','fBairro','fNome','fFone','fOnde'].forEach(id=>{
-  const el=$(id); if(!el) return;
-  el.addEventListener('input',()=>{ const b=$('e'+id.slice(1)); if(b) b.classList.remove('on'); });
-});
-
-function extenso(iso){
-  const [,m,dd]=iso.split('-');
-  const M=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
-  return `${Number(dd)} de ${M[Number(m)-1]}`;
-}
-
-$('enviar').addEventListener('click',()=>{
-  let ok=true; const ruim=i=>{ $(i).classList.add('on'); ok=false; };
-  const servico=$('fServico').value, data=$('fData').value, hora=$('fHora').value;
-  const nome=$('fNome').value.trim(), fone=$('fFone').value.trim();
-  const onde   = MODO === 'ambos' ? $('fOnde').value : (VAI ? 'vou' : 'recebo');
-  const pedeBairroAgora = PEDE_BAIRRO && onde === 'vou';
-  const bairro = pedeBairroAgora ? $('fBairro').value : '';
-
-  if(!servico) ruim('eServico');
-  if(!data) {
-    $('eData').textContent = 'Escolhe uma data.';
-    ruim('eData');
-  } else if(!atendeNo(data)) {
-    $('eData').textContent = 'Nesse dia eu não atendo.';
-    ruim('eData');
-  } else if(!LIVRES.includes(hora) && hora) {
-    $('eHora').textContent = 'Esse horário já passou. Escolhe outro.';
-    ruim('eHora');
-  }
-  if(!hora) ruim('eHora');
-  if(MODO === 'ambos' && !onde) ruim('eOnde');
-  if(pedeBairroAgora && !bairro) ruim('eBairro');
-  if(!nome) ruim('eNome');
-  if(!foneValido(fone)) ruim('eFone');
-  if(!ok) return;
-
-  const t=[`Oi, ${CONFIG.profissional}! Quero agendar pelo site:`,'',
-           `Serviço: ${servico}`,`Data: ${extenso(data)}`,`Horário: ${hora}`];
-  if (MODO === 'ambos') {
-    t.push(onde === 'vou' ? 'Local: na minha casa' : 'Local: no seu espaço');
-  }
-  if (bairro) t.push(`Bairro: ${bairro}`);
-  t.push('',`Meu nome: ${nome}`,`Meu WhatsApp: ${fone}`);
-
-  // Registra o pedido na agenda dela. Nao espera resposta: se o banco estiver
-  // fora, a conversa no WhatsApp abre do mesmo jeito.
-  try {
-    fetch('/api/pedido', {
-      method: 'POST',
-      keepalive: true,
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ nome, fone, servico, data, hora, bairro, onde,
-                             duracao: duracaoDoServico(servico) })
-    }).catch(() => {});
-  } catch (e) {}
-
-  const link = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(t.join('\n'))}`;
-
-  // Navegador embutido (Instagram, Facebook) costuma barrar janela nova. Se
-  // barrar, o modal nao pode simplesmente fechar: ela preencheu tudo e ficaria
-  // achando que o site nao funciona.
-  const aba = window.open(link, '_blank');
-  if (aba) { off(); return; }
-
-  $('linkZap').href = link;
-  $('saida').hidden = false;
-  $('enviar').textContent = 'Reenviar';
-  $('linkZap').focus();
-});
-
-function esconderSaida(){
-  $('saida').hidden = true;
-  $('enviar').textContent = 'Enviar';
-}
 </script>
 </body>
 </html>

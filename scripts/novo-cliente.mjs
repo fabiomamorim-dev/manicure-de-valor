@@ -260,6 +260,21 @@ const html = readFileSync(join("template", "index.html"), "utf8")
 
 writeFileSync(join(pasta, "index.html"), html);
 
+// A página de agendamento mora em /agendar, com endereço próprio: dá para
+// mandar "marca aqui" direto na conversa, o botão voltar do celular funciona,
+// e cabe o passo a passo. Mesmos dados, mesmo tema.
+const agendar = readFileSync(join("template", "agendar.html"), "utf8")
+  .replaceAll("__DADOS__", JSON.stringify(dados, null, 2))
+  .replaceAll("__NOME__", dados.profissional)
+  .replaceAll("__TEMA__", tema)
+  .replaceAll("__DESC__", attr(descricao))
+  .replaceAll("__FAVICON__", favicon)
+  .replaceAll("__FONTES__", `<link href="${TEMAS[tema].fontes}" rel="stylesheet">`);
+
+mkdirSync(join(pasta, "agendar"), { recursive: true });
+writeFileSync(join(pasta, "agendar", "index.html"), agendar);
+
 console.log(`Pronto: ${join(pasta, "index.html")} — tema ${tema}`);
+console.log(`        ${join(pasta, "agendar", "index.html")}`);
 console.log(`Prévia local:  npx wrangler dev`);
 console.log(`No ar:         https://${slug}.manicuredevalor.com.br`);

@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="pt-BR" data-tema="soft">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Agendar com Carla Silva</title>
+<meta name="description" content="Manicure e pedicure em domicílio com Carla Silva. Atendo Centro, Vila Mariana, Pinheiros e região. Escolha o horário pelo site.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23c05267%22%2F%3E%3Ctext%20x%3D%2232%22%20y%3D%2245%22%20text-anchor%3D%22middle%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2238%22%20fill%3D%22%23fdf7f4%22%3EC%3C%2Ftext%3E%3C%2Fsvg%3E" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* tema pop — o padrao */
+  --milk:#fff7f2;
+  --ink:#171110;
+  --pop:#e02e49;
+  --pop-dark:#bd2b41;
+  --butter:#f5cd67;
+  --blush:#fbe0d6;
+  --muted:#866d65;
+  --line:#efe0d7;
+  --fonte-titulo:'Bricolage Grotesque',system-ui,sans-serif;
+  --fonte-texto:'Instrument Sans',system-ui,sans-serif;
+  --peso-titulo:800;
+  --peso-medio:500;
+  --ls-titulo:-.035em;
+}
+html[data-tema="clean"]{
+  --milk:#f8f2ee; --ink:#24191a; --pop:#b83d55; --pop-dark:#94293f;
+  --butter:#c9a46a; --blush:#efe0d8; --muted:#826a62; --line:#e6d7cd;
+  --fonte-titulo:'DM Serif Display',Georgia,serif;
+  --fonte-texto:'DM Sans',system-ui,sans-serif;
+  --peso-titulo:400; --peso-medio:400; --ls-titulo:-.015em;
+}
+html[data-tema="soft"]{
+  --milk:#fdf7f4; --ink:#3b2a26; --pop:#c05267; --pop-dark:#a03e52;
+  --butter:#e8b4a0; --blush:#f7e4dc; --muted:#846d66; --line:#eddcd4;
+  --fonte-titulo:'Fraunces',Georgia,serif;
+  --fonte-texto:'Manrope',system-ui,sans-serif;
+  --peso-titulo:600; --peso-medio:500; --ls-titulo:-.01em;
+}
+html[data-tema="minimal"]{
+  --milk:#faf7f4; --ink:#14110f; --pop:#8a6a52; --pop-dark:#6d523e;
+  --butter:#d9c3a5; --blush:#efe7df; --muted:#7d6f66; --line:#e6dcd3;
+  --fonte-titulo:'Instrument Serif',Georgia,serif;
+  --fonte-texto:'Instrument Sans',system-ui,sans-serif;
+  --peso-titulo:400; --peso-medio:400; --ls-titulo:-.01em;
+}
+html[data-tema="glam"]{
+  --milk:#fbf0f1; --ink:#2a1016; --pop:#a4123c; --pop-dark:#7d0d2e;
+  --butter:#d9b26a; --blush:#f6dfe2; --muted:#87666c; --line:#ecd8dc;
+  --fonte-titulo:'Playfair Display',Georgia,serif;
+  --fonte-texto:'Manrope',system-ui,sans-serif;
+  --peso-titulo:700; --peso-medio:500; --ls-titulo:-.02em;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+/* Classe com display explícito vence o atributo hidden do navegador. Sem
+   isso, botão escondido aparece — e foi o que aconteceu com o "Abrir a
+   conversa" na primeira versão desta página. */
+[hidden]{display:none !important}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--milk);color:var(--ink);font-family:var(--fonte-texto);
+     font-size:17px;line-height:1.5;min-height:100dvh;display:flex;flex-direction:column}
+h1{font-family:var(--fonte-titulo);font-weight:var(--peso-titulo);
+   letter-spacing:var(--ls-titulo);font-size:27px;line-height:1.1}
+
+/* O topo fica sempre na tela: a cliente precisa saber onde está e voltar. */
+header{position:sticky;top:0;background:var(--milk);z-index:5;
+       padding:14px 20px 0;border-bottom:1px solid var(--line)}
+.topo{display:flex;align-items:center;gap:12px;min-height:40px}
+.voltar{border:none;background:none;color:var(--ink);font:inherit;cursor:pointer;
+        padding:8px;margin-left:-8px;border-radius:50%;line-height:0}
+.voltar[hidden]{display:none}
+.quem{font-size:15px;color:var(--muted);flex:1;min-width:0;overflow:hidden;
+      text-overflow:ellipsis;white-space:nowrap}
+.barra{height:3px;background:var(--line);margin:12px -20px 0}
+.barra i{display:block;height:3px;background:var(--pop);transition:width .25s ease}
+
+main{flex:1;padding:24px 20px 40px;max-width:560px;width:100%;margin:0 auto}
+.passo{display:none}
+.passo.on{display:block;animation:entra .22s ease}
+@keyframes entra{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+h1+.lead{color:var(--muted);font-size:16px;margin-top:6px}
+
+/* Listas tocáveis. Alvo grande: isso é usado com uma mão, no ônibus. */
+.lista{display:flex;flex-direction:column;gap:10px;margin-top:22px}
+.item{display:flex;align-items:center;gap:14px;width:100%;text-align:left;
+      background:#fff;border:1.5px solid var(--line);border-radius:16px;
+      padding:16px 18px;font:inherit;color:inherit;cursor:pointer}
+.item:hover{border-color:var(--pop)}
+.item b{display:block;font-weight:var(--peso-medio);font-size:17px}
+.item small{display:block;color:var(--muted);font-size:14.5px;margin-top:2px}
+.item .dir{margin-left:auto;text-align:right;white-space:nowrap}
+.item .preco{font-weight:var(--peso-medio)}
+.item .dur{display:block;color:var(--muted);font-size:13.5px}
+
+/* Os dias rolam na horizontal, como num app de agendamento. */
+.dias{display:flex;gap:9px;overflow-x:auto;margin:22px -20px 0;padding:2px 20px 10px;
+      scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
+.dias::-webkit-scrollbar{display:none}
+.dia{flex:0 0 auto;scroll-snap-align:start;width:62px;padding:12px 0;border-radius:14px;
+     background:#fff;border:1.5px solid var(--line);cursor:pointer;font:inherit;
+     color:inherit;text-align:center}
+.dia em{display:block;font-style:normal;font-size:12.5px;color:var(--muted);
+        text-transform:uppercase;letter-spacing:.06em}
+.dia b{display:block;font-size:21px;font-weight:var(--peso-medio);margin-top:2px}
+.dia small{display:block;font-size:11.5px;color:var(--muted);margin-top:1px}
+.dia[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--milk)}
+.dia[aria-pressed="true"] em,.dia[aria-pressed="true"] small{color:var(--milk);opacity:.72}
+
+.horas{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:9px;margin-top:22px}
+.hora{padding:14px 4px;border-radius:12px;background:#fff;border:1.5px solid var(--line);
+      font:inherit;font-variant-numeric:tabular-nums;cursor:pointer;color:inherit}
+.hora:hover{border-color:var(--pop)}
+.hora[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--milk)}
+
+.campo{margin-top:18px}
+.campo label{display:block;font-size:14.5px;color:var(--muted);margin-bottom:6px}
+.campo input,.campo select{width:100%;font:16px var(--fonte-texto);padding:14px 16px;
+  border:1.5px solid var(--line);border-radius:13px;background:#fff;color:var(--ink)}
+.campo input:focus,.campo select:focus{outline:none;border-color:var(--pop)}
+.bad{color:var(--pop-dark);font-size:14px;margin-top:6px;display:none}
+.bad.on{display:block}
+
+.b{display:block;width:100%;text-align:center;font:var(--peso-medio) 17px var(--fonte-texto);
+   padding:17px;border-radius:999px;border:none;cursor:pointer;text-decoration:none;margin-top:26px}
+.b-cheio{background:var(--pop);color:#fff}
+.b-vazio{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line);margin-top:10px}
+
+.resumo{background:var(--blush);border-radius:18px;padding:20px 22px;margin-top:22px}
+.resumo dl{display:grid;grid-template-columns:auto 1fr;gap:9px 18px;font-size:16px}
+.resumo dt{color:var(--muted)}
+.resumo dd{text-align:right;font-weight:var(--peso-medio)}
+.aviso{background:var(--blush);border-radius:14px;padding:15px 17px;color:var(--muted);
+       font-size:15.5px;margin-top:20px}
+.volta-site{display:block;text-align:center;color:var(--muted);font-size:15px;
+            margin-top:28px;text-decoration:underline}
+@media(min-width:560px){ main{padding-top:34px} h1{font-size:31px} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="topo">
+    <button class="voltar" id="voltar" hidden aria-label="Voltar">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <span class="quem" id="quem">Carla Silva</span>
+  </div>
+  <div class="barra"><i id="progresso" style="width:20%"></i></div>
+</header>
+
+<main>
+
+  <!-- 0 · quem já veio antes -->
+  <section class="passo" id="p0">
+    <h1 id="oiNome">Oi!</h1>
+    <p class="lead" id="oiLead"></p>
+    <button class="b b-cheio" id="deNovo"></button>
+    <button class="b b-vazio" id="outroServico">Escolher outro serviço</button>
+  </section>
+
+  <!-- 1 · serviço -->
+  <section class="passo" id="p1">
+    <h1>O que você quer fazer?</h1>
+    <div class="lista" id="servicos"></div>
+  </section>
+
+  <!-- 2 · dia -->
+  <section class="passo" id="p2">
+    <h1>Que dia fica bom?</h1>
+    <p class="lead" id="leadDia"></p>
+    <div class="dias" id="dias"></div>
+    <p class="aviso" id="semDia" hidden></p>
+  </section>
+
+  <!-- 3 · horário -->
+  <section class="passo" id="p3">
+    <h1>A que horas?</h1>
+    <p class="lead" id="leadHora"></p>
+    <div class="horas" id="horas"></div>
+    <p class="aviso" id="semHora" hidden></p>
+  </section>
+
+  <!-- 4 · dados -->
+  <section class="passo" id="p4">
+    <h1>Só seus dados</h1>
+    <p class="lead">Para ela confirmar com você no WhatsApp.</p>
+    <div class="campo">
+      <label for="fNome">Seu nome</label>
+      <input id="fNome" type="text" autocomplete="name" placeholder="Como ela te chama">
+      <p class="bad" id="eNome">Me diz seu nome.</p>
+    </div>
+    <div class="campo">
+      <label for="fFone">Seu WhatsApp</label>
+      <input id="fFone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="(00) 00000-0000">
+      <p class="bad" id="eFone">Confere o número, com DDD.</p>
+    </div>
+    <div class="campo" id="wrapOnde" hidden>
+      <label for="fOnde">Onde vai ser?</label>
+      <select id="fOnde">
+        <option value="vou">Eu quero que você vá até mim</option>
+        <option value="recebo">Eu vou até você</option>
+      </select>
+    </div>
+    <div class="campo" id="wrapBairro" hidden>
+      <label for="fBairro">Seu bairro</label>
+      <select id="fBairro"></select>
+      <p class="bad" id="eBairro">Escolhe o bairro.</p>
+    </div>
+    <button class="b b-cheio" id="revisar">Revisar</button>
+  </section>
+
+  <!-- 5 · confirmação -->
+  <section class="passo" id="p5">
+    <h1>Tudo certo?</h1>
+    <p class="lead">Falta só mandar para ela.</p>
+    <div class="resumo"><dl id="resumo"></dl></div>
+    <button class="b b-cheio" id="enviar">Enviar no WhatsApp</button>
+    <a class="b b-vazio" id="linkZap" href="#" target="_blank" rel="noopener" hidden>Abrir a conversa</a>
+    <p class="aviso" id="depois" hidden>Toque em "Abrir a conversa" — seu navegador bloqueou a janela nova.</p>
+  </section>
+
+  <a class="volta-site" href="/">voltar para o site</a>
+</main>
+
+<script>
+const CONFIG = {
+  "tema": "soft",
+  "profissional": "Carla Silva",
+  "whatsapp": "5511987654321",
+  "servicos": [
+    {
+      "nome": "Manicure",
+      "desc": "Corte, lixa, cutícula e esmaltação",
+      "preco": "R$ 45",
+      "duracao": 60
+    },
+    {
+      "nome": "Pedicure",
+      "desc": "Cuidado completo dos pés com hidratação",
+      "preco": "R$ 50",
+      "duracao": 60
+    },
+    {
+      "nome": "Manicure + pedicure",
+      "desc": "Os dois no mesmo atendimento",
+      "preco": "R$ 85",
+      "duracao": 120
+    },
+    {
+      "nome": "Unhas em gel",
+      "desc": "Durabilidade de até três semanas",
+      "preco": "R$ 70",
+      "duracao": 90
+    },
+    {
+      "nome": "Manutenção de gel",
+      "desc": "Retoque do alongamento",
+      "preco": "R$ 50",
+      "duracao": 60
+    },
+    {
+      "nome": "Alongamento",
+      "desc": "Fibra ou acrigel, com design",
+      "preco": "R$ 80",
+      "duracao": 150
+    }
+  ],
+  "horarios": [
+    "08:00",
+    "09:00",
+    "10:00",
+    "11:00",
+    "13:00",
+    "14:00",
+    "15:00",
+    "16:00",
+    "17:00",
+    "18:00"
+  ],
+  "diasQueAtende": [
+    "seg",
+    "ter",
+    "qua",
+    "qui",
+    "sex",
+    "sab"
+  ],
+  "antecedenciaHoras": 2,
+  "pedirBairro": true,
+  "bairros": [
+    "Centro",
+    "Vila Mariana",
+    "Pinheiros",
+    "Moema",
+    "Ipiranga",
+    "Saúde",
+    "Jabaquara",
+    "Outro"
+  ],
+  "diasDeAntecedencia": 0,
+  "diasDeRetorno": 21,
+  "fotos": {
+    "capa": "https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=1200&q=70",
+    "galeria": [
+      "https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=700&q=70",
+      "https://images.unsplash.com/photo-1610992015762-45dca7fa3a85?auto=format&fit=crop&w=700&q=70",
+      "https://images.unsplash.com/photo-1607779097040-26e80aa78e66?auto=format&fit=crop&w=700&q=70",
+      "https://images.unsplash.com/photo-1612887390768-fb02affea7a6?auto=format&fit=crop&w=700&q=70",
+      "https://images.unsplash.com/photo-1630843599725-32ead7671867?auto=format&fit=crop&w=700&q=70",
+      "https://images.unsplash.com/photo-1571290274554-6a2eaa771e5f?auto=format&fit=crop&w=700&q=70"
+    ]
+  },
+  "instagram": "carlasilva.nails",
+  "sobre": {
+    "texto": "Sou manicure há oito anos e faz três que atendo só em domicílio. Comecei em salão, mas gostei mesmo foi de trabalhar assim: uma cliente por vez, sem pressa e sem fila esperando.\n\nLevo tudo comigo e não tenho hora marcada em cima da outra — se sua unha pedir mais capricho naquele dia, tem tempo pra isso.",
+    "foto": "https://images.unsplash.com/photo-1734821331651-7e4a47793566?auto=format&fit=crop&w=800&q=70"
+  },
+  "avaliacoes": {
+    "nota": "4,9",
+    "quantidade": 37,
+    "atendimentos": 250
+  },
+  "depoimentos": [
+    {
+      "texto": "Chegou no horário, montou tudo em cinco minutos e minha unha durou três semanas.",
+      "autora": "Marina S."
+    },
+    {
+      "texto": "Eu não tinha mais tempo de ir ao salão. Resolveu minha vida.",
+      "autora": "Carolina M."
+    },
+    {
+      "texto": "Caprichosa de verdade. Já indiquei pra três amigas.",
+      "autora": "Amanda T."
+    }
+  ]
+};
+
+const $ = id => document.getElementById(id);
+const esc = t => String(t ?? '').replace(/[&<>"]/g, c =>
+  ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
+
+const AT     = CONFIG.atendimento || { vouAteVoce: true };
+const VAI    = !!AT.vouAteVoce;
+const RECEBE = !!AT.recebo;
+const MODO   = (VAI && RECEBE) ? 'ambos' : RECEBE ? 'espaco' : 'domicilio';
+const PEDE_BAIRRO = VAI && CONFIG.pedirBairro !== false && Array.isArray(CONFIG.bairros) && CONFIG.bairros.length > 0;
+
+const SIGLAS = ['dom','seg','ter','qua','qui','sex','sab'];
+const DIAS   = Array.isArray(CONFIG.diasQueAtende) ? CONFIG.diasQueAtende : SIGLAS;
+const MESES  = ['janeiro','fevereiro','março','abril','maio','junho',
+                'julho','agosto','setembro','outubro','novembro','dezembro'];
+const SERVICOS = Array.isArray(CONFIG.servicos) ? CONFIG.servicos : [];
+
+// Datas sempre montadas peça por peça. new Date('2026-10-11') é lido como UTC
+// e no Brasil volta o dia anterior — já nos mordeu uma vez.
+const dataLocal = iso => { const [a,m,d] = iso.split('-').map(Number); return new Date(a, m-1, d); };
+const iso = d => [d.getFullYear(), String(d.getMonth()+1).padStart(2,'0'),
+                  String(d.getDate()).padStart(2,'0')].join('-');
+const extenso = s => { const d = dataLocal(s); return `${d.getDate()} de ${MESES[d.getMonth()]}`; };
+const HOJE = iso(new Date());
+
+const duracaoDe = nome => {
+  const s = SERVICOS.find(s => s.nome === nome);
+  return (s && Number(s.duracao)) || 60;
+};
+
+/* ----------------------------------------------- o que o navegador lembra */
+
+// Sem conta, sem senha, sem dado dela no nosso banco: o próprio aparelho
+// guarda quem ela é. Se limpar o navegador ou trocar de celular, ela digita
+// três campos de novo — é o preço, e é barato.
+const CHAVE = 'mdv:' + location.hostname.split('.')[0];
+const lembrar = dados => { try { localStorage.setItem(CHAVE, JSON.stringify(dados)); } catch(e){} };
+const lembrado = () => { try { return JSON.parse(localStorage.getItem(CHAVE) || 'null'); } catch(e){ return null; } };
+
+/* ------------------------------------------------------------- navegação */
+
+const ESCOLHA = { servico:'', duracao:60, data:'', hora:'', nome:'', fone:'', bairro:'', onde:'vou' };
+let passo = 1;
+const TOTAL = 5;
+
+function ir(n, empurrar = true){
+  document.querySelectorAll('.passo').forEach(s => s.classList.remove('on'));
+  $('p'+n).classList.add('on');
+  passo = n;
+  $('progresso').style.width = Math.round((Math.max(n,1)/TOTAL)*100) + '%';
+  $('voltar').hidden = (n <= 1 && !vindaDoP0) || n === 0;
+  window.scrollTo(0,0);
+  // O botão voltar do celular tem que funcionar. Era uma das coisas que o
+  // modal não dava: lá, voltar fechava a página inteira.
+  if (empurrar) history.pushState({ passo:n }, '');
+  if (n === 2) montaDias();
+  if (n === 3) buscaHoras();
+  if (n === 5) montaResumo();
+}
+let vindaDoP0 = false;
+
+window.addEventListener('popstate', e => {
+  const n = (e.state && e.state.passo) || 1;
+  if (n === passo) return;
+  ir(n, false);
+});
+$('voltar').addEventListener('click', () => history.back());
+
+/* --------------------------------------------------------------- serviço */
+
+$('servicos').innerHTML = SERVICOS.map((s,i) => `
+  <button class="item" data-servico="${esc(s.nome)}">
+    <span><b>${esc(s.nome)}</b>${s.desc ? `<small>${esc(s.desc)}</small>` : ''}</span>
+    <span class="dir"><span class="preco">${esc(s.preco || '')}</span>
+      <span class="dur">${Number(s.duracao)||60} min</span></span>
+  </button>`).join('');
+
+$('servicos').addEventListener('click', e => {
+  const b = e.target.closest('[data-servico]');
+  if (!b) return;
+  ESCOLHA.servico = b.dataset.servico;
+  ESCOLHA.duracao = duracaoDe(ESCOLHA.servico);
+  ir(2);
+});
+
+/* ------------------------------------------------------------------- dia */
+
+function montaDias(){
+  const antec = Number(CONFIG.diasDeAntecedencia) || 0;
+  const comeco = new Date(); comeco.setDate(comeco.getDate() + antec);
+  const dias = [];
+  for (let i = 0; i < 45 && dias.length < 14; i++){
+    const d = new Date(comeco); d.setDate(comeco.getDate() + i);
+    if (DIAS.includes(SIGLAS[d.getDay()])) dias.push(d);
+  }
+  $('leadDia').textContent = ESCOLHA.servico + ' · ' + ESCOLHA.duracao + ' min';
+  if (!dias.length){
+    $('dias').innerHTML = '';
+    $('semDia').hidden = false;
+    $('semDia').textContent = 'Não consegui montar os dias. Chama ela no WhatsApp que vocês combinam.';
+    return;
+  }
+  $('semDia').hidden = true;
+  $('dias').innerHTML = dias.map(d => {
+    const s = iso(d);
+    return `<button class="dia" data-dia="${s}" aria-pressed="${ESCOLHA.data === s}">
+      <em>${SIGLAS[d.getDay()]}</em><b>${d.getDate()}</b>
+      <small>${MESES[d.getMonth()].slice(0,3)}</small></button>`;
+  }).join('');
+}
+
+$('dias').addEventListener('click', e => {
+  const b = e.target.closest('[data-dia]');
+  if (!b) return;
+  ESCOLHA.data = b.dataset.dia;
+  ESCOLHA.hora = '';
+  ir(3);
+});
+
+/* --------------------------------------------------------------- horário */
+
+function buscaHoras(){
+  $('leadHora').textContent = extenso(ESCOLHA.data);
+  $('horas').innerHTML = '';
+  $('semHora').hidden = true;
+
+  fetch('/api/horarios?data=' + encodeURIComponent(ESCOLHA.data) + '&duracao=' + ESCOLHA.duracao)
+    .then(r => r.json())
+    .then(d => mostraHoras(d && d.ok && Array.isArray(d.horarios) ? d.horarios : null))
+    .catch(() => mostraHoras(null));
+}
+
+function mostraHoras(lista){
+  // Se a consulta falhar, a grade do dados.json vale. Melhor ela remarcar um
+  // horário do que a cliente não conseguir marcar nada.
+  const horas = lista === null ? (CONFIG.horarios || []) : lista;
+  if (!horas.length){
+    $('semHora').hidden = false;
+    $('semHora').textContent = 'Esse dia encheu. Escolhe outro que eu te mostro os horários.';
+    return;
+  }
+  $('horas').innerHTML = horas.map(h =>
+    `<button class="hora" data-hora="${esc(h)}" aria-pressed="false">${esc(h)}</button>`).join('');
+}
+
+$('horas').addEventListener('click', e => {
+  const b = e.target.closest('[data-hora]');
+  if (!b) return;
+  ESCOLHA.hora = b.dataset.hora;
+  const antes = lembrado();
+  if (antes && antes.nome && antes.fone){
+    ESCOLHA.nome = antes.nome; ESCOLHA.fone = antes.fone;
+    ESCOLHA.bairro = antes.bairro || ''; ESCOLHA.onde = antes.onde || 'vou';
+    ir(5);                       // já sabemos quem é: vai direto para o fim
+  } else {
+    ir(4);
+  }
+});
+
+/* ---------------------------------------------------------------- dados */
+
+if (MODO === 'ambos') $('wrapOnde').hidden = false;
+if (PEDE_BAIRRO){
+  $('fBairro').innerHTML = '<option value="">Selecione</option>' +
+    CONFIG.bairros.map(b => `<option>${esc(b)}</option>`).join('');
+  $('wrapBairro').hidden = (MODO === 'espaco');
+}
+$('fOnde').addEventListener('change', () => {
+  if (PEDE_BAIRRO) $('wrapBairro').hidden = $('fOnde').value !== 'vou';
+});
+
+const foneOk = f => /^\d{10,11}$/.test(String(f).replace(/\D/g,''));
+
+$('fFone').addEventListener('input', e => {
+  const n = e.target.value.replace(/\D/g,'').slice(0,11);
+  e.target.value = n.length > 6
+    ? `(${n.slice(0,2)}) ${n.slice(2,n.length>10?7:6)}-${n.slice(n.length>10?7:6)}`
+    : n.length > 2 ? `(${n.slice(0,2)}) ${n.slice(2)}` : n;
+});
+
+$('revisar').addEventListener('click', () => {
+  let ok = true;
+  const ruim = (id, mal) => { $(id).classList.toggle('on', mal); if (mal) ok = false; };
+  ruim('eNome', !$('fNome').value.trim());
+  ruim('eFone', !foneOk($('fFone').value));
+  const precisaBairro = PEDE_BAIRRO && !$('wrapBairro').hidden;
+  ruim('eBairro', precisaBairro && !$('fBairro').value);
+  if (!ok) return;
+
+  ESCOLHA.nome = $('fNome').value.trim();
+  ESCOLHA.fone = $('fFone').value;
+  ESCOLHA.bairro = precisaBairro ? $('fBairro').value : '';
+  ESCOLHA.onde = MODO === 'ambos' ? $('fOnde').value : (MODO === 'espaco' ? 'recebo' : 'vou');
+  ir(5);
+});
+
+/* --------------------------------------------------------------- resumo */
+
+function montaResumo(){
+  const linhas = [
+    ['Serviço', ESCOLHA.servico],
+    ['Dia', extenso(ESCOLHA.data)],
+    ['Horário', ESCOLHA.hora],
+    ['Nome', ESCOLHA.nome],
+  ];
+  if (MODO === 'ambos') linhas.push(['Onde', ESCOLHA.onde === 'vou' ? 'na minha casa' : 'no espaço dela']);
+  if (ESCOLHA.bairro) linhas.push(['Bairro', ESCOLHA.bairro]);
+  $('resumo').innerHTML = linhas.map(([k,v]) =>
+    `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('');
+}
+
+$('enviar').addEventListener('click', () => {
+  lembrar({ nome:ESCOLHA.nome, fone:ESCOLHA.fone, servico:ESCOLHA.servico,
+            bairro:ESCOLHA.bairro, onde:ESCOLHA.onde });
+
+  const t = [`Oi, ${CONFIG.profissional}! Quero agendar pelo site:`,'',
+             `Serviço: ${ESCOLHA.servico}`,`Data: ${extenso(ESCOLHA.data)}`,
+             `Horário: ${ESCOLHA.hora}`];
+  if (MODO === 'ambos') t.push(ESCOLHA.onde === 'vou' ? 'Local: na minha casa' : 'Local: no seu espaço');
+  if (ESCOLHA.bairro) t.push(`Bairro: ${ESCOLHA.bairro}`);
+  t.push('',`Meu nome: ${ESCOLHA.nome}`,`Meu WhatsApp: ${ESCOLHA.fone}`);
+
+  // Registra na agenda dela. Não espera resposta: se o banco estiver fora, a
+  // conversa abre do mesmo jeito.
+  try {
+    fetch('/api/pedido', {
+      method:'POST', keepalive:true, headers:{'content-type':'application/json'},
+      body: JSON.stringify({ nome:ESCOLHA.nome, fone:ESCOLHA.fone, servico:ESCOLHA.servico,
+                             data:ESCOLHA.data, hora:ESCOLHA.hora, bairro:ESCOLHA.bairro,
+                             onde:ESCOLHA.onde, duracao:ESCOLHA.duracao })
+    }).catch(()=>{});
+  } catch(e){}
+
+  const link = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(t.join('\n'))}`;
+  const aba = window.open(link, '_blank');
+  if (aba) return;
+
+  // Navegador embutido (Instagram, Facebook) costuma barrar janela nova. Ela
+  // preencheu tudo: não pode ficar achando que o site não funciona.
+  $('linkZap').href = link;
+  $('linkZap').hidden = false;
+  $('depois').hidden = false;
+  $('enviar').textContent = 'Reenviar';
+  $('linkZap').focus();
+});
+
+/* ------------------------------------------------------------- abertura */
+
+(function(){
+  $('quem').textContent = CONFIG.profissional;
+
+  const pedido = new URLSearchParams(location.search).get('servico');
+  const existe = pedido && SERVICOS.some(s => s.nome === pedido);
+  if (existe){
+    ESCOLHA.servico = pedido;
+    ESCOLHA.duracao = duracaoDe(pedido);
+    history.replaceState({ passo:2 }, '');
+    ir(2, false);
+    vindaDoP0 = true;
+    $('voltar').hidden = false;
+    return;
+  }
+
+  const antes = lembrado();
+  if (antes && antes.nome && antes.servico && SERVICOS.some(s => s.nome === antes.servico)){
+    $('oiNome').textContent = 'Oi, ' + antes.nome.split(' ')[0] + '!';
+    $('oiLead').textContent = 'Da última vez foi ' + antes.servico.toLowerCase() + '.';
+    $('deNovo').textContent = antes.servico + ' de novo';
+    $('deNovo').addEventListener('click', () => {
+      ESCOLHA.servico = antes.servico;
+      ESCOLHA.duracao = duracaoDe(antes.servico);
+      vindaDoP0 = true;
+      ir(2);
+    });
+    $('outroServico').addEventListener('click', () => { vindaDoP0 = true; ir(1); });
+    history.replaceState({ passo:0 }, '');
+    ir(0, false);
+    return;
+  }
+
+  history.replaceState({ passo:1 }, '');
+  ir(1, false);
+})();
+</script>
+</body>
+</html>

@@ -57,9 +57,14 @@ const ASSETS = {
     const caminho = new URL(req.url).pathname;
     const mapa = {
       "/clientes/carlasilva/": "../public/clientes/carlasilva/index.html",
+      "/clientes/carlasilva/agendar/": "../public/clientes/carlasilva/agendar/index.html",
       "/clientes/carlasilva/dados.json": "../public/clientes/carlasilva/dados.json",
       "/site/": "../public/site/index.html",
     };
+    // o roteador da Cloudflare normaliza "/pasta" para "/pasta/"
+    if (!caminho.endsWith("/") && mapa[caminho + "/"]) {
+      return new Response(null, { status: 308, headers: { location: caminho + "/" } });
+    }
     if (caminho.endsWith("/index.html")) {
       const pasta = caminho.replace(/index\.html$/, "");
       if (mapa[pasta]) return new Response(null, { status: 308, headers: { location: pasta } });
@@ -269,6 +274,10 @@ r = await worker.fetch(new Request(SITE + "/"), env);
 ok(r.status === 200 && (await r.text()).includes("Carla Silva"), "site da cliente abre");
 r = await worker.fetch(new Request("https://manicuredevalor.com.br/"), env);
 ok(r.status === 200 && (await r.text()).includes("Manicure de Valor"), "institucional abre");
+r = await worker.fetch(new Request(SITE + "/agendar"), env);
+html = await r.text();
+ok(r.status === 200 && !r.headers.get("location") && html.includes("O que você quer fazer?"),
+   "/agendar abre a página de agendamento sem expor o caminho interno");
 r = await worker.fetch(new Request(SITE + "/fotos/naoexiste.webp"), env);
 ok(r.status === 404, "foto inexistente dá 404");
 html = await (await worker.fetch(new Request("https://manicuredevalor.com.br/painel?k=" + chave), env)).text();
