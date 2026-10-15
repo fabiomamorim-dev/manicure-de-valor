@@ -31,8 +31,12 @@ Contador subindo até 7.
 **Tela:** balões aparecendo sobre a conversa — "Quanto é a unha em gel?",
 "Tem sábado?", "Você vem no Água Verde?". Visualizada 14:20, respondida 22:40.
 
-> Quanto é a unha em gel. Tem sábado. Você vem no Água Verde. Você responde à
+> Quanto é a unha em gel? Tem sábado? Você vem no Água Verde? Você responde à
 > noite, entre uma cliente e outra — e quando responde, ela já marcou com outra.
+
+A pontuação é o que controla a entonação na geração de voz. As três primeiras
+são perguntas de cliente e precisam soar como pergunta; com ponto final saem
+lidas reto. Pelo mesmo motivo o preço na fala 9 está por extenso.
 
 ## 3 · a segunda dor
 
