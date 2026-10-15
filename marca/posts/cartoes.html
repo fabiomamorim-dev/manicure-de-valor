@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Manicure de Valor — cartões de feed</title>
+<style>
+@font-face{font-family:Fraunces;src:url(../video/fontes/fraunces/files/fraunces-latin-600-normal.woff2) format('woff2');font-weight:600;font-display:block}
+@font-face{font-family:Fraunces;src:url(../video/fontes/fraunces/files/fraunces-latin-700-normal.woff2) format('woff2');font-weight:700;font-display:block}
+@font-face{font-family:Manrope;src:url(../video/fontes/manrope/files/manrope-latin-400-normal.woff2) format('woff2');font-weight:400;font-display:block}
+@font-face{font-family:Manrope;src:url(../video/fontes/manrope/files/manrope-latin-500-normal.woff2) format('woff2');font-weight:500;font-display:block}
+@font-face{font-family:Manrope;src:url(../video/fontes/manrope/files/manrope-latin-700-normal.woff2) format('woff2');font-weight:700;font-display:block}
+
+:root{--marrom:#412e2a;--creme:#fdf7f4;--rosa:#c05267;--nude:#e8b4a0;
+  --cinza:#8a7873;--linha:#eddcd4}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#ddd;font-family:Manrope,sans-serif;color:var(--marrom);
+  -webkit-font-smoothing:antialiased}
+
+/* 1080x1080, que é a medida de post de feed no guia da marca */
+.cartao{width:1080px;height:1080px;background:var(--creme);position:relative;
+  padding:96px 92px;display:flex;flex-direction:column;overflow:hidden}
+.cartao + .cartao{margin-top:40px}
+
+.assina{position:absolute;left:92px;bottom:76px;display:flex;align-items:center;
+  gap:18px}
+.assina svg{width:46px;height:49px}
+.assina b{font-family:Fraunces,serif;font-weight:700;font-size:28px;
+  letter-spacing:-.01em}
+.assina span{font-size:24px;color:var(--cinza)}
+
+h1{font-family:Fraunces,serif;font-weight:700;letter-spacing:-.025em;
+  line-height:1.08}
+.sub{color:var(--cinza);line-height:1.42}
+
+/* ---------------------------------------------------------- 1 · o preço */
+/* centralizado acima da assinatura: este cartão tem pouco texto e encostado
+   no topo ficava com um buraco embaixo */
+#preco{justify-content:center;padding-bottom:230px}
+#preco h1{font-size:200px;color:var(--rosa);line-height:.92}
+#preco .mes{font-family:Manrope,sans-serif;font-weight:500;font-size:46px;
+  color:var(--cinza);margin-top:4px}
+#preco .frase{font-family:Fraunces,serif;font-weight:600;font-size:60px;
+  line-height:1.2;margin-top:60px;max-width:14ch}
+#preco .sub{font-size:33px;margin-top:28px;max-width:26ch}
+
+/* ------------------------------------------------- 2 · as três situações */
+#jeitos h1{font-size:76px;max-width:16ch}
+#jeitos .linhas{margin-top:62px;display:flex;flex-direction:column;gap:34px}
+#jeitos .l{border-top:3px solid var(--nude);padding-top:22px}
+#jeitos .l b{display:block;font-size:34px;font-weight:700;margin-bottom:9px}
+#jeitos .l span{display:block;font-size:30px;color:var(--cinza);line-height:1.36}
+
+/* -------------------------------------------------- 3 · quem sumiu */
+#sumiu h1{font-size:82px;max-width:13ch}
+#sumiu .sub{font-size:34px;margin-top:38px;max-width:25ch}
+#sumiu .balao{margin-top:56px;background:#f7e2d8;border-radius:28px 28px 28px 10px;
+  padding:34px 38px;font-size:30px;line-height:1.4;color:#4b3933;max-width:780px}
+#sumiu .balao i{display:block;font-style:normal;font-size:25px;color:#a8826f;
+  margin-top:16px}
+</style>
+</head>
+<body>
+
+<!-- 1 ------------------------------------------------------------------ -->
+<section class="cartao" id="preco">
+  <h1>R$ 39,90</h1>
+  <div class="mes">por mês</div>
+  <p class="frase">Seu site e sua agenda.</p>
+  <p class="sub">Pronto em um dia. Sem fidelidade, sem taxa por agendamento.</p>
+  <div class="assina" data-assina></div>
+</section>
+
+<!-- 2 ------------------------------------------------------------------ -->
+<section class="cartao" id="jeitos">
+  <h1>Você atende de que jeito?</h1>
+  <div class="linhas">
+    <div class="l"><b>Vai até a casa da cliente</b>
+      <span>Ser achada por quem ainda não te conhece, em vez de depender só de indicação.</span></div>
+    <div class="l"><b>Tem o seu próprio espaço</b>
+      <span>Aparecer para quem busca manicure perto de onde você atende.</span></div>
+    <div class="l"><b>Atende no salão de outra pessoa</b>
+      <span>A clientela passa a ser sua — e vai junto se um dia você mudar de salão.</span></div>
+  </div>
+  <div class="assina" data-assina></div>
+</section>
+
+<!-- 3 ------------------------------------------------------------------ -->
+<section class="cartao" id="sumiu">
+  <h1>Quantas clientes sumiram sem você perceber?</h1>
+  <p class="sub">A agenda mostra quem passou do prazo e já escreve a mensagem.
+    Você toca e manda, do seu número.</p>
+  <div class="balao">Oi! Já deu umas semanas desde a sua última sessão — quer
+    marcar a manutenção? Me diz um dia que eu te encaixo.
+    <i>a agenda escreve · você só envia</i></div>
+  <div class="assina" data-assina></div>
+</section>
+
+<script>
+// A assinatura é igual nos três: símbolo, nome e endereço.
+const ASSINA = `
+  <svg viewBox="0 0 160 172" xmlns="http://www.w3.org/2000/svg">
+    <mask id="m"><path d="M20 26h30l30 80 30-80h30L80 152z" fill="#fff"
+      stroke="#fff" stroke-width="24" stroke-linejoin="round"/></mask>
+    <g mask="url(#m)">
+      <rect width="160" height="172" fill="#412e2a"/>
+      <path d="M0 62q80 26 160 0v110H0z" fill="#e8b4a0"/>
+    </g>
+  </svg>
+  <b>Manicure de Valor</b><span>manicuredevalor.com.br</span>`;
+for (const el of document.querySelectorAll("[data-assina]")) el.innerHTML = ASSINA;
+</script>
+</body>
+</html>
