@@ -6,32 +6,38 @@
     {
       "nome": "Manicure",
       "desc": "Corte, lixa, cutícula e esmaltação",
-      "preco": "R$ 45"
+      "preco": "R$ 45",
+      "duracao": 60
     },
     {
       "nome": "Pedicure",
       "desc": "Cuidado completo dos pés com hidratação",
-      "preco": "R$ 50"
+      "preco": "R$ 50",
+      "duracao": 60
     },
     {
       "nome": "Manicure + pedicure",
       "desc": "Os dois no mesmo atendimento",
-      "preco": "R$ 85"
+      "preco": "R$ 85",
+      "duracao": 120
     },
     {
       "nome": "Unhas em gel",
       "desc": "Durabilidade de até três semanas",
-      "preco": "R$ 70"
+      "preco": "R$ 70",
+      "duracao": 90
     },
     {
       "nome": "Manutenção de gel",
       "desc": "Retoque do alongamento",
-      "preco": "R$ 50"
+      "preco": "R$ 50",
+      "duracao": 60
     },
     {
       "nome": "Alongamento",
       "desc": "Fibra ou acrigel, com design",
-      "preco": "R$ 80"
+      "preco": "R$ 80",
+      "duracao": 150
     }
   ],
   "horarios": [

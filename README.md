@@ -23,11 +23,12 @@ marca/             logo, símbolo e versão monocromática
 scripts/
   novo-cliente.mjs gera o index.html a partir do dados.json
 worker/
-  index.js         roteamento por subdomínio
+  index.js         roteamento por subdomínio, as rotas e o HTML do painel
+  agenda.js        tudo que toca o banco: consultas, horário livre, telefone
 ferramentas/
   fotos.html       corta e comprime as fotos, roda no navegador
 db/
-  schema.sql       tabela dos pedidos (lembrete de manutencao)
+  schema.sql       clientes e atendimentos (a agenda)
 teste/
   painel.test.mjs  testa o Worker sem subir nada
 docs/
@@ -152,7 +153,8 @@ O script recusa qualquer coisa fora de `[a-z0-9-]`.
 | `bairros` | lista exibida, opções do campo e área de atendimento nos dados estruturados |
 | `descricao` | opcional. Sobrescreve o texto do preview no WhatsApp e no Google. Sem ele, é montado com o nome e os bairros |
 | `diasDeAntecedencia` | `0` permite agendar hoje; `1` só a partir de amanhã |
-| `diasDeRetorno` | dias até a manutenção, usado no painel. Padrão 21 |
+| `diasDeRetorno` | dias até a manutenção, usado na agenda. Padrão 21 |
+| `servicos[].duracao` | minutos que o serviço ocupa na agenda. Padrão 60. É isso que faz um combinado de duas horas bloquear dois horários em vez de um |
 | `tema` | `soft` (padrão), `pop`, `clean`, `minimal` ou `glam`. Ver Temas abaixo |
 | `instagram` | usuário sem arroba. Vazio esconde o link do topo |
 | `sobre.texto` | seção "Oi, eu sou a ___". Linha em branco separa parágrafo |
@@ -205,24 +207,70 @@ texto sobre fundo, texto secundário sobre fundo, branco sobre o botão e o pre�
 sobre a seção escura. Ao criar um tema novo, confira esses quatro pares antes —
 boa parte do público tem mais de 40 anos e lê no celular, no sol.
 
-## Lembrete de manutenção
+## A agenda
+
+Em `/painel`, e é o que a profissional abre todo dia. Duas portas de entrada,
+um lugar só:
+
+- a cliente agenda pelo site → cai em **Pedidos novos**, ela confirma
+- a cliente manda mensagem, como sempre fez → ela lança na mão, em
+  **+ Lançar atendimento**
+
+A entrada manual não é um extra. Sem ela a agenda só conheceria quem veio pelo
+site, e a clientela que a profissional já tem ficaria invisível por meses — aí
+a agenda é meia agenda, vira trabalho dobrado e ela volta para o caderninho.
+Com a entrada manual, ela cadastra as dez clientes fiéis em dois minutos e o
+painel serve no primeiro dia.
+
+O painel mostra **Hoje**, **Próximos dias**, **Pedidos novos** e **Hora de
+voltar**, e tem a lista de clientes com histórico em `?ver=clientes`.
+
+### Hora de voltar
 
 A cliente de manicure volta a cada duas ou três semanas — quando lembra. Quem
-lembra por ela é a profissional, e é isso que o painel resolve.
+lembra por ela é a profissional.
 
-Como funciona: ao enviar o agendamento, o site registra o pedido no Worker
-**e** abre o WhatsApp, como sempre. Depois, em `/painel`, a profissional vê
-quem está na hora de voltar e chama com um toque — a mensagem já vai escrita.
+Conta os dias desde o último atendimento **que de fato aconteceu** e compara
+com `diasDeRetorno`. Quem passou do prazo aparece com um botão que abre o
+WhatsApp com a mensagem já escrita. Quem já tem horário marcado some da lista:
+não faz sentido cobrar volta de quem já vai voltar.
+
 Quem manda é ela, do número dela. Não existe API do WhatsApp no meio, nem
-mensagem saindo em nome de ninguém.
+mensagem saindo em nome de ninguém — disparo automático em nome da
+profissional é o caminho curto para o número dela ser banido.
+
+### Horário livre de verdade
+
+`/api/horarios?data=&duracao=` devolve o que sobrou do dia: a grade do
+`dados.json` menos o que já está ocupado, considerando a duração de cada
+atendimento. O formulário consulta isso quando a cliente escolhe a data ou
+troca de serviço.
+
+Se a consulta falhar, a lista local continua valendo. É de propósito: melhor
+oferecer um horário que a profissional vai ter que remarcar do que deixar a
+cliente sem conseguir marcar nada.
+
+Os quatro estados de um atendimento, e o que cada um faz com o horário:
+
+| | |
+|---|---|
+| `pedido` | chegou pelo site, ela ainda não confirmou — **ocupa** |
+| `confirmado` | ela confirmou — **ocupa** |
+| `atendido` | aconteceu — começa a contar o retorno |
+| `cancelado` | libera o horário, fica no histórico |
+
+`pedido` ocupa de propósito: se não ocupasse, duas clientes pediriam o mesmo
+sábado às 14h antes de ela abrir o painel, e sobraria para ela desmarcar.
 
 Enquanto o banco não estiver ligado, nada disso atrapalha: o site funciona
-igual, o agendamento abre o WhatsApp e o registro simplesmente não acontece.
+igual, o agendamento abre o WhatsApp, a grade inteira é oferecida e o registro
+simplesmente não acontece.
 
 ### Ligar o banco
 
 ```bash
-npx wrangler d1 create manicure-de-valor
+# o banco já existe; isso aqui é só se for recriar do zero
+# npx wrangler d1 create manicure-de-valor
 # cole o database_id no wrangler.toml e descomente o bloco [[d1_databases]]
 
 npx wrangler d1 execute manicure-de-valor --remote --file=db/schema.sql

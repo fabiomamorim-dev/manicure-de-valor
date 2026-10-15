@@ -363,32 +363,38 @@ const CONFIG = {
     {
       "nome": "Manicure",
       "desc": "Corte, lixa, cutícula e esmaltação",
-      "preco": "R$ 45"
+      "preco": "R$ 45",
+      "duracao": 60
     },
     {
       "nome": "Pedicure",
       "desc": "Cuidado completo dos pés com hidratação",
-      "preco": "R$ 50"
+      "preco": "R$ 50",
+      "duracao": 60
     },
     {
       "nome": "Manicure + pedicure",
       "desc": "Os dois no mesmo atendimento",
-      "preco": "R$ 85"
+      "preco": "R$ 85",
+      "duracao": 120
     },
     {
       "nome": "Unhas em gel",
       "desc": "Durabilidade de até três semanas",
-      "preco": "R$ 70"
+      "preco": "R$ 70",
+      "duracao": 90
     },
     {
       "nome": "Manutenção de gel",
       "desc": "Retoque do alongamento",
-      "preco": "R$ 50"
+      "preco": "R$ 50",
+      "duracao": 60
     },
     {
       "nome": "Alongamento",
       "desc": "Fibra ou acrigel, com design",
-      "preco": "R$ 80"
+      "preco": "R$ 80",
+      "duracao": 150
     }
   ],
   "horarios": [
@@ -567,7 +573,16 @@ $('precos').innerHTML = CONFIG.servicos.map(s =>
      <div class="price-info"><h3>${esc(s.nome)}</h3><p>${esc(s.desc)}</p></div>
      <div class="price-right"><b>${esc(s.preco)}</b><button class="b-mini" data-open data-servico="${esc(s.nome)}">Agendar</button></div>
    </div>`).join('');
-$('fServico').innerHTML = '<option value="">Selecione</option>' + CONFIG.servicos.map(s=>`<option>${s.nome}</option>`).join('');
+// A duração viaja junto com o serviço: é ela que diz quanto tempo da agenda
+// dela aquele atendimento ocupa. Sem isso, um "manicure + pedicure" de duas
+// horas bloquearia só um horário e a cliente seguinte cairia em cima.
+$('fServico').innerHTML = '<option value="">Selecione</option>' +
+  CONFIG.servicos.map(s=>`<option value="${esc(s.nome)}" data-duracao="${Number(s.duracao)||60}">${esc(s.nome)}</option>`).join('');
+
+const duracaoDoServico = nome => {
+  const s = (CONFIG.servicos || []).find(s => s.nome === nome);
+  return (s && Number(s.duracao)) || 60;
+};
 $('fHora').innerHTML = '<option value="">Selecione</option>' + CONFIG.horarios.map(h=>`<option>${h}</option>`).join('');
 
 /* ---- dias que ela atende e horarios ainda possiveis ----------------------
@@ -604,17 +619,39 @@ function horariosPara(iso){
   });
 }
 
-function atualizarHorarios(){
-  const iso = $('fData').value;
-  const anterior = $('fHora').value;
-  const livres = iso ? horariosPara(iso) : CONFIG.horarios;
+// O que está na tela agora. A validação do envio confere contra isto, e nao
+// contra a lista fixa: o que vale é o que ela podia escolher.
+let LIVRES = CONFIG.horarios.slice();
+let consulta = 0;
 
+function mostrarHorarios(livres){
+  const anterior = $('fHora').value;
+  LIVRES = livres;
   $('fHora').innerHTML = (livres.length
     ? '<option value="">Selecione</option>' + livres.map(h=>`<option>${h}</option>`).join('')
     : '<option value="">Sem horário para esse dia</option>');
-
   if (livres.includes(anterior)) $('fHora').value = anterior;
   $('fHora').disabled = livres.length === 0;
+}
+
+function atualizarHorarios(){
+  const iso = $('fData').value;
+  mostrarHorarios(iso ? horariosPara(iso) : CONFIG.horarios);
+  if (!iso) return;
+
+  // Pergunta para a agenda dela o que de fato está livre. A lista local já
+  // está na tela enquanto a resposta nao chega — e se nao chegar, continua
+  // valendo. Melhor oferecer um horario que ela vai ter que remarcar do que
+  // deixar a cliente sem conseguir marcar nada.
+  const minha = ++consulta;
+  const dur = duracaoDoServico($('fServico').value);
+  fetch('/api/horarios?data=' + encodeURIComponent(iso) + '&duracao=' + dur)
+    .then(r => r.json())
+    .then(d => {
+      if (minha !== consulta) return;   // resposta atrasada de uma data antiga
+      if (d && d.ok && Array.isArray(d.horarios)) mostrarHorarios(d.horarios);
+    })
+    .catch(()=>{});
 }
 
 $('fData').addEventListener('change', () => {
@@ -633,6 +670,10 @@ $('fData').addEventListener('change', () => {
   }
   atualizarHorarios();
 });
+
+// Trocar de serviço muda a duração, e a duração muda o que cabe no dia: um
+// combinado de duas horas nao entra num vao de uma.
+$('fServico').addEventListener('change', atualizarHorarios);
 
 const F = CONFIG.fotos || {};
 if (F.capa) {
@@ -878,7 +919,7 @@ $('enviar').addEventListener('click',()=>{
   } else if(!atendeNo(data)) {
     $('eData').textContent = 'Nesse dia eu não atendo.';
     ruim('eData');
-  } else if(!horariosPara(data).includes(hora) && hora) {
+  } else if(!LIVRES.includes(hora) && hora) {
     $('eHora').textContent = 'Esse horário já passou. Escolhe outro.';
     ruim('eHora');
   }
@@ -897,15 +938,15 @@ $('enviar').addEventListener('click',()=>{
   if (bairro) t.push(`Bairro: ${bairro}`);
   t.push('',`Meu nome: ${nome}`,`Meu WhatsApp: ${fone}`);
 
-  // Registra o pedido para o lembrete de manutencao. Nao espera resposta:
-  // se o banco estiver fora, a conversa no WhatsApp abre do mesmo jeito.
+  // Registra o pedido na agenda dela. Nao espera resposta: se o banco estiver
+  // fora, a conversa no WhatsApp abre do mesmo jeito.
   try {
     fetch('/api/pedido', {
       method: 'POST',
       keepalive: true,
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ nome, fone, servico, data, hora, bairro,
-                             retorno: CONFIG.diasDeRetorno })
+      body: JSON.stringify({ nome, fone, servico, data, hora, bairro, onde,
+                             duracao: duracaoDoServico(servico) })
     }).catch(() => {});
   } catch (e) {}
 
