@@ -98,21 +98,41 @@ function toque() {
   wav("toque.wav", normaliza(passaBaixa(passaAlta(x, 420), 5200), 0.55));
 }
 
-// Transição entre cenas. Ruído com o corte do filtro subindo e descendo —
-// é a varredura que dá a sensação de passagem, não o volume.
+// Transição entre cenas. Só sobe: varredura que desce lê como queda, e a
+// primeira versão disso ficou melancólica por causa exatamente disso. Curta,
+// clara, e sem grave — é o grave que dá peso.
 function whoosh() {
-  const x = buf(0.44), n = x.length;
+  const x = buf(0.28), n = x.length;
   const bruto = new Float32Array(n);
   for (let i = 0; i < n; i++) bruto[i] = Math.random() * 2 - 1;
   let ant = 0;
   for (let i = 0; i < n; i++) {
     const t = i / n;
-    const corte = 300 + Math.sin(Math.PI * t) * 3400;
+    const corte = 700 + Math.pow(t, 1.6) * 9000;     // sobe e para no alto
     const a = (1 / SR) / (1 / (2 * Math.PI * corte) + 1 / SR);
     ant = ant + a * (bruto[i] - ant);
-    x[i] = ant * Math.sin(Math.PI * t) * Math.sin(Math.PI * t);
+    // sobe rápido, sai rápido: nada de cauda arrastando
+    const amp = Math.pow(t, 0.7) * Math.pow(1 - t, 0.45);
+    x[i] = ant * amp;
   }
-  wav("whoosh.wav", normaliza(x, 0.4));
+  wav("whoosh.wav", normaliza(passaAlta(x, 900), 0.42));
+}
+
+// Alternativa mais discreta: um sopro curto de ar, quase sem corpo. Serve
+// quando a cena só troca e não há movimento grande na tela.
+function swish() {
+  const x = buf(0.17), n = x.length;
+  const bruto = new Float32Array(n);
+  for (let i = 0; i < n; i++) bruto[i] = Math.random() * 2 - 1;
+  let ant = 0;
+  for (let i = 0; i < n; i++) {
+    const t = i / n;
+    const corte = 2600 + Math.pow(t, 1.3) * 8000;
+    const a = (1 / SR) / (1 / (2 * Math.PI * corte) + 1 / SR);
+    ant = ant + a * (bruto[i] - ant);
+    x[i] = ant * Math.pow(t, 0.5) * Math.pow(1 - t, 0.6);
+  }
+  wav("swish.wav", normaliza(passaAlta(x, 2200), 0.3));
 }
 
 // Pedido entregue. Tríade subindo, resolvendo — é o som de "deu certo".
@@ -143,41 +163,66 @@ function lembrete() {
   wav("lembrete.wav", normaliza(passaBaixa(x, 7000), 0.62));
 }
 
-// Cama musical. Pad de acordes longos, bem embaixo da voz. Osciladores
-// levemente desafinados entre si: afinação exata soa como órgão de brinquedo,
-// a batida lenta entre eles é o que dá corpo.
+// Cama musical. A primeira versão ficou melancólica, e o motivo era a soma de
+// quatro coisas: registro grave, filtro fechado, um acorde menor no meio e
+// acorde trocando a cada sete segundos. Grave, escuro e lento soa triste
+// mesmo com harmonia alegre.
+//
+// Esta é uma oitava acima, mais aberta, só acordes maiores, trocando no dobro
+// da velocidade, e com um arpejo leve em cima — é o movimento que tira o ar
+// parado, não a harmonia.
 function cama(segundos = 57) {
-  const x = buf(segundos), n = x.length;
-  // I – vi – IV – V em dó, que é familiar e resolve sem chamar atenção
+  const n = Math.round(segundos * SR);
+  const pad = new Float32Array(n);
+  const arp = new Float32Array(n);
+
+  // C – F – C – G: nenhum menor, resolve sempre
   const acordes = [
-    [130.81, 164.81, 196.00],   // C
-    [110.00, 130.81, 164.81],   // Am
-    [87.31, 130.81, 174.61],    // F
-    [98.00, 123.47, 146.83],    // G
+    [261.63, 329.63, 392.00],   // C
+    [349.23, 440.00, 523.25],   // F
+    [261.63, 329.63, 392.00],   // C
+    [392.00, 493.88, 587.33],   // G
   ];
-  const porAcorde = segundos / 8;   // duas voltas
+  const porAcorde = 3.5;
+
   for (let i = 0; i < n; i++) {
     const t = i / SR;
     const idx = Math.floor(t / porAcorde) % acordes.length;
     const dentro = (t % porAcorde) / porAcorde;
-    // sobe e desce dentro do acorde, e os acordes se sobrepõem no cruzamento
-    const sw = Math.pow(Math.sin(Math.PI * dentro), 0.55);
+    const sw = Math.pow(Math.sin(Math.PI * dentro), 0.45);
     let v = 0;
     for (const f of acordes[idx]) {
-      v += sine(f, i) * 0.34;
-      v += sine(f * 1.003, i, 0.7) * 0.26;          // desafinação lenta
-      v += sine(f * 2, i, 1.3) * 0.07;              // oitava, discreta
+      v += sine(f, i) * 0.30;
+      v += sine(f * 1.004, i, 0.7) * 0.22;   // desafinação, dá corpo
+      v += sine(f * 2, i, 1.3) * 0.06;
     }
-    x[i] = v * sw;
+    pad[i] = v * sw;
   }
-  // respiração muito lenta, para não ficar parado
-  for (let i = 0; i < n; i++) x[i] *= 0.85 + 0.15 * Math.sin(2 * Math.PI * i / SR / 11);
-  const y = passaBaixa(passaBaixa(x, 1400), 2600);
-  // entra e sai sem corte seco
-  const fade = Math.round(2.5 * SR);
+
+  // Arpejo: plucks curtos subindo pelas notas do acorde. Fica alto e baixo no
+  // volume, só para o fundo andar para frente.
+  const passo = 0.44;
+  for (let k = 0; k * passo < segundos; k++) {
+    const t0 = k * passo;
+    const idx = Math.floor(t0 / porAcorde) % acordes.length;
+    const notas = acordes[idx];
+    const f = notas[[0, 1, 2, 1][k % 4]] * 2;        // uma oitava acima do pad
+    const i0 = Math.round(t0 * SR), dur = Math.round(0.4 * SR);
+    for (let i = 0; i < dur && i0 + i < n; i++) {
+      const e = Math.pow(Math.max(0, 1 - i / dur), 3.2);
+      arp[i0 + i] += (sine(f, i) * 0.6 + sine(f * 2, i) * 0.12) * e;
+    }
+  }
+
+  const y = new Float32Array(n);
+  const padF = passaBaixa(pad, 4500);
+  const arpF = passaBaixa(arp, 6500);
+  for (let i = 0; i < n; i++) y[i] = padF[i] * 0.85 + arpF[i] * 0.3;
+
+  const fade = Math.round(1.8 * SR);
   for (let i = 0; i < fade; i++) { y[i] *= i / fade; y[n - 1 - i] *= i / fade; }
   wav("cama.wav", normaliza(y, 0.5));
 }
 
-mensagem(); toque(); whoosh(); enviado(); lembrete(); cama();
+mensagem(); toque(); whoosh(); swish(); enviado(); lembrete(); cama();
 console.log("\nem " + PASTA);
