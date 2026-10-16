@@ -50,6 +50,22 @@ h1{font-family:Fraunces,serif;font-weight:700;letter-spacing:-.025em;
 #jeitos .l b{display:block;font-size:34px;font-weight:700;margin-bottom:9px}
 #jeitos .l span{display:block;font-size:30px;color:var(--cinza);line-height:1.36}
 
+/* ------------------------------------------- 4 · ver um exemplo */
+#exemplo{justify-content:center;padding-bottom:230px}
+#exemplo h1{font-size:84px;max-width:13ch}
+#exemplo .sub{font-size:34px;margin-top:36px;max-width:24ch}
+#exemplo .selo{margin-top:46px;align-self:flex-start;background:var(--rosa);
+  color:#fff;font-size:30px;font-weight:700;padding:16px 30px;border-radius:999px}
+
+/* ------------------------------------------ 5 · não mexe em nada */
+#tecnologia{justify-content:center;padding-bottom:230px}
+#tecnologia h1{font-size:84px;max-width:12ch}
+#tecnologia .sub{font-size:34px;margin-top:36px;max-width:25ch}
+#tecnologia .passos{margin-top:48px;display:flex;flex-direction:column;gap:20px}
+#tecnologia .passos div{display:flex;gap:18px;align-items:baseline;font-size:31px}
+#tecnologia .passos b{font-family:Fraunces,serif;font-weight:700;
+  color:var(--nude);font-size:38px;width:40px;flex:none}
+
 /* -------------------------------------------------- 3 · quem sumiu */
 #sumiu h1{font-size:82px;max-width:13ch}
 #sumiu .sub{font-size:34px;margin-top:38px;max-width:25ch}
@@ -95,8 +111,29 @@ h1{font-family:Fraunces,serif;font-weight:700;letter-spacing:-.025em;
   <div class="assina" data-assina></div>
 </section>
 
+<!-- 4 ------------------------------------------------------------------ -->
+<section class="cartao" id="exemplo">
+  <h1>Quer ver o seu antes de decidir?</h1>
+  <p class="sub">Me manda o seu @ que eu monto um exemplo com o seu nome,
+    os seus serviços e os seus preços. Você olha e decide depois.</p>
+  <div class="selo">sem compromisso</div>
+  <div class="assina" data-assina></div>
+</section>
+
+<!-- 5 ------------------------------------------------------------------ -->
+<section class="cartao" id="tecnologia">
+  <h1>Você não mexe em nada.</h1>
+  <p class="sub">Quem monta sou eu. Você só me conta como trabalha.</p>
+  <div class="passos">
+    <div><b>1</b><span>Você me manda serviços, preços e os dias que atende</span></div>
+    <div><b>2</b><span>Eu monto e te mando o link pronto, em um dia</span></div>
+    <div><b>3</b><span>Mudou um preço? Me chama que eu troco</span></div>
+  </div>
+  <div class="assina" data-assina></div>
+</section>
+
 <script>
-// A assinatura é igual nos três: símbolo, nome e endereço.
+// A assinatura é igual em todos: símbolo, nome e endereço.
 const ASSINA = `
   <svg viewBox="0 0 160 172" xmlns="http://www.w3.org/2000/svg">
     <mask id="m"><path d="M20 26h30l30 80 30-80h30L80 152z" fill="#fff"
